@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>CHAMS – MISD</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:"Segoe UI", Roboto, Arial, sans-serif;
+}
+
+
+body{
+    background:#1f1f1f;
+    overflow:hidden;
+    width:100%;
+    height:100vh;
+}
+
+
+.topbar{
+    height:8vh;
+    background:#0b4a7a;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:0 2%;
+    z-index: 100;
+}
+
+
+.top-left{
+    display:flex;
+    align-items:center;
+    gap: 1.2vw;
+    color:#fff;
+}
+
+
+.menu-icon{
+    font-size: 2vw;
+    cursor:pointer;
+    display: flex;
+    align-items: center;
+}
+
+
+.logo img{
+    height: 4.5vh;
+    width: auto;
+}
+
+
+.search-box input{
+    width: 15vw;
+    height: 4vh;
+    border-radius: 0.3vw;
+    border:none;
+    padding:0 1vw;
+    outline:none;
+    font-size: 0.8vw;
+}
+
+
+.container{
+    display:flex;
+    height: 92vh;
+    width: 100%;
+}
+
+
+.sidebar{
+    width: 18%;
+    background:#ffffff;
+    padding: 2.5vh 1.2%;
+    display:flex;
+    flex-direction:column;
+    transition: width 0.3s ease, padding 0.3s ease;
+    border-right: 0.1vw solid #ddd;
+    overflow-x: hidden;
+}
+
+
+.sidebar.collapsed {
+    width: 6vw;
+    padding: 2vh 0;
+}
+
+
+.sidebar.collapsed .hide-on-collapse,
+.sidebar.collapsed .profile-role,
+.sidebar.collapsed .real-name {
+    display: none !important;
+}
+
+
+.sidebar.collapsed .profile-label {
+    display: block !important;
+    font-size: 0.65vw;
+    font-weight: 800;
+    color: #0b4a7a;
+    margin-top: 2px;
+}
+
+
+.sidebar.collapsed .menu-item {
+    flex-direction: column;
+    justify-content: center;
+    padding: 1.2vh 0;
+    gap: 2px;
+}
+
+
+.sidebar.collapsed .menu-text {
+    font-size: 0.6vw !important;
+    display: block !important;
+    text-align: center;
+}
+
+
+.profile-card{
+    background:#fff;
+    border-radius: 0.8vw;
+    padding: 2.5vh 5%;
+    text-align:center;
+    margin-bottom: 3vh;
+    transition: all 0.3s ease;
+}
+
+
+.sidebar.collapsed .profile-card {
+    box-shadow: none;
+    padding: 1vh 0;
+    margin-bottom: 1.5vh;
+    background: transparent;
+}
+
+
+.avatar-circle{
+    width: 5.5vw;
+    height: 5.5vw;
+    border-radius: 50%;
+    background:#0b4a7a;
+    margin: 0 auto 1.5vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:#fff;
+    transition: all 0.3s ease;
+    font-size:3vw;
+}
+
+
+.sidebar.collapsed .avatar-circle {
+    width: 3.5vw;
+    height: 3.5vw;
+    margin-bottom: 0;
+}
+
+
+.profile-name{ font-weight: 600; font-size: 1.1vw; color: #333; }
+.profile-label { display: none; } /* Hidden in full view */
+.profile-role{ font-size: 0.8vw; color:#0b4a7a; margin-top: 0.5vh; }
+
+
+/* --- MENU --- */
+.menu{ flex:1; }
+
+
+.menu-item{
+    display:flex;
+    align-items:center;
+    gap: 0.8vw;
+    padding: 1.2vh 5%;
+    font-size: 0.9vw;
+    font-weight: 600;
+    color:#0b4a7a;
+    border-radius: 0.5vw;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+    position: relative;
+}
+
+
+.menu-item:hover { background: #f0f4f8; }
+.menu-item i{ font-size: 1.5vw; }
+.sidebar.collapsed .menu-item i{ font-size: 1.6vw; }
+
+
+.notification-dot{
+    width:0.6vw;
+    height:0.6vw;
+    background:#ff2d8d;
+    border-radius:50%;
+    margin-left:auto;
+}
+
+
+.sidebar.collapsed .notification-dot{
+    position:absolute;
+    top: 5px;
+    right: 25%;
+    margin:0;
+}
+
+
+.signout{
+    margin-top: 2.5vh;
+    display:flex;
+    gap:0.8vw;
+    color:#0b4a7a;
+    font-size:0.9vw;
+    font-weight:700;
+    align-items:center;
+    cursor:pointer;
+    padding:1vh 5%;
+}
+
+
+.content{
+    flex:1;
+    background:#f5f6f8;
+    padding: 3vh 3%;
+    overflow:auto;
+}
+
+
+.page-header{
+    font-size: 1.4vw;
+    font-weight: 600;
+    color:#0b4a7a;
+    margin-bottom: 2vh;
+    display: flex;
+    align-items: center;
+    gap: 0.5vw;
+}
+
+
+.toolbar{
+    display:flex;
+    justify-content:space-between;
+    margin-bottom: 2vh;
+    font-size: 0.85vw;
+}
+
+
+.toolbar-left{
+    display:flex;
+    gap: 1.5vw;
+    color:#0b4a7a;
+}
+
+
+.toolbar-left div{ cursor:pointer; }
+
+
+.inventory-list{
+    background:#fff;
+    border-radius: 0.5vw;
+    box-shadow: 0 0.1vw 0.4vw rgba(0,0,0,0.15);
+}
+
+
+.inventory-item{
+    display:flex;
+    align-items:center;
+    padding: 2.5vh 2%;
+    border-bottom: 0.1vw solid #e5e5e5;
+}
+
+
+.item-icon{
+    margin-right: 1.2vw;
+    color: #0b4a7a;
+    font-size: 2vw;
+}
+
+
+.item-details{ flex:1; }
+
+
+.item-title{
+    font-weight: 600;
+    font-size: 1vw;
+    display:flex;
+    align-items:center;
+}
+
+
+.item-meta{
+    font-size: 0.75vw;
+    color:#666;
+    display:flex;
+    gap: 3vw;
+    margin-top: 0.5vh;
+}
+
+
+.status-dot{
+    width: 0.6vw;
+    height: 0.6vw;
+    background: #d32f2f;
+    border-radius:50%;
+    margin-left:0.5vw;
+}
+
+
+.item-actions{
+    font-size:0.8vw;
+    color:#777;
+    display:flex;
+    gap:1.2vw;
+    align-items:center;
+}
+
+
+.item-checkbox{
+    width:1.1vw;
+    height:1.1vw;
+    margin-right:1.2vw;
+    display:none;
+}
+
+
+.edit-mode .item-checkbox{ display:block; }
+</style>
+</head>
+
+
+<body>
+
+
+<div class="topbar">
+    <div class="top-left">
+        <i class="fas fa-bars menu-icon" onclick="toggleMenu()"></i>
+        <div class="logo">
+           <img src="C:\Users\Admin\Downloads/CHAMS.JPG" alt="Logo">
+        </div>
+    </div>
+    <div class="search-box">
+        <input type="text" placeholder="Search...">
+    </div>
+</div>
+
+
+<div class="container">
+    <div class="sidebar" id="sidebar">
+        <div class="profile-card">
+            <div class="avatar-circle">
+                <i class="fas fa-user"></i>
+            </div>
+            <div class="profile-name real-name">Jose L</div>
+            <div class="profile-label">PROFILE</div>
+            <div class="profile-role">ADMIN</div>
+        </div>
+
+
+        <div class="menu">
+            <div class="menu-item"><i class="fas fa-home"></i> <span class="menu-text">HOME</span></div>
+            <div class="menu-item"><i class="fas fa-ticket-alt"></i> <span class="menu-text">TICKETS</span></div>
+            <div class="menu-item"><i class="fas fa-box"></i> <span class="menu-text">INVENTORY </span></div>
+           
+            <div class="menu-item hide-on-collapse"><i class="fas fa-search"></i> <span class="menu-text">INVENTORY TRACKER</span></div>
+           
+            <div class="menu-item"><i class="fas fa-clipboard-list"></i> <span class="menu-text">MAINTENANCE LOG</span></div>
+           
+            <div class="menu-item hide-on-collapse"><i class="fas fa-history"></i> <span class="menu-text">ACTIVITY</span></div>
+           
+            <div class="menu-item">
+                <i class="fas fa-bell"></i> <span class="menu-text">NOTIFICATION</span>
+                <div class="notification-dot"></div>
+            </div>
+            <div class="menu-item"><i class="fas fa-cog"></i> <span class="menu-text">SETTINGS</span></div>
+           
+            <div class="menu-item hide-on-collapse"><i class="fas fa-question-circle"></i> <span class="menu-text">FAQs</span></div>
+        </div>
+
+
+        <div class="signout hide-on-collapse">
+            <i class="fas fa-sign-out-alt"></i> <span class="menu-text">SIGN OUT</span>
+        </div>
+    </div>
+
+
+    <div class="content" id="content">
+        <div class="page-header">
+            <i class="fas fa-chevron-left" style="font-size: 1.5vw;"></i> INVENTORY
+        </div>
+
+
+        <div class="toolbar">
+            <div class="toolbar-left">
+                <div onclick="toggleEdit()">Edit</div>
+                <div onclick="toggleSort()">Sort by: Date <i class="fas fa-caret-down" style="font-size: 1vw;"></i></div>
+            </div>
+            <div>1–1 of 1</div>
+        </div>
+
+
+        <div class="inventory-list" id="inventoryList">
+            <div class="inventory-item" data-date="2024-11-03">
+                <input type="checkbox" class="item-checkbox">
+                <div class="item-icon">
+                    <i class="fas fa-print"></i>
+                </div>
+
+
+                 <div class="item-details">
+                    <div class="item-title">
+                        Printer Ink <span class="status-dot"></span>
+                    </div>
+                    <div class="item-meta">
+                        <div><b>Input by:</b> San MI Admin</div>
+                        <div><b>Supplier:</b> Red Horse Co.</div>
+                        <div><b>Serial No.:</b> N/A</div>
+                    </div>
+                </div>
+
+
+                <div class="item-actions">
+                    <div>3 Nov 14:24</div>
+                    <i class="fas fa-lock" style="font-size:1.2vw;"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+function toggleMenu(){
+    document.getElementById("sidebar").classList.toggle("collapsed");
+}
+
+
+function toggleEdit(){
+    document.getElementById("content").classList.toggle("edit-mode");
+}
+
+
+let newestFirst = true;
+function toggleSort(){
+    const list = document.getElementById("inventoryList");
+    const items = Array.from(list.children);
+
+
+    items.sort((a,b)=>{
+        return newestFirst
+            ? new Date(b.dataset.date) - new Date(a.dataset.date)
+            : new Date(a.dataset.date) - new Date(b.dataset.date);
+    });
+
+
+    newestFirst = !newestFirst;
+    items.forEach(i => list.appendChild(i));
+}
+</script>
+
+
+</body>
+</html>
+
