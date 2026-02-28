@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>CHAMS – Inventory Item Details</title>
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:"Segoe UI", Arial, sans-serif;
+}
+
+
+body{
+    background:#f0f2f5;
+    overflow:hidden;
+    width: 100%;
+    height: 100vh;
+}
+
+
+.topbar{
+    height: 8vh;
+    background:#0b4a7a;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:0 2%;
+    z-index: 100;
+}
+
+
+.top-left{
+    display:flex;
+    align-items:center;
+    gap: 1.2vw;
+    color:#fff;
+}
+
+
+.menu-icon{
+    font-size: 2.2vw;
+    cursor:pointer;
+    user-select: none;
+}
+
+
+.logo img{
+    height: 4.5vh;
+    width: auto;
+}
+
+
+.search-box input{
+    width: 18vw;
+    height: 4vh;
+    border-radius: 0.3vw;
+    border:none;
+    padding:0 1vw;
+    outline:none;
+}
+
+
+.container{
+    display:flex;
+    height: 92vh;
+    width: 100%;
+}
+
+
+.sidebar{
+    width: 18%;
+    background:#ffffff;
+    padding: 2.5vh 1.2%;
+    display:flex;
+    flex-direction:column;
+    transition: 0.3s ease;
+    overflow:hidden;
+    border-right: 1px solid #ddd;
+}
+
+
+.sidebar.collapsed{
+    width: 6.5vw;
+    padding: 2vh 0;
+}
+
+
+.sidebar.collapsed .hide-on-collapse,
+.sidebar.collapsed .profile-role,
+.sidebar.collapsed .real-name {
+    display: none !important;
+}
+
+
+.sidebar.collapsed .profile-label {
+    display: block !important;
+    font-size: 0.7vw;
+    font-weight: 800;
+    color: #0b4a7a;
+    margin-top: 2px;
+}
+
+
+.profile-card{
+    background:#fff;
+    border-radius: 0.8vw;
+    padding: 2.5vh 5%;
+    text-align:center;
+    margin-bottom: 3vh;
+    transition: 0.3s;
+}
+
+
+.sidebar.collapsed .profile-card{
+    box-shadow: none;
+    padding: 1vh 0;
+    background: transparent;
+}
+
+
+.avatar-circle{
+    width: 5.5vw;
+    height: 5.5vw;
+    border-radius: 50%;
+    background:#0b4a7a;
+    margin: 0 auto 1.5vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:#fff;
+    transition: 0.3s;
+}
+
+
+.sidebar.collapsed .avatar-circle{
+    width: 3.5vw;
+    height: 3.5vw;
+    margin-bottom: 0;
+}
+
+
+.avatar-circle i { font-size: 3vw; transition: 0.3s; }
+.sidebar.collapsed .avatar-circle i { font-size: 1.8vw; }
+
+
+.profile-name { font-weight: 600; font-size: 1.1vw; }
+.profile-label { display: none; }
+.profile-role { font-size: 0.8vw; color:#0b4a7a; margin-top: 0.5vh; font-weight: 700; }
+
+
+.menu { flex: 1; }
+
+
+.menu-item{
+    display:flex;
+    align-items:center;
+    gap: 0.8vw;
+    padding: 1.2vh 8%;
+    font-size: 0.85vw;
+    color:#0b4a7a;
+    font-weight: 600;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: 0.2s;
+    border-radius: 0.5vw;
+}
+
+
+.menu-item:hover { background: #f0f4f8; }
+.menu-item i { font-size: 1vw; }
+
+
+.sidebar.collapsed .menu-item{
+    flex-direction: column;
+    padding: 1.2vh 0;
+    justify-content: center;
+    text-align: center;
+    gap: 2px;
+}
+
+
+.sidebar.collapsed .menu-item i { font-size: 1.6vw; }
+
+
+.signout{
+    margin-top: 2.5vh;
+    padding: 1vh 8%;
+    display:flex;
+    gap: 0.8vw;
+    color:#0b4a7a;
+    font-size: 0.9vw;
+    font-weight: 700;
+    cursor: pointer;
+    align-items: center;
+}
+
+
+.sidebar.collapsed .signout{
+    flex-direction: column;
+    font-size: 0.65vw;
+    gap: 2px;
+    padding: 1vh 0;
+}
+
+
+.content{
+    flex:1;
+    padding: 4vh 5%;
+    overflow-y:auto;
+    background: #fff;
+}
+
+
+.breadcrumb{
+    display: flex;
+    align-items: center;
+    gap: 0.5vw;
+    font-size: 1.1vw;
+    font-weight: 700;
+    color: #333;
+    margin-bottom: 4vh;
+    cursor: pointer;
+}
+
+
+.breadcrumb:hover { color: #0b4a7a; }
+
+
+.details-card{
+    border: 0.1vw solid #ddd;
+    border-radius: 0.5vw;
+    padding: 4vh 3%;
+    margin-bottom: 4vh;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    row-gap: 3vh;
+    column-gap: 5vw;
+    box-shadow: 0 0.2vw 0.5vw rgba(0,0,0,0.05);
+}
+
+
+.detail-group{
+    display: flex;
+    align-items: center;
+    font-size: 0.95vw;
+}
+
+
+.label{
+    color: #888;
+    width: 10vw;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.8vw;
+}
+
+
+.value{
+    color: #333;
+    font-weight: 700;
+}
+
+
+.status-row{
+    margin-top: 5vh;
+    display: flex;
+    flex-direction: column;
+    gap: 3vh;
+}
+
+
+.status-item{
+    display: flex;
+    align-items: center;
+    gap: 1.5vw;
+    font-size: 0.9vw;
+    font-weight: 600;
+    color: #888;
+}
+
+
+.status-badge{
+    padding: 0.8vh 2.5vw;
+    border-radius: 0.5vw;
+    color: #fff;
+    font-weight: 700;
+    text-transform: uppercase;
+    min-width: 8vw;
+    text-align: center;
+}
+
+
+.badge-none { background: #28a745; }
+.badge-blue { background: #007bff; }
+
+
+.attachment-btn{
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    gap: 0.5vw;
+    padding: 0.8vh 1.5vw;
+    border: 0.1vw solid #ddd;
+    border-radius: 0.3vw;
+    background: #fff;
+    font-size: 0.8vw;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+
+.attachment-btn:hover { background: #f8f9fa; border-color: #0b4a7a; }
+
+
+.footer-actions{
+    margin-top: 10vh;
+    display: flex;
+    justify-content: flex-end;
+    gap: 1.5vw;
+}
+
+
+.action-btn{
+    display: flex;
+    align-items: center;
+    gap: 0.5vw;
+    padding: 1.2vh 2.5vw;
+    border-radius: 0.5vw;
+    font-size: 0.9vw;
+    font-weight: 700;
+    cursor: pointer;
+    border: 0.15vw solid;
+    transition: 0.2s;
+}
+
+
+.btn-edit {
+    background: #fff9e6;
+    border-color: #f1c40f;
+    color: #333;
+}
+.btn-edit:hover { background: #f1c40f; color: #fff; }
+
+
+.btn-download {
+    background: #e7f3ff;
+    border-color: #0b4a7a;
+    color: #0b4a7a;
+}
+.btn-download:hover { background: #0b4a7a; color: #fff; }
+</style>
+</head>
+
+
+<body>
+
+
+<div class="topbar">
+    <div class="top-left">
+        <i class="fas fa-bars menu-icon" onclick="toggleMenu()"></i>
+        <div class="logo"><img src="C:\Users\Admin\Downloads/CHAMS.JPG" alt="CHAMS Logo"></div>
+    </div>
+    <div class="search-box">
+        <input type="text" placeholder="Search...">
+    </div>
+</div>
+
+
+<div class="container">
+    <div class="sidebar" id="sidebar">
+        <div class="profile-card">
+            <div class="avatar-circle">
+                <i class="fas fa-user"></i>
+            </div>
+            <div class="profile-name real-name">Jose L</div>
+            <div class="profile-label">PROFILE</div>
+            <div class="profile-role">ADMIN</div>
+        </div>
+
+
+        <div class="menu">
+            <div class="menu-item"><i class="fas fa-home"></i> <span>HOME</span></div>
+            <div class="menu-item"><i class="fas fa-ticket-alt"></i> <span>TICKETS</span></div>
+            <div class="menu-item"><i class="fas fa-box"></i> <span>INVENTORY</span></div>
+            <div class="menu-item hide-on-collapse"><i class="fas fa-search"></i> <span>INVENTORY TRACKER</span></div>
+            <div class="menu-item"><i class="fas fa-clipboard-list"></i> <span>MAINTENANCE LOG</span></div>
+            <div class="menu-item hide-on-collapse"><i class="fas fa-history"></i> <span>ACTIVITY LOG</span></div>
+            <div class="menu-item"><i class="fas fa-bell"></i> <span>NOTIFICATION</span></div>
+            <div class="menu-item"><i class="fas fa-cog"></i> <span>SETTINGS</span></div>
+            <div class="menu-item hide-on-collapse"><i class="fas fa-question-circle"></i> <span>FAQs</span></div>
+        </div>
+
+
+        <div class="signout hide-on-collapse">
+            <div class="signout-item"><i class="fas fa-sign-out-alt"></i> <span>SIGN OUT</span></div>
+        </div>
+    </div>
+
+
+    <div class="content">
+        <div class="breadcrumb" onclick="window.history.back()">
+            <i class="fas fa-chevron-left"></i> INVENTORY TRACKER
+        </div>
+
+
+        <div class="details-card">
+            <div class="detail-group"><div class="label">Item Name:</div> <div class="value">PC</div></div>
+            <div class="detail-group"><div class="label">Quantity:</div> <div class="value">5</div></div>
+            <div class="detail-group"><div class="label">Department:</div> <div class="value">MISD</div></div>
+            <div class="detail-group"><div class="label">Supplier:</div> <div class="value">LOGI CORP</div></div>
+            <div class="detail-group"><div class="label">Item Brand:</div> <div class="value">Dell</div></div>
+            <div class="detail-group"><div class="label">Input by:</div> <div class="value">Ray</div></div>
+            <div class="detail-group"><div class="label">Date Delivered:</div> <div class="value">11/03/25</div></div>
+        </div>
+
+
+        <div class="status-row">
+            <div class="status-item">
+                <div style="width: 8vw;">DEFECTS:</div>
+                <div class="status-badge badge-none">NONE</div>
+                <button class="attachment-btn">
+                    See Attachment <i class="fas fa-file-alt"></i>
+                </button>
+            </div>
+
+
+            <div class="status-item">
+                <div style="width: 8vw;">SERIAL NO:</div>
+                <div class="status-badge badge-blue">15512</div>
+            </div>
+        </div>
+
+
+        <div class="footer-actions">
+            <button class="action-btn btn-edit">
+                EDIT <i class="fas fa-pen"></i>
+            </button>
+            <button class="action-btn btn-download">
+                DOWNLOAD <i class="fas fa-download"></i>
+            </button>
+        </div>
+    </div>
+</div>
+
+
+<script>
+function toggleMenu(){
+    document.getElementById("sidebar").classList.toggle("collapsed");
+}
+</script>
+
+
+</body>
+</html>
+
