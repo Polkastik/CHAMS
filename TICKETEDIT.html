@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>CHAMS - Ticket Details</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"/>
+
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Segoe UI", Roboto, Arial, sans-serif;
+        }
+
+
+        body {
+            background: #f5f6f8;
+            overflow: hidden;
+            width: 100%;
+            height: 100vh;
+        }
+
+
+        .topbar {
+            height: 8vh;
+            background: #0b4a7a;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 2%;
+            color: #fff;
+            position: relative;
+            z-index: 100;
+        }
+
+
+        .top-left {
+            display: flex;
+            align-items: center;
+            gap: 1.2vw;
+        }
+
+
+        .menu-icon {
+            font-size: 1.8vw;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+        }
+
+
+        .logo img {
+            height: 4.5vh;
+            width: auto;
+            object-fit: contain;
+        }
+
+
+        .search-box input {
+            width: 15vw;
+            height: 4vh;
+            border-radius: 0.3vw;
+            border: none;
+            padding: 0 1vw;
+            outline: none;
+            font-size: 0.85vw;
+        }
+
+
+        .container {
+            display: flex;
+            height: 92vh;
+            width: 100%;
+        }
+
+
+        .sidebar {
+            width: 18%;
+            background: #fff;
+            padding: 2.5vh 1.2%;
+            display: flex;
+            flex-direction: column;
+            transition: 0.3s ease;
+            border-right: 1px solid #ddd;
+        }
+
+
+        .sidebar.collapsed {
+            width: 6.5vw;
+            padding: 2vh 0;
+        }
+
+
+        .profile-card {
+            background: #fff;
+            padding: 2.5vh 5%;
+            text-align: center;
+            margin-bottom: 3vh;
+            transition: 0.3s;
+        }
+
+
+        .sidebar.collapsed .profile-card {
+            box-shadow: none;
+            border: none;
+            padding: 1vh 0;
+            background: transparent;
+        }
+
+
+        .avatar {
+            width: 6vw;
+            height: 6vw;
+            border-radius: 50%;
+            background: #0b4a7a;
+            margin: 0 auto 1vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 2.5vw;
+            transition: 0.3s;
+        }
+
+
+        .sidebar.collapsed .avatar {
+            width: 3.5vw;
+            height: 3.5vw;
+            font-size: 1.5vw;
+            margin-bottom: 0;
+        }
+
+
+        .profile-name { font-weight: 600; font-size: 1.1vw; color: #333; }
+        .profile-role { font-size: 0.8vw; color: #0b4a7a; font-weight: 700; text-transform: uppercase; }
+        .profile-label { display: none; }
+
+
+        .sidebar.collapsed .hide-on-collapse,
+        .sidebar.collapsed .profile-role,
+        .sidebar.collapsed .profile-name {
+            display: none !important;
+        }
+
+
+        .sidebar.collapsed .profile-label {
+            display: block !important;
+            font-size: 0.7vw;
+            font-weight: 800;
+            color: #0b4a7a;
+            margin-top: 2px;
+        }
+
+
+        .menu { flex: 1; }
+
+
+        .menu-item {
+            display: flex;
+            align-items: center;
+            gap: 0.8vw;
+            padding: 1.2vh 5%;
+            color: #0b4a7a;
+            cursor: pointer;
+            border-radius: 0.4vw;
+            margin-bottom: 0.2vh;
+            font-size: 0.85vw;
+            font-weight: 600;
+            transition: 0.2s;
+            position: relative;
+        }
+
+
+        .menu-item:hover { background: #f0f7ff; }
+
+
+        .sidebar.collapsed .menu-item {
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            gap: 2px;
+            padding: 1.2vh 0;
+            font-size: 0.65vw;
+        }
+
+
+        .sidebar.collapsed .menu-item i { font-size: 1.6vw; }
+
+
+        .notification-dot {
+            width: 0.6vw;
+            height: 0.6vw;
+            background: #ff2d8d;
+            border-radius: 50%;
+            margin-left: auto;
+        }
+
+
+        .sidebar.collapsed .notification-dot {
+            position: absolute;
+            top: 5px;
+            right: 25%;
+            margin: 0;
+        }
+
+
+        .signout {
+            margin-top: 2vh;
+            display: flex;
+            align-items: center;
+            gap: 0.8vw;
+            font-size: 0.9vw;
+            font-weight: 700;
+            color: #0b4a7a;
+            cursor: pointer;
+            padding: 1vh 5%;
+        }
+
+
+        .sidebar.collapsed .signout {
+            flex-direction: column;
+            align-items: center;
+            font-size: 0.65vw;
+            gap: 2px;
+            padding: 1vh 0;
+        }
+
+
+        .content {
+            flex: 1;
+            padding: 4vh 4%;
+            overflow-y: auto;
+            background: #f4f7f9;
+        }
+
+
+        .title {
+            font-weight: 800;
+            font-size: 1.5vw;
+            color: #0b4a7a;
+            margin-bottom: 3vh;
+            display: flex;
+            align-items: center;
+            gap: 0.5vw;
+        }
+
+
+        .card {
+            background: #fff;
+            border-radius: 0.6vw;
+            padding: 4vh 3%;
+            box-shadow: 0 0.2vw 0.8vw rgba(0,0,0,0.1);
+        }
+
+
+        .info-box {
+            border: 0.1vw solid #ddd;
+            padding: 3vh 2.5%;
+            border-radius: 0.6vw;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            row-gap: 3vh;
+        }
+
+
+        .label { color: #888; font-size: 0.8vw; font-weight: 600; margin-bottom: 0.5vh; }
+        .value { font-weight: 700; font-size: 1vw; color: #333; }
+       
+        .inline-edit-icon {
+            cursor: pointer;
+            color: #0b4a7a;
+            font-size: 0.9vw;
+            margin-left: 0.5vw;
+            transition: 0.2s;
+        }
+        .inline-edit-icon:hover { opacity: 0.7; }
+
+
+        .message-box {
+            border: 0.1vw solid #ddd;
+            padding: 2vh 2%;
+            border-radius: 0.6vw;
+            position: relative;
+            font-size: 0.95vw;
+            color: #444;
+            line-height: 1.5;
+            margin-top: 1vh;
+        }
+
+
+        .badge { display: inline-block; padding: 0.6vh 1.2vw; border-radius: 0.4vw; color: #fff; font-size: 0.75vw; font-weight: 700; }
+        .red { background: #b71c1c; }
+        .blue { background: #0b4a7a; }
+
+
+        .row { display: flex; align-items: center; gap: 1vw; margin-top: 3vh; }
+       
+        .upload { margin-left: auto; }
+        .upload button {
+            padding: 1vh 1.5vw;
+            border-radius: 0.4vw;
+            border: 0.1vw solid #ccc;
+            background: #fff;
+            color: #0b4a7a;
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.5vw;
+            font-size: 0.85vw;
+        }
+
+
+        .actions { display: flex; justify-content: flex-end; gap: 1.5vw; margin-top: 5vh; }
+        .btn-action {
+            padding: 1.2vh 2vw;
+            border-radius: 0.4vw;
+            border: none;
+            cursor: pointer;
+            font-weight: 700;
+            font-size: 0.9vw;
+            display: flex;
+            align-items: center;
+            gap: 0.6vw;
+        }
+        .cancel { background: #d32f2f; color: #fff; }
+        .save { background: #2e7d32; color: #fff; }
+    </style>
+</head>
+
+
+<body>
+
+
+<div class="topbar">
+    <div class="top-left">
+        <div class="menu-icon" onclick="toggleMenu()">
+            <i class="fas fa-bars"></i>
+        </div>
+        <div class="logo">
+            <img src="C:\Users\Admin\Downloads/CHAMS.JPG" alt="CHAMS Logo">
+        </div>
+    </div>
+    <div class="search-box">
+        <input type="text" placeholder="Search...">
+    </div>
+</div>
+
+
+<div class="container">
+
+
+    <div class="sidebar" id="sidebar">
+        <div class="profile-card">
+            <div class="avatar"><i class="fas fa-user"></i></div>
+            <div class="profile-name">Jose L</div>
+            <div class="profile-label">PROFILE</div>
+            <div class="profile-role">ADMIN</div>
+        </div>
+
+
+        <div class="menu">
+            <div class="menu-item"><i class="fas fa-home"></i> <span>HOME</span></div>
+            <div class="menu-item"><i class="fas fa-ticket-alt"></i> <span>TICKETS</span></div>
+            <div class="menu-item"><i class="fas fa-box"></i> <span>INVENTORY</span></div>
+           
+            <div class="menu-item hide-on-collapse"><i class="fas fa-search"></i> <span>TRACKER</span></div>
+           
+            <div class="menu-item"><i class="fas fa-clipboard-list"></i> <span>MAINTENANCE LOG </span></div>
+           
+            <div class="menu-item hide-on-collapse"><i class="fas fa-history"></i> <span>ACTIVITY</span></div>
+           
+            <div class="menu-item">
+                <i class="fas fa-bell"></i> <span>NOTIFICATION</span>
+                <div class="notification-dot"></div>
+            </div>
+            <div class="menu-item"><i class="fas fa-cog"></i> <span>SETTINGS</span></div>
+           
+            <div class="menu-item hide-on-collapse"><i class="fas fa-question-circle"></i> <span>FAQs</span></div>
+        </div>
+
+
+        <div class="signout hide-on-collapse">
+            <i class="fas fa-sign-out-alt"></i> <span>SIGN OUT</span>
+        </div>
+    </div>
+
+
+    <div class="content">
+        <div class="title">
+            <i class="fas fa-chevron-left" onclick="window.history.back()" style="cursor:pointer"></i> TICKETS
+        </div>
+
+
+        <div class="card">
+            <div class="info-box">
+                <div>
+                    <div class="label">Applicant Name:</div>
+                    <div class="value">Eren Yeager</div>
+                </div>
+                <div>
+                    <div class="label">Department:</div>
+                    <div class="value">MISD</div>
+                </div>
+                <div>
+                    <div class="label">Ticket Type:</div>
+                    <div class="value">Troubleshooting</div>
+                </div>
+                <div>
+                    <div class="label">Category:</div>
+                    <div class="value">Technical Support</div>
+                </div>
+            </div>
+
+
+            <div style="margin-top: 3vh;">
+                <div class="label">Message:</div>
+                <div class="message-box">
+                    The printer is malfunctioning in our reception.
+                    <i class="fas fa-pen-to-square inline-edit-icon"></i>
+                </div>
+            </div>
+
+
+            <div class="row">
+                <div class="label">Priority:</div>
+                <span class="badge red">HIGH</span>
+                <i class="fas fa-pen-to-square inline-edit-icon"></i>
+
+
+                <div class="upload">
+                    <button><i class="fas fa-upload"></i> Upload Attachment</button>
+                </div>
+            </div>
+
+
+            <div class="row">
+                <div class="label">Status:</div>
+                <span class="badge red">UNRESOLVED</span>
+                <i class="fas fa-pen-to-square inline-edit-icon"></i>
+            </div>
+
+
+            <div class="row">
+                <div class="label">Assign to:</div>
+                <span class="badge blue">Kenneth Fundador</span>
+                <i class="fas fa-pen-to-square inline-edit-icon"></i>
+            </div>
+
+
+            <div class="actions">
+                <button class="btn-action cancel"><i class="fas fa-times"></i> CANCEL</button>
+                <button class="btn-action save"><i class="fas fa-save"></i> SAVE CHANGES</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    function toggleMenu() {
+        document.getElementById("sidebar").classList.toggle("collapsed");
+    }
+</script>
+
+
+</body>
+</html>
+
