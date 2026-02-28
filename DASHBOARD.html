@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>CHAMS – Dashboard</title>
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:"Segoe UI", Arial, sans-serif;
+}
+
+
+body{
+    background:#f4f7f9;
+    overflow:hidden;
+    width:100%;
+    height:100vh;
+}
+
+
+.topbar{
+    height:8vh;
+    background:#0b4a7a;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:0 2.5%;
+    z-index: 100;
+}
+
+
+.top-left{
+    display:flex;
+    align-items:center;
+    gap:1.2vw;
+    color:#fff;
+}
+
+
+.menu-icon{
+    font-size:2.2vw;
+    cursor:pointer;
+    display:flex;
+    align-items:center;
+    user-select:none;
+}
+
+
+.logo img{
+    height:4.5vh;
+    width:auto;
+}
+
+
+.search-box input{
+    width:18vw;
+    height:4vh;
+    border-radius:0.4vw;
+    border:none;
+    padding:0 1vw;
+    outline:none;
+    font-size:0.85vw;
+}
+
+
+.container{
+    display:flex;
+    height:92vh;
+    width:100%;
+}
+
+
+.sidebar{
+    width:18%;
+    background:#ffffff;
+    padding:2.5vh 1.2%;
+    display:flex;
+    flex-direction:column;
+    transition:0.3s ease;
+    overflow:hidden;
+    border-right: 1px solid #e0e0e0;
+}
+
+
+.sidebar.collapsed{
+    width:6.5vw;
+    padding:2vh 0;
+}
+
+
+.sidebar.collapsed .hide-on-collapse,
+.sidebar.collapsed .profile-role,
+.sidebar.collapsed .real-name {
+    display: none !important;
+}
+
+
+.sidebar.collapsed .profile-label {
+    display: block !important;
+    font-size: 0.7vw;
+    font-weight: 800;
+    color: #0b4a7a;
+    margin-top: 2px;
+}
+
+
+.profile-card{
+    background:#fff;
+    padding: 2.5vh 5%;
+    text-align:center;
+    margin-bottom:3vh;
+    transition: 0.3s ease;
+}
+
+
+.sidebar.collapsed .profile-card {
+    border: none;
+    padding: 1vh 0;
+    background: transparent;
+    margin-bottom: 1vh;
+}
+
+
+.avatar {
+    width: 5.5vw;
+    height: 5.5vw;
+    border-radius: 50%;
+    background: #0b4a7a;
+    margin: 0 auto 1.2vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-size: 2.5vw;
+    transition: 0.3s;
+}
+
+
+.sidebar.collapsed .avatar {
+    width: 3.5vw;
+    height: 3.5vw;
+    font-size: 1.5vw;
+    margin-bottom: 0;
+}
+
+
+.profile-name { font-weight: 700; font-size: 1vw; color: #333; }
+.profile-label { display: none; }
+.profile-role {
+    font-size: 0.7vw;
+    color: #0b4a7a;
+    font-weight: 700;
+    text-transform: uppercase;
+    margin-top: 0.5vh;
+}
+
+
+.menu{ flex:1; }
+
+
+.menu-item{
+    display:flex;
+    align-items:center;
+    gap:0.8vw;
+    padding:1.4vh 10%;
+    font-size:0.85vw;
+    color:#0b4a7a;
+    font-weight: 600;
+    cursor:pointer;
+    border-radius:0.6vw;
+    margin-bottom: 0.5vh;
+    transition:0.2s;
+    white-space:nowrap;
+    position: relative;
+}
+
+
+.menu-item:hover{ background:#eef2f6; }
+.menu-item i{ font-size:1.3vw; width: 1.5vw; text-align: center;}
+
+
+/* COLLAPSED MENU STYLE */
+.sidebar.collapsed .menu-item{
+    flex-direction:column;
+    padding: 1.2vh 0;
+    justify-content: center;
+    text-align: center;
+    gap: 2px;
+    font-size: 0.65vw;
+}
+
+
+.signout{
+    margin-top:2vh;
+    padding: 1.5vh 10%;
+    display:flex;
+    gap:0.8vw;
+    color:#0b4a7a;
+    font-size:0.9vw;
+    font-weight:700;
+    align-items:center;
+    cursor:pointer;
+}
+
+
+.sidebar.collapsed .signout {
+    flex-direction: column;
+    padding: 1vh 0;
+    font-size: 0.65vw;
+    gap: 2px;
+}
+
+
+.content{
+    flex:1;
+    padding:4vh 3%;
+    overflow-y:auto;
+}
+
+
+.section-label{
+    font-size:0.85vw;
+    font-weight:800;
+    color:#888;
+    margin-bottom:1.5vh;
+    text-transform:uppercase;
+    letter-spacing: 0.05vw;
+}
+
+
+.ticket-summary{
+    display:grid;
+    grid-template-columns:repeat(4, 1fr);
+    background:#fff;
+    border: 1px solid #e0e0e0;
+    border-radius:0.8vw;
+    margin-bottom:4vh;
+    box-shadow: 0 0.2vw 0.8vw rgba(0,0,0,0.03);
+    overflow: hidden;
+}
+
+
+.summary-card{
+    text-align:center;
+    padding:4vh 0;
+    border-right:1px solid #f0f0f0;
+    transition: 0.3s;
+    cursor: default;
+}
+
+
+.summary-card:hover {
+    background: #fafafa;
+}
+
+
+.summary-card:last-child{ border-right:none; }
+
+
+.summary-card h4{
+    font-size:0.8vw;
+    color: #0b4a7a;
+    margin-bottom:1vh;
+    font-weight: 800;
+}
+
+
+.summary-card .count{
+    font-size:2.8vw;
+    font-weight:300;
+    color:#333;
+}
+
+
+.dashboard-grid{
+    display:flex;
+    gap:2%;
+    height:52vh;
+}
+
+
+.grid-box{
+    background:#fff;
+    border-radius:1vw;
+    box-shadow:0 0.4vw 1.2vw rgba(0,0,0,0.05);
+    padding:3vh 1.5vw;
+    border: 1px solid #eee;
+}
+
+
+.stock-box{ width:22%; text-align:center; }
+.perf-box{ width:48%; }
+.activity-box{ width:28%; }
+
+
+.pie-mock{
+    width:9vw;
+    height:9vw;
+    border-radius:50%;
+    background:conic-gradient(#0b4a7a 0% 40%, #4a90e2 40% 70%, #50e3c2 70% 90%, #ff2d8d 90% 100%);
+    margin:3vh auto;
+    box-shadow: inset 0 0 1vw rgba(0,0,0,0.1);
+}
+
+
+.stock-legend {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8vh;
+    margin-top: 2vh;
+}
+
+
+.legend-item {
+    font-size: 0.75vw;
+    color: #666;
+    display: flex;
+    justify-content: space-between;
+    font-weight: 600;
+}
+
+
+.activity-list{ margin-top:2.5vh; }
+
+
+.activity-item{
+    display:flex;
+    align-items:center;
+    gap:0.8vw;
+    margin-bottom:2.2vh;
+    font-size:0.85vw;
+    color: #444;
+}
+
+
+.initial-circle{
+    width:2.2vw;
+    height:2.2vw;
+    background:#eef2f6;
+    color:#0b4a7a;
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-weight:800;
+    font-size:0.75vw;
+    border: 1px solid #0b4a7a22;
+}
+</style>
+</head>
+
+
+<body>
+
+
+<div class="topbar">
+    <div class="top-left">
+        <i class="fas fa-bars menu-icon" onclick="toggleMenu()"></i>
+        <div class="logo">
+            <img src="C:\Users\Admin\Downloads/CHAMS.JPG" alt="CHAMS Logo">
+        </div>
+    </div>
+
+
+    <div class="search-box">
+        <input type="text" placeholder="Global system search...">
+    </div>
+</div>
+
+
+<div class="container">
+    <div class="sidebar" id="sidebar">
+        <div class="profile-card">
+            <div class="avatar">
+                <i class="fas fa-user"></i>
+            </div>
+            <div class="profile-name real-name">Jose L</div>
+            <div class="profile-label">PROFILE</div>
+            <div class="profile-role">ADMIN</div>
+        </div>
+
+
+        <div class="menu">
+            <div class="menu-item"><i class="fas fa-home"></i> <span>HOME</span></div>
+            <div class="menu-item"><i class="fas fa-ticket-alt"></i> <span>TICKETS</span></div>
+            <div class="menu-item"><i class="fas fa-box"></i> <span>INVENTORY</span></div>
+           
+            <div class="menu-item hide-on-collapse"><i class="fas fa-search"></i> <span>INVENTORY TRACKER</span></div>
+           
+            <div class="menu-item"><i class="fas fa-clipboard-list"></i> <span>MAINTENANCE LOG</span></div>
+           
+            <div class="menu-item hide-on-collapse"><i class="fas fa-history"></i> <span>ACTIVITY LOG</span></div>
+           
+            <div class="menu-item"><i class="fas fa-bell"></i> <span>NOTIFICATION</span></div>
+            <div class="menu-item"><i class="fas fa-cog"></i> <span>SETTINGS</span></div>
+           
+            <div class="menu-item hide-on-collapse"><i class="fas fa-question-circle"></i> <span>FAQs</span></div>
+        </div>
+
+
+        <div class="signout hide-on-collapse">
+            <i class="fas fa-sign-out-alt"></i> <span>SIGN OUT</span>
+        </div>
+    </div>
+
+
+    <div class="content">
+        <div class="section-label">Operational Overview</div>
+        <div class="ticket-summary">
+            <div class="summary-card">
+                <h4>OVERDUE</h4>
+                <div class="count" style="color: #ff2d8d;">1</div>
+            </div>
+            <div class="summary-card">
+                <h4>OPEN</h4>
+                <div class="count">1</div>
+            </div>
+            <div class="summary-card">
+                <h4>UNASSIGNED</h4>
+                <div class="count">1</div>
+            </div>
+            <div class="summary-card">
+                <h4>URGENT</h4>
+                <div class="count" style="color:#bbb;">0</div>
+            </div>
+        </div>
+
+
+        <div class="dashboard-grid">
+            <div class="grid-box stock-box">
+                <div class="section-label" style="text-align:left;">Inventory Levels</div>
+                <div class="pie-mock"></div>
+                <div class="stock-legend">
+                    <div class="legend-item"><span>Hardware</span> <span>40%</span></div>
+                    <div class="legend-item"><span>Peripherals</span> <span>30%</span></div>
+                    <div class="legend-item"><span>Consumables</span> <span>20%</span></div>
+                    <div class="legend-item"><span>Other</span> <span>10%</span></div>
+                </div>
+            </div>
+
+
+            <div class="grid-box perf-box">
+                <div class="section-label">Ticket Resolution Performance</div>
+                <div style="width:100%; height:85%; display:flex; flex-direction: column; align-items:center; justify-content:center; border:1px dashed #ddd; border-radius: 0.5vw;">
+                    <i class="fas fa-chart-line" style="font-size:4vw; color:#0b4a7a; opacity: 0.1; margin-bottom: 1vh;"></i>
+                    <p style="color:#888; font-size:0.8vw; font-weight: 600;">Monthly Trend Analytics</p>
+                </div>
+            </div>
+
+
+            <div class="grid-box activity-box">
+                <div class="section-label">Recent Activity</div>
+                <div class="activity-list">
+                    <div class="activity-item">
+                        <div class="initial-circle">JD</div>
+                        <div><b>John Doe</b> reported No Internet</div>
+                    </div>
+                    <div class="activity-item">
+                        <div class="initial-circle">EV</div>
+                        <div><b>Erna V.</b> updated Ink levels</div>
+                    </div>
+                    <div class="activity-item">
+                        <div class="initial-circle">KF</div>
+                        <div><b>Kenneth F.</b> closed Ticket #402</div>
+                    </div>
+                    <div class="activity-item">
+                        <div class="initial-circle">RC</div>
+                        <div><b>Raymund</b> assigned Maintenance</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+function toggleMenu(){
+    document.getElementById("sidebar").classList.toggle("collapsed");
+}
+</script>
+
+
+</body>
+</html>
+
+
+
