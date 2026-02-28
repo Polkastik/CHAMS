@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>CHAMS – Inventory Tracker</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:"Segoe UI", Arial, sans-serif;
+}
+
+
+body{
+    background:#1f1f1f;
+    overflow:hidden;
+    width: 100%;
+    height: 100vh;
+}
+
+
+.topbar{
+    height: 8vh;
+    background:#0b4a7a;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:0 2%;
+    z-index: 100;
+}
+
+
+.top-left{
+    display:flex;
+    align-items:center;
+    gap: 1.2vw;
+    color:#fff;
+}
+
+
+.menu-icon{
+    font-size: 2.2vw;
+    cursor:pointer;
+    display: flex;
+    align-items: center;
+    user-select: none;
+}
+
+
+.logo img{
+    height: 4.5vh;
+    width: auto;
+}
+
+
+.search-box input{
+    width: 15vw;
+    height: 4vh;
+    border-radius: 0.3vw;
+    border:none;
+    padding:0 1vw;
+    outline:none;
+    font-size: 0.85vw;
+}
+
+
+.container{
+    display:flex;
+    height: 92vh;
+    width: 100%;
+}
+
+
+.sidebar{
+    width: 18%;
+    background:#ffffff;
+    padding: 2.5vh 1.2%;
+    display:flex;
+    flex-direction:column;
+    transition: 0.3s ease;
+    overflow:hidden;
+    border-right: 1px solid #ddd;
+}
+
+
+.sidebar.collapsed{
+    width: 6.5vw;
+    padding: 2vh 0;
+}
+
+
+.sidebar.collapsed .hide-on-collapse,
+.sidebar.collapsed .profile-role,
+.sidebar.collapsed .real-name {
+    display: none !important;
+}
+
+
+.sidebar.collapsed .profile-label {
+    display: block !important;
+    font-size: 0.7vw;
+    font-weight: 800;
+    color: #0b4a7a;
+    margin-top: 2px;
+}
+
+
+.profile-card{
+    background:#fff;
+    border-radius: 0.8vw;
+    padding: 2.5vh 5%;
+    text-align:center;
+    margin-bottom: 3vh;
+    transition: 0.3s;
+}
+
+
+.sidebar.collapsed .profile-card{
+    box-shadow: none;
+    padding: 1vh 0;
+    background: transparent;
+}
+
+
+.avatar-circle{
+    width: 5.5vw;
+    height: 5.5vw;
+    border-radius: 50%;
+    background:#0b4a7a;
+    margin: 0 auto 1.5vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:#fff;
+    transition: 0.3s;
+}
+
+
+.sidebar.collapsed .avatar-circle{
+    width: 3.5vw;
+    height: 3.5vw;
+    margin-bottom: 0;
+}
+
+
+.avatar-circle i { font-size: 3vw; transition: 0.3s; }
+.sidebar.collapsed .avatar-circle i { font-size: 1.8vw; }
+
+
+.profile-name { font-weight: 600; font-size: 1.1vw; }
+.profile-label { display: none; }
+.profile-role { font-size: 0.8vw; color:#0b4a7a; margin-top: 0.5vh; font-weight: 700; }
+
+
+.menu{ flex:1; }
+
+
+.menu-item{
+    display:flex;
+    flex-direction: row;
+    align-items:center;
+    gap: 0.8vw;
+    padding: 1.2vh 5%;
+    font-size: 0.85vw;
+    color:#0b4a7a;
+    border-radius: 0.5vw;
+    cursor: pointer;
+    transition: 0.2s;
+    position: relative;
+    white-space: nowrap;
+}
+
+
+.menu-item:hover { background: #f0f4f8; }
+.menu-item i { font-size: 1w; }
+
+
+.sidebar.collapsed .menu-item{
+    flex-direction: column;
+    padding: 1.2vh 0;
+    justify-content: center;
+    text-align: center;
+    gap: 2px;
+}
+
+
+.sidebar.collapsed .menu-item i { font-size: 1.6vw; }
+
+
+.menu-text{ transition: all 0.3s; }
+
+
+.sidebar.collapsed .menu-text{
+    font-size: 0.65vw;
+    margin-top: 0.3vh;
+}
+
+
+.notification-dot{
+    width: 0.6vw;
+    height: 0.6vw;
+    background:#ff2d8d;
+    border-radius: 50%;
+    margin-left:auto;
+}
+
+
+.sidebar.collapsed .notification-dot{
+    position: absolute;
+    top: 5px;
+    right: 25%;
+    margin: 0;
+}
+
+
+.signout{
+    margin-top: 2.5vh;
+    display:flex;
+    flex-direction: row;
+    gap: 0.8vw;
+    color:#0b4a7a;
+    font-size: 0.9vw;
+    font-weight: 600;
+    align-items: center;
+    cursor: pointer;
+    padding: 1vh 5%;
+}
+
+
+.sidebar.collapsed .signout{
+    flex-direction: column;
+    font-size: 0.65vw;
+    gap: 2px;
+    padding: 1vh 0;
+}
+
+
+.content{
+    flex:1;
+    background:#e6e8eb;
+    padding: 4vh 3%;
+    overflow-y:auto;
+}
+
+
+.page-title{
+    display: flex;
+    align-items: center;
+    gap: 0.5vw;
+    font-size: 1.3vw;
+    font-weight: 600;
+    color:#333;
+    margin-bottom: 3vh;
+    cursor: pointer;
+}
+
+
+.table-wrapper{ width: 100%; }
+
+
+table{
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0 1vh;
+}
+
+
+thead th{
+    text-align: left;
+    font-size: 0.75vw;
+    font-weight: 700;
+    color:#666;
+    padding: 1vh 1%;
+    text-transform: uppercase;
+    letter-spacing: 0.03vw;
+}
+
+
+tbody tr{
+    background:#ffffff;
+    box-shadow: 0 0.2vw 0.4vw rgba(0,0,0,0.1);
+    transition: transform 0.2s ease;
+}
+
+
+tbody tr:hover { transform: scale(1.002); }
+
+
+tbody td{
+    padding: 1.5vh 1%;
+    font-size: 0.85vw;
+    color:#333;
+    vertical-align: middle;
+}
+
+
+.edit-btn{
+    border: 0.1vw solid #0b4a7a;
+    background:#fff;
+    color:#0b4a7a;
+    padding: 0.5vh 1.2vw;
+    border-radius: 2vh;
+    font-size: 0.75vw;
+    font-weight: 700;
+    cursor:pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.3vw;
+    transition: all 0.2s ease;
+}
+
+
+.edit-btn:hover{
+    background:#0b4a7a;
+    color:#fff;
+}
+
+
+.edit-btn i{ font-size:1.1vw; }
+</style>
+</head>
+
+
+<body>
+
+
+<div class="topbar">
+    <div class="top-left">
+        <i class="fas fa-bars menu-icon" onclick="toggleMenu()"></i>
+        <div class="logo">
+            <img src="C:\Users\Admin\Downloads/CHAMS.JPG" alt="CHAMS Logo">
+        </div>
+    </div>
+    <div class="search-box">
+        <input type="text" placeholder="Quick find item...">
+    </div>
+</div>
+
+
+<div class="container">
+    <div class="sidebar" id="sidebar">
+        <div class="profile-card">
+            <div class="avatar-circle">
+                <i class="fas fa-user"></i>
+            </div>
+            <div class="profile-name real-name">Jose L</div>
+            <div class="profile-label">PROFILE</div>
+            <div class="profile-role">ADMIN</div>
+        </div>
+  <div class="menu">
+        <div class="menu-item"><i class="fas fa-home"></i> <span>HOME</span></div>
+        <div class="menu-item"><i class="fas fa-ticket-alt"></i> <span>TICKETS</span></div>
+        <div class="menu-item"><i class="fas fa-box"></i> <span>INVENTORY</span></div>
+       
+        <div class="menu-item hide-on-collapse"><i class="fas fa-search"></i> <span>INVENTORY TRACKER</span></div>
+       
+        <div class="menu-item"><i class="fas fa-clipboard-list"></i> <span>MAINTENANCE LOG</span></div>
+       
+        <div class="menu-item hide-on-collapse"><i class="fas fa-history"></i> <span>ACTIVITY LOG</span></div>
+       
+        <div class="menu-item"><i class="fas fa-bell"></i> <span>NOTIFICATION</span></div>
+        <div class="menu-item"><i class="fas fa-cog"></i> <span>SETTINGS</span></div>
+       
+        <div class="menu-item hide-on-collapse"><i class="fas fa-question-circle"></i> <span>FAQs</span></div>
+    </div>
+
+
+    <div class="signout hide-on-collapse">
+        <div class="signout-item"><i class="fas fa-sign-out-alt"></i> <span>SIGN OUT</span></div>
+    </div>
+</div>
+    <div class="content">
+        <div class="page-title" onclick="window.history.back()">
+            <i class="fas fa-arrow-left"></i> INVENTORY TRACKER
+        </div>
+
+
+        <div class="table-wrapper">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Date Delivered</th>
+                        <th>Department</th>
+                        <th>Item</th>
+                        <th>Brand</th>
+                        <th>Qty</th>
+                        <th>Defects</th>
+                        <th>Supplier</th>
+                        <th>Serial Number</th>
+                        <th>Input By</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>11/03/25</td>
+                        <td>MISD</td>
+                        <td>PC</td>
+                        <td>DELL</td>
+                        <td>5</td>
+                        <td>0</td>
+                        <td>LOGI CORP</td>
+                        <td>15512</td>
+                        <td>Ray</td>
+                        <td>
+                            <button class="edit-btn">
+                                <i class="fas fa-edit"></i> EDIT
+                            </button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>10/23/25</td>
+                        <td>MISD</td>
+                        <td>PRINTER</td>
+                        <td>CANON</td>
+                        <td>1</td>
+                        <td>0</td>
+                        <td>INK-JET</td>
+                        <td>ABCD12345</td>
+                        <td>Kei</td>
+                        <td>
+                            <button class="edit-btn">
+                                <i class="fas fa-edit"></i> EDIT
+                            </button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+<script>
+function toggleMenu(){
+    document.getElementById("sidebar").classList.toggle("collapsed");
+}
+</script>
+
+
+</body>
+</html>
+
+
+
