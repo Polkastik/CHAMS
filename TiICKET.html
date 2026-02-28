@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>CHAMS – MISD</title>
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:"Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+
+body{
+    background:#1f1f1f;
+    overflow:hidden;
+    width:100%;
+    height:100vh;
+}
+
+
+.topbar{
+    height:8vh;
+    background:#0b4a7a;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:0 2%;
+}
+
+
+.top-left{
+    display:flex;
+    align-items:center;
+    gap:1.5vw;
+    color:#fff;
+    width:50%;
+}
+
+
+.menu-icon{
+    font-size:2vw;
+    cursor:pointer;
+}
+
+
+.logo img{
+    height:5vh;
+    width:auto;
+    object-fit:contain;
+}
+
+
+.search-box{
+    width:30%;
+    display:flex;
+    justify-content:flex-end;
+}
+
+
+.search-box input{
+    width:80%;
+    height:4vh;
+    border-radius:0.5vw;
+    border:none;
+    padding:0 3%;
+    outline:none;
+}
+
+
+.container{
+    display:flex;
+    height:92vh;
+    width:100%;
+}
+
+
+.sidebar{
+    width:18%;
+    background:#ffffff;
+    padding: 2.5vh 1.2%;
+    display:flex;
+    flex-direction:column;
+    transition: 0.3s ease;
+    border-right:1px solid #ddd;
+    overflow:hidden;
+}
+
+
+.sidebar.collapsed{
+    width: 6.5vw;
+    padding: 2vh 0;
+}
+
+
+.sidebar.collapsed .hide-on-collapse,
+.sidebar.collapsed .profile-role,
+.sidebar.collapsed .real-name {
+    display: none !important;
+}
+
+
+.sidebar.collapsed .profile-label {
+    display: block !important;
+    font-size: 0.7vw;
+    font-weight: 800;
+    color: #0b4a7a;
+    margin-top: 2px;
+}
+
+
+.profile-card{
+    background:#fff;
+    border-radius: 0.8vw;
+    padding: 2.5vh 5%;
+    text-align:center;
+    margin-bottom: 3vh;
+    transition: 0.3s;
+}
+
+
+.sidebar.collapsed .profile-card{
+    box-shadow: none;
+    padding: 1vh 0;
+    background: transparent;
+}
+
+
+.avatar-circle{
+    width: 5.5vw;
+    height: 5.5vw;
+    border-radius: 50%;
+    background:#0b4a7a;
+    margin: 0 auto 1.5vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:#fff;
+    transition: 0.3s;
+}
+
+
+.sidebar.collapsed .avatar-circle{
+    width: 3.5vw;
+    height: 3.5vw;
+    margin-bottom: 0;
+}
+
+
+.avatar-circle i { font-size: 3vw; transition: 0.3s; }
+.sidebar.collapsed .avatar-circle i { font-size: 1.8vw; }
+
+
+.profile-name { font-weight: 600; font-size: 1.1vw; color: #333; }
+.profile-label { display: none; }
+.profile-role { font-size: 0.8vw; color:#0b4a7a; margin-top: 0.5vh; font-weight: 700; }
+
+
+.menu{ flex:1; }
+
+
+.menu-item{
+    display:flex;
+    align-items:center;
+    gap: 0.8vw;
+    padding: 1.2vh 5%;
+    font-size: 0.50vw;
+    color:#0b4a7a;
+    font-weight: 700;
+    border-radius: 0.5vw;
+    cursor: pointer;
+    transition: 0.2s;
+    white-space: nowrap;
+}
+
+
+.menu-item:hover { background: #f0f4f8; }
+
+
+.sidebar.collapsed .menu-item{
+    flex-direction: column;
+    padding: 1.2vh 0;
+    justify-content: center;
+    text-align: center;
+    gap: 2px;
+}
+
+
+.sidebar.collapsed .menu-item i { font-size: 1.6vw; }
+
+
+.notification-dot{
+    width:0.6vw;
+    height:0.6vw;
+    background:#ff2d8d;
+    border-radius:50%;
+    margin-left:auto;
+}
+
+
+.sidebar.collapsed .notification-dot {
+    position: absolute;
+    top: 5px;
+    right: 25%;
+}
+
+
+.signout{
+    margin-top:2.5vh;
+    display:flex;
+    align-items:center;
+    gap: 0.8vw;
+    font-weight:700;
+    font-size:0.9vw;
+    color:#0b4a7a;
+    cursor:pointer;
+    padding:1vh 5%;
+}
+
+
+.sidebar.collapsed .signout{
+    flex-direction: column;
+    font-size: 0.65vw;
+    gap: 2px;
+    padding: 1vh 0;
+}
+
+
+.content{
+    flex:1;
+    background:#f4f7f9;
+    padding:3vh 3%;
+    overflow-y:auto;
+}
+
+
+.tickets-header{
+    display:flex;
+    align-items:center;
+    gap:1%;
+    margin-bottom:2vh;
+    color:#333;
+    font-weight:800;
+    font-size:1.4vw;
+    cursor: pointer;
+}
+
+
+.tickets-toolbar{
+    background:#fff;
+    padding:1.5vh 2%;
+    border-radius:0.5vw;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    box-shadow:0 0.1vw 0.3vw rgba(0,0,0,0.1);
+    margin-bottom:2vh;
+}
+
+
+.toolbar-left span{
+    font-size:0.8vw;
+    font-weight:600;
+    color:#555;
+    cursor:pointer;
+    margin-right:2vw;
+}
+
+
+.toolbar-left span.disabled{ opacity:0.3; }
+
+
+.ticket-card{
+    background:#fff;
+    border-radius:0.6vw;
+    box-shadow:0 0.1vw 0.3vw rgba(0,0,0,0.1);
+    margin-bottom:1.5vh;
+    padding:2vh 2%;
+    display:flex;
+    align-items:center;
+    gap:2%;
+    position:relative;
+}
+
+
+.ticket-avatar{
+    width:3vw;
+    height:3vw;
+    border-radius:50%;
+    background:#eef2f6;
+    color:#0b4a7a;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:1.5vw;
+}
+
+
+.ticket-info{ flex:1; }
+
+
+.ticket-title{
+    font-weight:700;
+    font-size:1vw;
+    color: #333;
+}
+
+
+.ticket-desc{
+    font-size:0.85vw;
+    margin-top:0.3vh;
+    color: #555;
+}
+
+
+.ticket-meta{
+    font-size:0.75vw;
+    margin-top:0.5vh;
+    color:#888;
+}
+
+
+.badge{
+    padding:0.6vh 1vw;
+    font-size:0.7vw;
+    font-weight:700;
+    border-radius:0.4vw;
+    color:#fff;
+}
+
+
+.assigned{ background:#0b4a7a; }
+.unresolved{ background:#d32f2f; }
+.resolved{ background:#2e7d32; }
+.high{ background:#b71c1c; }
+.low{ background:#388e3c; }
+
+
+.time{
+    font-size:0.75vw;
+    color:#888;
+    margin-right:1vw;
+}
+
+
+.overdue{
+    position:absolute;
+    left:0;
+    top:0;
+    background:#d32f2f;
+    color:#fff;
+    font-size:0.65vw;
+    font-weight:800;
+    padding:0.4vh 1vw;
+    border-radius:0.4vw 0 0.6vw 0;
+}
+</style>
+</head>
+
+
+<body>
+
+
+<div class="topbar">
+    <div class="top-left">
+        <div class="menu-icon" onclick="toggleMenu()">
+            <i class="fas fa-bars"></i>
+        </div>
+        <div class="logo">
+            <img src="C:\Users\Admin\Downloads/CHAMS.JPG">
+        </div>
+    </div>
+    <div class="search-box">
+        <input type="text" placeholder="Search...">
+    </div>
+</div>
+
+
+<div class="container">
+<div class="sidebar" id="sidebar">
+    <div class="profile-card">
+        <div class="avatar-circle">
+            <i class="fa-solid fa-user"></i>
+        </div>
+        <div class="profile-name real-name">Jose L</div>
+        <div class="profile-label">PROFILE</div>
+        <div class="profile-role">ADMIN</div>
+    </div>
+
+
+    <div class="menu">
+        <div class="menu-item"><i class="fas fa-home"></i> <span>HOME</span></div>
+        <div class="menu-item"><i class="fas fa-ticket-alt"></i> <span>TICKETS</span></div>
+        <div class="menu-item"><i class="fas fa-box"></i> <span>INVENTORY</span></div>
+        <div class="menu-item hide-on-collapse"><i class="fas fa-search"></i> <span>INVENTORY TRACKER</span></div>
+        <div class="menu-item"><i class="fas fa-clipboard-list"></i> <span>MAINTENANCE LOG</span></div>
+        <div class="menu-item hide-on-collapse"><i class="fas fa-history"></i> <span>ACTIVITY LOG</span></div>
+        <div class="menu-item">
+            <i class="fas fa-bell"></i> <span>NOTIFICATION</span>
+            <div class="notification-dot"></div>
+        </div>
+        <div class="menu-item"><i class="fas fa-cog"></i> <span>SETTINGS</span></div>
+        <div class="menu-item hide-on-collapse"><i class="fas fa-question-circle"></i> <span>FAQs</span></div>
+    </div>
+
+
+    <div class="signout hide-on-collapse">
+        <i class="fas fa-sign-out-alt"></i> <span>SIGN OUT</span>
+    </div>
+</div>
+
+
+<div class="content">
+    <div class="tickets-header">
+        <i class="fas fa-chevron-left"></i> TICKETS
+    </div>
+
+
+    <div class="tickets-toolbar">
+        <div class="toolbar-left">
+            <span id="editBtn" class="disabled" onclick="editTickets()">Edit</span>
+            <span onclick="sortTickets()">Sort by: Date ▾</span>
+        </div>
+        <div>1-3 of 3</div>
+    </div>
+
+
+    <div id="ticketList">
+        <div class="ticket-card" data-date="2026-02-05T09:00">
+            <input type="checkbox" onchange="checkSelection()">
+            <div class="ticket-avatar"><i class="fas fa-user"></i></div>
+            <div class="ticket-info">
+                <div class="ticket-title">Eren Y</div>
+                <div class="ticket-desc">The printer is malfunctioning in our reception.</div>
+                <div class="ticket-meta">Technical Support · Kenneth F</div>
+            </div>
+            <div class="time">Just now</div>
+            <div class="badge assigned">Assigned</div>
+            <div class="badge unresolved">Unresolved</div>
+            <div class="badge high">High</div>
+        </div>
+
+
+        <div class="ticket-card" data-date="2026-02-04T13:07">
+            <input type="checkbox" onchange="checkSelection()">
+            <div class="ticket-avatar"><i class="fas fa-user"></i></div>
+            <div class="ticket-info">
+                <div class="ticket-title">Fourth N</div>
+                <div class="ticket-desc">Server error.</div>
+                <div class="ticket-meta">Technical Support · Jane F</div>
+            </div>
+            <div class="time">Yesterday 13:07</div>
+            <div class="badge assigned">Assigned</div>
+            <div class="badge resolved">Resolved</div>
+            <div class="badge low">Low</div>
+        </div>
+
+
+        <div class="ticket-card" data-date="2026-02-04T15:35">
+            <div class="overdue">OVERDUE</div>
+            <input type="checkbox" onchange="checkSelection()">
+            <div class="ticket-avatar"><i class="fas fa-user"></i></div>
+            <div class="ticket-info">
+                <div class="ticket-title">Lisa M</div>
+                <div class="ticket-desc">Computer error po dito sa may tabi ng emergency...</div>
+                <div class="ticket-meta">Technical Support · Kenneth F</div>
+            </div>
+            <div class="time">Yesterday 15:35</div>
+            <div class="badge assigned">Assigned</div>
+            <div class="badge unresolved">Unresolved</div>
+            <div class="badge high">High</div>
+        </div>
+    </div>
+</div>
+</div>
+
+
+<script>
+function toggleMenu(){
+    document.getElementById("sidebar").classList.toggle("collapsed");
+}
+
+
+function checkSelection(){
+    const checked=document.querySelectorAll("input[type='checkbox']:checked").length;
+    document.getElementById("editBtn").classList.toggle("disabled",checked===0);
+}
+
+
+function editTickets(){
+    alert("Edit ticket action triggered");
+}
+
+
+let asc=false;
+function sortTickets(){
+    const list=document.getElementById("ticketList");
+    const tickets=Array.from(list.children);
+    asc=!asc;
+    tickets.sort((a,b)=>{
+        return asc
+        ? new Date(a.dataset.date)-new Date(b.dataset.date)
+        : new Date(b.dataset.date)-new Date(a.dataset.date);
+    });
+    tickets.forEach(t=>list.appendChild(t));
+}
+</script>
+
+
+</body>
+</html>
+
