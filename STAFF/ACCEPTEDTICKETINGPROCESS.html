@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HAMS - Ticket Resolution</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --hams-blue: #00407a;
+            --sidebar-bg: #e9eff5;
+            --text-main: #003366;
+            --border-color: #bcccdc;
+            --btn-resolve: #588157; /* Green for resolve action */
+            --status-bg: #ff0000;
+            --status-pending: #ff9f43;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Arial Narrow', sans-serif; }
+        
+        body { 
+            display: flex; 
+            height: 100vh; 
+            background-color: #f4f7f9; 
+            overflow: hidden; 
+            width: 100%; 
+            font-size: 100%; 
+        }
+
+        /* --- HEADER --- */
+        header {
+            background-color: var(--hams-blue);
+            height: 8vh; 
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 2%;
+            position: fixed;
+            top: 0; width: 100%; z-index: 1000;
+        }
+
+        .header-left { display: flex; align-items: center; gap: 2vw; color: white; height: 100%; }
+        .menu-toggle { font-size: 2.5vh; cursor: pointer; color: white; }
+        .logo-img { height: 80%; width: auto; mix-blend-mode: screen; filter: brightness(1.1); }
+
+        .search-container {
+            background: white; border-radius: 0.5vw; display: flex; align-items: center;
+            padding: 0.3% 1%; width: 20%; box-shadow: inset 0 0.1vh 0.3vh rgba(0,0,0,0.1);
+        }
+        .search-container input { border: none; outline: none; width: 100%; font-size: 80%; }
+        .search-container i { color: #aaa; font-size: 80%; }
+
+        /* --- SIDEBAR --- */
+        .sidebar {
+            width: 15vw; 
+            background-color: var(--sidebar-bg);
+            padding-top: 10vh; 
+            display: flex;
+            flex-direction: column;
+            transition: width 0.3s ease;
+            border-right: 0.1vw solid #d1d9e0;
+            height: 100vh;
+            position: fixed;
+            left: 0; top: 0;
+        }
+
+        .sidebar.collapsed { width: 6vw; }
+
+        .profile-area { text-align: center; padding: 5% 5%; margin-bottom: 2vh; }
+        .sidebar.collapsed .profile-area { display: none; }
+
+        .profile-icon-big { font-size: 8vh; color: var(--text-main); margin-bottom: 2%; }
+        .profile-name { font-weight: bold; color: var(--text-main); font-size: 1.5vh; margin-bottom: 1vh;}
+        .staff-badge {
+            background: white; border: 0.1vw solid #ccc; border-radius: 1vw;
+            padding: 2% 10%; font-size: 1vh; font-weight: bold; color: var(--text-main);
+        }
+
+        .nav-list { flex-grow: 1; display: flex; flex-direction: column; }
+        
+        .nav-item {
+            display: flex;
+            align-items: center;
+            padding: 1.5vh 15%;
+            text-decoration: none;
+            color: var(--text-main);
+            font-weight: bold;
+            font-size: 1.3vh;
+            text-transform: uppercase;
+            white-space: nowrap;
+            transition: all 0.2s;
+        }
+
+        .sidebar.collapsed .nav-item {
+            flex-direction: column;
+            padding: 1.5vh 0;
+            justify-content: center;
+            text-align: center;
+        }
+
+        .nav-item i { font-size: 2.2vh; width: 2vw; margin-right: 5%; text-align: center; }
+        .sidebar.collapsed .nav-item i { margin-right: 0; margin-bottom: 0.5vh; font-size: 2.5vh; }
+        .sidebar.collapsed .nav-item span { font-size: 0.9vh; letter-spacing: 0; }
+
+        .nav-item:hover { background: #dce4ed; }
+        .dot { color: #ff007f; margin-left: 2%; font-size: 1.5vh; }
+
+        /* --- CONTENT AREA --- */
+        .main-wrapper { 
+            margin-left: 15vw;
+            width: 85vw;
+            padding-top: 10vh;
+            padding-left: 2%; 
+            padding-right: 2%; 
+            overflow-y: auto;
+            transition: margin-left 0.3s ease, width 0.3s ease;
+        }
+
+        .sidebar.collapsed + .main-wrapper {
+            margin-left: 6vw;
+            width: 94vw;
+        }
+
+        .sign-out { margin-top: auto; border-top: 0.1vh solid #cbd5e0; padding-bottom: 2vh; }
+
+        /* --- TICKET RESOLUTION SPECIFICS --- */
+        .page-header { display: flex; align-items: center; gap: 1vw; margin-bottom: 2vh; color: var(--text-main); }
+        .page-header i { font-size: 1.5vh; cursor: pointer; }
+        .page-header h2 { font-size: 2vh; text-transform: uppercase; letter-spacing: 0.1vw; }
+
+        .details-container {
+            background: white;
+            border: 0.1vw solid var(--border-color);
+            border-radius: 0.5vw;
+            padding: 3vh 3%;
+            box-shadow: 0 0.5vh 1vh rgba(0,0,0,0.05);
+            min-height: 70vh;
+            position: relative;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            border: 0.1vw solid var(--border-color);
+            padding: 2vh;
+            border-radius: 0.3vw;
+            margin-bottom: 2vh;
+            font-size: 1.2vh;
+        }
+
+        .grid-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 1.5vh;
+            padding-right: 2vw;
+        }
+
+        .label { color: #888; font-weight: bold; width: 30%; }
+        .value { color: #000; font-weight: bold; width: 65%; }
+
+        .message-box {
+            border: 0.1vw solid var(--border-color);
+            border-radius: 0.3vw;
+            padding: 2vh;
+            min-height: 10vh;
+            font-size: 1.3vh;
+            color: #000;
+            font-weight: bold;
+            margin-bottom: 2vh;
+        }
+
+        .status-section { margin-top: 2vh; }
+        .status-row { display: flex; align-items: center; margin-bottom: 1.5vh; font-size: 1.2vh; }
+        .status-label { width: 10vw; color: #888; font-weight: bold; }
+        
+        .status-badge {
+            color: white;
+            padding: 0.5vh 1.5vw;
+            border-radius: 0.3vw;
+            font-weight: bold;
+            font-size: 1.1vh;
+            text-transform: uppercase;
+        }
+
+        .bg-high { background-color: var(--status-bg); }
+        .bg-pending { background-color: var(--status-pending); }
+
+        .assigned-badge {
+            background-color: var(--hams-blue);
+            color: white;
+            padding: 0.5vh 1vw;
+            border-radius: 0.3vw;
+            font-weight: bold;
+        }
+
+        .resolve-btn {
+            position: absolute;
+            bottom: 4vh;
+            right: 3%;
+            background-color: var(--btn-resolve);
+            color: white;
+            padding: 1.5vh 3vw;
+            border: none;
+            border-radius: 0.4vw;
+            font-weight: bold;
+            font-size: 1.2vh;
+            cursor: pointer;
+            box-shadow: 0 0.2vh 0.5vh rgba(0,0,0,0.2);
+            text-transform: uppercase;
+        }
+
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="header-left">
+            <i class="fas fa-bars menu-toggle" id="toggleBtn"></i>
+            <img src="CHAMS LOGO.jpg" alt="CHAMS Logo" class="logo-img">
+        </div>
+        <div class="search-container">
+            <input type="text" placeholder="Search...">
+            <i class="fas fa-search"></i>
+        </div>
+    </header>
+
+    <nav class="sidebar" id="sidebar">
+        <div class="profile-area">
+            <div class="profile-icon-big"><i class="fas fa-user-circle"></i></div>
+            <div class="profile-name">Kenneth F.</div>
+            <div class="staff-badge">STAFF | 2.0.1 <i class="fas fa-cog"></i></div>
+        </div>
+
+        <div class="nav-list">
+            <a href="#" class="nav-item profile-collapsed-only" style="display: none;" id="collapsedProfile">
+                <i class="fas fa-user-circle"></i><span>Profile</span>
+            </a>
+            <a href="#" class="nav-item"><i class="fas fa-home"></i><span>Home</span></a>
+            <a href="#" class="nav-item" style="background: #dce4ed;"><i class="fas fa-file-invoice"></i><span>Tickets</span></a>
+            <a href="#" class="nav-item"><i class="fas fa-folder"></i><span>Inventory</span></a>
+            <a href="#" class="nav-item"><i class="fas fa-bell"></i><span>Notification<span class="dot">●</span></span></a>
+            <a href="#" class="nav-item"><i class="fas fa-cog"></i><span>Settings</span></a>
+            <a href="#" class="nav-item"><i class="fas fa-question-circle"></i><span>FAQs</span></a>
+        </div>
+        <a href="#" class="nav-item sign-out"><i class="fas fa-sign-out-alt"></i><span>Sign Out</span></a>
+    </nav>
+
+    <div class="main-wrapper">
+        <div class="page-header">
+            <i class="fas fa-chevron-left"></i>
+            <h2>Tickets</h2>
+        </div>
+
+        <div class="details-container">
+            
+            <div class="info-grid">
+                <div>
+                    <div class="grid-row">
+                        <span class="label">Applicant Name:</span>
+                        <span class="value">Eren Yeager</span>
+                    </div>
+                    <div class="grid-row">
+                        <span class="label">Ticket Type:</span>
+                        <span class="value">Troubleshooting</span>
+                    </div>
+                </div>
+                
+                <div>
+                    <div class="grid-row">
+                        <span class="label">Department:</span>
+                        <span class="value">MISD</span>
+                    </div>
+                    <div class="grid-row">
+                        <span class="label">Category:</span>
+                        <span class="value">Technical Support</span>
+                    </div>
+                </div>
+            </div>
+
+            <div style="font-size: 1.2vh; color: #888; font-weight: bold; margin-bottom: 1vh;">Message:</div>
+            <div class="message-box">
+                The printer is malfunctioning in our reception.
+            </div>
+
+            <div class="status-section">
+                <div class="status-row">
+                    <span class="status-label">Priority:</span>
+                    <span class="status-badge bg-high">HIGH</span>
+                </div>
+                <div class="status-row">
+                    <span class="status-label">Status:</span>
+                    <span class="status-badge bg-pending">PENDING</span>
+                </div>
+                <div class="status-row" style="margin-top: 3vh;">
+                    <span class="status-label">Assigned to:</span>
+                    <span class="assigned-badge">Kenneth Fundador</span>
+                </div>
+            </div>
+
+            <button class="resolve-btn">RESOLVE TICKET</button>
+
+        </div>
+    </div>
+
+    <script>
+        const toggleBtn = document.getElementById('toggleBtn');
+        const sidebar = document.getElementById('sidebar');
+        const collapsedProfile = document.getElementById('collapsedProfile');
+
+        toggleBtn.addEventListener('click', () => {
+            sidebar.classList.toggle('collapsed');
+            if (sidebar.classList.contains('collapsed')) {
+                collapsedProfile.style.display = 'flex';
+            } else {
+                collapsedProfile.style.display = 'none';
+            }
+        });
+    </script>
+</body>
+</html>
