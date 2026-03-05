@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notification Panel</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --hams-blue: #00407a;
+            --notification-bg: #e6e6e6; /* Light gray background for items */
+            --text-color: #000;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Courier New', monospace; font-weight: bold; }
+
+        body {
+            background-color: var(--hams-blue);
+            height: 100vh;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* --- NOTIFICATION CONTAINER --- */
+        .notification-panel {
+            background-color: var(--hams-blue); /* Same as body, but acts as container */
+            width: 400px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            /* Optional border to see the container bounds if needed, removed for exact look */
+            /* border: 1px solid white; */ 
+        }
+
+        /* Bell Icon */
+        .bell-icon {
+            font-size: 40px;
+            color: black; /* The icon in image is black/dark */
+            margin-bottom: 30px;
+            position: relative;
+        }
+        
+        /* The little plus inside the bell */
+        .bell-icon::after {
+            content: '+';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: var(--hams-blue);
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        /* List of notifications */
+        .notif-list {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 20px; /* Space between items */
+            margin-bottom: 40px;
+        }
+
+        .notif-item {
+            background-color: var(--notification-bg);
+            padding: 15px 35px; /* Side padding to center text */
+            text-align: center;
+            color: black;
+            font-size: 14px;
+            position: relative;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            /* To allow removal animation */
+            transition: opacity 0.3s, transform 0.3s;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 5px;
+            right: 10px;
+            font-size: 16px;
+            cursor: pointer;
+            color: black;
+            font-family: sans-serif; /* 'x' looks better in sans-serif */
+        }
+        
+        .close-btn:hover {
+            color: red;
+        }
+
+        /* Clear All Button */
+        .clear-all-btn {
+            background-color: white;
+            color: var(--hams-blue);
+            border: none;
+            padding: 10px 30px;
+            border-radius: 20px; /* Rounded pill shape */
+            font-size: 14px;
+            cursor: pointer;
+            text-transform: uppercase;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            font-weight: bold;
+        }
+
+        .clear-all-btn:hover {
+            background-color: #f0f0f0;
+        }
+
+        /* Empty state message (hidden by default) */
+        .empty-msg {
+            color: white;
+            display: none;
+            margin-bottom: 20px;
+            font-family: sans-serif;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="notification-panel">
+        <i class="fas fa-bell bell-icon"></i>
+        
+        <div class="notif-list" id="notifList">
+            <div class="notif-item">
+                <span class="close-btn" onclick="removeNotification(this)">x</span>
+                New Ticket Assigned
+            </div>
+            <div class="notif-item">
+                <span class="close-btn" onclick="removeNotification(this)">x</span>
+                Ticket Status Updated
+            </div>
+        </div>
+
+        <div class="empty-msg" id="emptyMsg">No new notifications</div>
+
+        <button class="clear-all-btn" onclick="clearAll()">CLEAR ALL</button>
+    </div>
+
+    <script>
+        // Function to remove a single notification
+        function removeNotification(element) {
+            // The element passed is the 'x' span. Parent is the .notif-item div.
+            const item = element.parentElement;
+            
+            // Add a fade out effect
+            item.style.opacity = '0';
+            item.style.transform = 'scale(0.9)';
+            
+            // Wait for transition to finish before removing from DOM
+            setTimeout(() => {
+                item.remove();
+                checkEmpty();
+            }, 300);
+        }
+
+        // Function to clear all notifications
+        function clearAll() {
+            const list = document.getElementById('notifList');
+            const items = list.querySelectorAll('.notif-item');
+            
+            items.forEach((item, index) => {
+                // Stagger the removal slightly for visual effect
+                setTimeout(() => {
+                    item.style.opacity = '0';
+                    item.style.transform = 'scale(0.9)';
+                    setTimeout(() => item.remove(), 300);
+                }, index * 100);
+            });
+
+            // Check if empty after the last animation
+            setTimeout(() => {
+                checkEmpty();
+            }, items.length * 100 + 300);
+        }
+
+        // Helper to show "No notifications" message if list is empty
+        function checkEmpty() {
+            const list = document.getElementById('notifList');
+            // We check children count. Note: check inside the timeout or after DOM update
+            if (list.children.length === 0) {
+                document.getElementById('emptyMsg').style.display = 'block';
+            }
+        }
+    </script>
+
+</body>
+</html>

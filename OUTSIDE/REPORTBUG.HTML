@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Report a Bug Modal</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --hams-blue: #00407a;
+            --bug-icon-color: black;
+            --modal-bg: #00407a; /* Dark Blue Background */
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Arial Narrow', sans-serif; }
+
+        body {
+            /* Simulating the dark blue background overlay */
+            background-color: var(--hams-blue); 
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* --- MODAL CONTAINER --- */
+        .modal-wrapper {
+            position: relative;
+            width: 500px;
+            /* Container doesn't have its own background, the blue is from body/overlay */
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* Bug Icon at Top */
+        .bug-icon {
+            font-size: 40px;
+            color: black; /* Solid black icon */
+            margin-bottom: 10px;
+            /* To ensure it sits above the white box if overlapped, though here it's above */
+            z-index: 2; 
+        }
+
+        /* Close 'X' */
+        .close-btn {
+            position: absolute;
+            top: 0;
+            right: 0;
+            font-size: 24px;
+            font-weight: bold;
+            color: black;
+            cursor: pointer;
+        }
+        .close-btn:hover { opacity: 0.7; }
+
+        /* The White Input Box */
+        .input-card {
+            background-color: white;
+            border-radius: 8px;
+            width: 100%;
+            height: 250px;
+            padding: 20px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            position: relative;
+        }
+
+        .bug-textarea {
+            width: 100%;
+            height: 100%;
+            border: none;
+            outline: none;
+            resize: none;
+            font-size: 14px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .bug-textarea::placeholder {
+            color: #ccc;
+            font-weight: bold;
+            font-size: 14px;
+            text-transform: uppercase;
+        }
+
+        /* Submit Button */
+        .btn-submit {
+            margin-top: 20px;
+            background-color: white;
+            color: #007bff; /* Bright blue text */
+            border: none;
+            border-radius: 5px;
+            padding: 10px 40px;
+            font-weight: bold;
+            font-size: 16px;
+            text-transform: uppercase;
+            cursor: pointer;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            transition: transform 0.1s;
+        }
+
+        .btn-submit:active {
+            transform: scale(0.98);
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="modal-wrapper" id="bugModal">
+        
+        <i class="fas fa-bug bug-icon"></i>
+        
+        <span class="close-btn" onclick="closeModal()">x</span>
+
+        <div class="input-card">
+            <textarea class="bug-textarea" id="issueText" placeholder="DESCRIBE ISSUE HERE"></textarea>
+        </div>
+
+        <button class="btn-submit" onclick="submitBug()">SUBMIT</button>
+
+    </div>
+
+    <script>
+        function closeModal() {
+            const modal = document.getElementById('bugModal');
+            // For demo purposes, we just hide it. In a real app, you might remove it from DOM or toggle a class.
+            modal.style.display = 'none';
+        }
+
+        function submitBug() {
+            const text = document.getElementById('issueText').value;
+            
+            if (text.trim() === "") {
+                alert("Please describe the issue before submitting.");
+                return;
+            }
+
+            // Simulate API call / Submission
+            console.log("Bug Report Submitted:", text);
+            
+            alert("Bug report submitted successfully!");
+            
+            // Clear and close
+            document.getElementById('issueText').value = "";
+            closeModal();
+        }
+    </script>
+
+</body>
+</html>

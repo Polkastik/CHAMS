@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CHAMS - Settings</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --hams-blue: #00407a;
+            --sidebar-bg: #e9eff5;
+            --text-main: #003366;
+            --border-color: #bcccdc;
+            --btn-signout: #00407a; /* Dark blue for sign out button */
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Arial Narrow', sans-serif; }
+        
+        body { 
+            display: flex; 
+            height: 100vh; 
+            background-color: #f4f7f9; 
+            overflow: hidden; 
+            width: 100%; 
+            font-size: 100%; 
+        }
+
+        /* --- HEADER --- */
+        header {
+            background-color: var(--hams-blue);
+            height: 8vh; 
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 2%;
+            position: fixed;
+            top: 0; width: 100%; z-index: 1000;
+        }
+
+        .header-left { display: flex; align-items: center; gap: 2vw; color: white; height: 100%; }
+        .menu-toggle { font-size: 2.5vh; cursor: pointer; color: white; }
+        .logo-img { height: 80%; width: auto; mix-blend-mode: screen; filter: brightness(1.1); }
+
+        .search-container {
+            background: white; border-radius: 0.5vw; display: flex; align-items: center;
+            padding: 0.3% 1%; width: 20%; box-shadow: inset 0 0.1vh 0.3vh rgba(0,0,0,0.1);
+        }
+        .search-container input { border: none; outline: none; width: 100%; font-size: 80%; }
+        .search-container i { color: #aaa; font-size: 80%; }
+
+        /* --- SIDEBAR --- */
+        .sidebar {
+            width: 15vw; 
+            background-color: var(--sidebar-bg);
+            padding-top: 10vh; 
+            display: flex;
+            flex-direction: column;
+            transition: width 0.3s ease;
+            border-right: 0.1vw solid #d1d9e0;
+            height: 100vh;
+            position: fixed;
+            left: 0; top: 0;
+        }
+
+        .sidebar.collapsed { width: 6vw; }
+
+        .profile-area { text-align: center; padding: 5% 5%; margin-bottom: 2vh; }
+        .sidebar.collapsed .profile-area { display: none; }
+
+        .profile-icon-big { font-size: 8vh; color: var(--text-main); margin-bottom: 2%; }
+        .profile-name { font-weight: bold; color: var(--text-main); font-size: 1.5vh; margin-bottom: 1vh;}
+        .staff-badge {
+            background: white; border: 0.1vw solid #ccc; border-radius: 1vw;
+            padding: 2% 10%; font-size: 1vh; font-weight: bold; color: var(--text-main);
+        }
+
+        .nav-list { flex-grow: 1; display: flex; flex-direction: column; }
+        
+        .nav-item {
+            display: flex;
+            align-items: center;
+            padding: 1.5vh 15%;
+            text-decoration: none;
+            color: var(--text-main);
+            font-weight: bold;
+            font-size: 1.3vh;
+            text-transform: uppercase;
+            white-space: nowrap;
+            transition: all 0.2s;
+        }
+
+        .sidebar.collapsed .nav-item {
+            flex-direction: column;
+            padding: 1.5vh 0;
+            justify-content: center;
+            text-align: center;
+        }
+
+        .nav-item i { font-size: 2.2vh; width: 2vw; margin-right: 5%; text-align: center; }
+        .sidebar.collapsed .nav-item i { margin-right: 0; margin-bottom: 0.5vh; font-size: 2.5vh; }
+        .sidebar.collapsed .nav-item span { font-size: 0.9vh; letter-spacing: 0; }
+
+        .nav-item:hover { background: #dce4ed; }
+        .dot { color: #ff007f; margin-left: 2%; font-size: 1.5vh; }
+        .sign-out { margin-top: auto; border-top: 0.1vh solid #cbd5e0; padding-bottom: 2vh; }
+
+        /* --- CONTENT AREA --- */
+        .main-wrapper { 
+            margin-left: 15vw;
+            width: 85vw;
+            padding-top: 10vh;
+            padding-left: 3%; 
+            padding-right: 3%; 
+            overflow-y: auto;
+            transition: margin-left 0.3s ease, width 0.3s ease;
+        }
+        .sidebar.collapsed + .main-wrapper { margin-left: 6vw; width: 94vw; }
+
+        /* --- SETTINGS PAGE STYLES --- */
+        .page-header {
+            color: var(--text-main);
+            font-size: 2.5vh;
+            font-weight: bold;
+            margin-bottom: 2vh;
+            text-transform: uppercase;
+            display: flex;
+            align-items: center;
+        }
+        .page-header i { margin-right: 15px; cursor: pointer; }
+
+        .settings-card {
+            background: white;
+            border-radius: 4px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            padding: 5vh;
+            min-height: 80vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            /* Center vertically within the card somewhat */
+            justify-content: flex-start; 
+            padding-top: 8vh;
+        }
+
+        .settings-profile-icon {
+            font-size: 15vh;
+            color: var(--hams-blue);
+            margin-bottom: 2vh;
+        }
+
+        .settings-name {
+            font-size: 2.5vh;
+            font-weight: bold;
+            color: var(--text-main);
+            text-transform: uppercase;
+            margin-bottom: 1.5vh;
+        }
+
+        .settings-dept-badge {
+            background-color: #e0e0e0;
+            color: var(--text-main);
+            padding: 0.8vh 3vw;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 1.3vh;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 5vh;
+            text-transform: uppercase;
+        }
+        
+        .settings-dept-badge i {
+            color: var(--hams-blue);
+            font-size: 1.5vh;
+            cursor: pointer;
+        }
+
+        .settings-action-row {
+            width: 80%;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            padding: 1.5vh 2vw;
+            display: flex;
+            align-items: center;
+            font-weight: bold;
+            font-size: 1.4vh;
+            color: black;
+            cursor: pointer;
+            margin-bottom: 5vh;
+            transition: background 0.2s;
+        }
+        
+        .settings-action-row:hover {
+            background-color: #f9f9f9;
+        }
+
+        .settings-action-row i {
+            font-size: 2vh;
+            margin-right: 1.5vw;
+            color: #333;
+        }
+        
+        /* The notification dot on the icon */
+        .icon-wrapper { position: relative; display: inline-block; margin-right: 1.5vw; }
+        .icon-dot {
+            position: absolute;
+            top: -2px;
+            right: -2px;
+            width: 8px;
+            height: 8px;
+            background-color: red; /* Error/Alert color */
+            border-radius: 50%;
+            border: 1px solid white;
+        }
+
+        .btn-signout-main {
+            border: 2px solid var(--btn-signout);
+            background: white;
+            color: var(--btn-signout);
+            padding: 1vh 4vh;
+            border-radius: 8px;
+            font-weight: bold;
+            font-size: 1.5vh;
+            cursor: pointer;
+            text-transform: uppercase;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.2s;
+        }
+
+        .btn-signout-main:hover {
+            background-color: var(--btn-signout);
+            color: white;
+        }
+
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="header-left">
+        <i class="fas fa-bars menu-toggle" id="toggleBtn"></i>
+        <img src="CHAMS LOGO.jpg" alt="CHAMS Logo" class="logo-img">
+    </div>
+    <div class="search-container">
+        <input type="text" placeholder="Search...">
+        <i class="fas fa-search"></i>
+    </div>
+</header>
+
+<nav class="sidebar" id="sidebar">
+    <div class="profile-area">
+        <div class="profile-icon-big"><i class="fas fa-user-circle"></i></div>
+        <div class="profile-name">Kenneth F.</div>
+        <div class="staff-badge">STAFF | 2.0.1 <i class="fas fa-cog"></i></div>
+    </div>
+
+    <div class="nav-list">
+        <a href="#" class="nav-item profile-collapsed-only" style="display: none;" id="collapsedProfile">
+            <i class="fas fa-user-circle"></i><span>Profile</span>
+        </a>
+
+        <a href="#" class="nav-item"><i class="fas fa-home"></i><span>Home</span></a>
+        <a href="#" class="nav-item"><i class="fas fa-file-invoice"></i><span>Tickets</span></a>
+        <a href="#" class="nav-item"><i class="fas fa-folder"></i><span>Inventory</span></a>
+        <a href="#" class="nav-item"><i class="fas fa-bell"></i><span>Notification<span class="dot">●</span></span></a>
+        <a href="#" class="nav-item"><i class="fas fa-cog"></i><span>Settings</span></a>
+        <a href="#" class="nav-item"><i class="fas fa-question-circle"></i><span>FAQs</span></a>
+    </div>
+
+    <a href="#" class="nav-item sign-out"><i class="fas fa-sign-out-alt"></i><span>Sign Out</span></a>
+</nav>
+
+<div class="main-wrapper">
+    <div class="page-header">
+        <i class="fas fa-chevron-left"></i> SETTINGS
+    </div>
+
+    <div class="settings-card">
+        
+        <div class="settings-profile-icon">
+            <i class="fas fa-user-circle"></i>
+        </div>
+
+        <div class="settings-name">Jin Shembot</div>
+
+        <div class="settings-dept-badge">
+            Other Department <i class="fas fa-pen-square" style="margin-left: 10px;"></i>
+        </div>
+
+        <div class="settings-action-row">
+            <div class="icon-wrapper">
+                <i class="fas fa-bars"></i>
+                <div class="icon-dot">!</div> 
+            </div>
+            REPORT A BUG
+        </div>
+
+        <button class="btn-signout-main">
+            <i class="fas fa-sign-out-alt"></i> SIGN OUT
+        </button>
+
+    </div>
+</div>
+
+<script>
+    const toggleBtn = document.getElementById('toggleBtn');
+    const sidebar = document.getElementById('sidebar');
+    const collapsedProfile = document.getElementById('collapsedProfile');
+
+    toggleBtn.addEventListener('click', () => {
+        sidebar.classList.toggle('collapsed');
+        if (sidebar.classList.contains('collapsed')) {
+            collapsedProfile.style.display = 'flex';
+        } else {
+            collapsedProfile.style.display = 'none';
+        }
+    });
+</script>
+
+</body>
+</html>

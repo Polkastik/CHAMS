@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ticket Filters</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --hams-blue: #00407a;
+            --text-main: #003366;
+            --text-dark: #333;
+            --text-light: #aaa;
+            --border-color: #e0e0e0;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Arial Narrow', sans-serif; }
+
+        body {
+            background-color: #f4f7f9;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            padding-top: 50px;
+            height: 100vh;
+        }
+
+        /* --- FILTER PANEL CONTAINER --- */
+        .filter-panel {
+            background: white;
+            width: 320px;
+            padding: 25px;
+            border-radius: 8px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+            position: relative;
+        }
+
+        /* Header */
+        .filter-header {
+            margin-bottom: 25px;
+        }
+
+        .filter-icon-top {
+            color: var(--hams-blue);
+            font-size: 18px;
+            margin-bottom: 15px;
+        }
+
+        .filter-title {
+            color: #222;
+            font-size: 18px;
+            font-weight: bold;
+            letter-spacing: 0.5px;
+        }
+
+        /* Input Fields */
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .custom-select {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 10px 15px;
+            cursor: pointer;
+            background: white;
+            transition: all 0.2s;
+            position: relative;
+        }
+
+        .custom-select:hover {
+            border-color: #bbb;
+            background-color: #fafafa;
+        }
+
+        .custom-select.active {
+            border-color: var(--hams-blue);
+            box-shadow: 0 0 0 1px var(--hams-blue) inset;
+        }
+
+        .select-label {
+            color: var(--text-light);
+            font-size: 13px;
+            font-weight: bold;
+            margin-right: 10px;
+            white-space: nowrap;
+        }
+
+        .select-value {
+            color: black;
+            font-weight: bold;
+            font-size: 13px;
+            flex-grow: 1;
+            text-align: left;
+            padding-left: 5px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .select-icon {
+            color: #ccc;
+            font-size: 12px;
+            transition: transform 0.2s;
+        }
+
+        .custom-select.active .select-icon {
+            transform: rotate(180deg);
+            color: var(--hams-blue);
+        }
+
+        /* --- CALENDAR WIDGET --- */
+        .calendar-wrapper {
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 15px;
+            margin-top: 5px; 
+            background: white;
+        }
+
+        .cal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            color: black;
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        .cal-nav {
+            color: #ddd;
+            cursor: pointer;
+            font-size: 10px;
+            padding: 5px;
+        }
+        .cal-nav:hover { color: var(--hams-blue); }
+
+        .cal-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            text-align: center;
+            row-gap: 8px;
+        }
+
+        .cal-date {
+            font-size: 12px;
+            font-weight: bold;
+            color: #333;
+            cursor: pointer;
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto;
+            border-radius: 50%;
+            transition: background-color 0.2s;
+        }
+
+        .cal-date:hover:not(.selected) {
+            background-color: #f0f0f0;
+        }
+
+        .cal-date.muted {
+            color: #ccc;
+        }
+
+        /* Solid blue circle (Selected) */
+        .cal-date.selected {
+            background-color: var(--hams-blue);
+            color: white;
+        }
+
+        /* Blue Text (Range) */
+        .cal-date.range-text {
+            color: var(--hams-blue);
+        }
+
+        /* Footer */
+        .filter-footer {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 15px;
+        }
+
+        .clear-btn {
+            color: black;
+            font-weight: bold;
+            font-size: 12px;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        .clear-btn:hover { text-decoration: underline; }
+
+    </style>
+</head>
+<body>
+
+    <div class="filter-panel" id="ticketFilterPanel">
+        
+        <div class="filter-icon-top">
+            <i class="fas fa-filter"></i>
+        </div>
+
+        <div class="filter-header">
+            <div class="filter-title">Ticket Filters</div>
+        </div>
+
+        <div class="filter-group">
+            
+            <div class="custom-select" onclick="toggleSelect(this)">
+                <span class="select-label">Category:</span>
+                <span class="select-value" id="val-category">Technical Support</span>
+                <i class="fas fa-chevron-down select-icon"></i>
+            </div>
+
+            <div class="custom-select" onclick="toggleSelect(this)">
+                <span class="select-label">Status:</span>
+                <span class="select-value" id="val-status">All</span>
+                <i class="fas fa-chevron-down select-icon"></i>
+            </div>
+
+            <div class="custom-select" onclick="toggleSelect(this)">
+                <span class="select-label">Priority:</span>
+                <span class="select-value" id="val-priority">All</span>
+                <i class="fas fa-chevron-down select-icon"></i>
+            </div>
+
+            <div class="custom-select" onclick="toggleSelect(this)">
+                <span class="select-label">Department:</span>
+                <span class="select-value" id="val-dept">MISD</span>
+                <i class="fas fa-chevron-down select-icon"></i>
+            </div>
+
+            <div class="custom-select" onclick="toggleSelect(this)">
+                <span class="select-label">Agent:</span>
+                <span class="select-value" id="val-agent">All</span>
+                <i class="fas fa-chevron-down select-icon"></i>
+            </div>
+
+            <div class="custom-select" onclick="toggleSelect(this)">
+                <span class="select-label">Created:</span>
+                <span class="select-value" id="val-created">1 Nov - 4 Nov</span>
+                <i class="fas fa-chevron-down select-icon"></i>
+            </div>
+
+            <div class="calendar-wrapper">
+                <div class="cal-header">
+                    <i class="fas fa-chevron-left cal-nav"></i>
+                    <span>November 2025</span>
+                    <i class="fas fa-chevron-right cal-nav"></i>
+                </div>
+                
+                <div class="cal-grid" id="calendarGrid">
+                    <div class="cal-date muted">28</div>
+                    <div class="cal-date muted">29</div>
+                    <div class="cal-date muted">30</div>
+                    <div class="cal-date muted">31</div>
+                    <div class="cal-date range-text" onclick="selectDate(this)">1</div>
+                    <div class="cal-date range-text" onclick="selectDate(this)">2</div>
+                    <div class="cal-date range-text" onclick="selectDate(this)">3</div>
+
+                    <div class="cal-date range-text" onclick="selectDate(this)">4</div>
+                    <div class="cal-date selected" id="defaultSelected" onclick="selectDate(this)">5</div>
+                    <div class="cal-date" onclick="selectDate(this)">6</div>
+                    <div class="cal-date" onclick="selectDate(this)">7</div>
+                    <div class="cal-date" onclick="selectDate(this)">8</div>
+                    <div class="cal-date" onclick="selectDate(this)">9</div>
+                    <div class="cal-date" onclick="selectDate(this)">10</div>
+
+                    <div class="cal-date" onclick="selectDate(this)">11</div>
+                    <div class="cal-date" onclick="selectDate(this)">12</div>
+                    <div class="cal-date" onclick="selectDate(this)">13</div>
+                    <div class="cal-date" onclick="selectDate(this)">14</div>
+                    <div class="cal-date" onclick="selectDate(this)">15</div>
+                    <div class="cal-date" onclick="selectDate(this)">16</div>
+                    <div class="cal-date" onclick="selectDate(this)">17</div>
+
+                    <div class="cal-date" onclick="selectDate(this)">18</div>
+                    <div class="cal-date" onclick="selectDate(this)">19</div>
+                    <div class="cal-date" onclick="selectDate(this)">20</div>
+                    <div class="cal-date" onclick="selectDate(this)">21</div>
+                    <div class="cal-date" onclick="selectDate(this)">22</div>
+                    <div class="cal-date" onclick="selectDate(this)">23</div>
+                    <div class="cal-date" onclick="selectDate(this)">24</div>
+
+                    <div class="cal-date" onclick="selectDate(this)">25</div>
+                    <div class="cal-date" onclick="selectDate(this)">26</div>
+                    <div class="cal-date" onclick="selectDate(this)">27</div>
+                    <div class="cal-date" onclick="selectDate(this)">28</div>
+                    <div class="cal-date" onclick="selectDate(this)">29</div>
+                    <div class="cal-date" onclick="selectDate(this)">30</div>
+                    <div class="cal-date muted">1</div>
+
+                    <div class="cal-date muted">2</div>
+                    <div class="cal-date muted">3</div>
+                    <div class="cal-date muted">4</div>
+                    <div class="cal-date muted">5</div>
+                    <div class="cal-date muted">6</div>
+                    <div class="cal-date muted">7</div>
+                    <div class="cal-date muted">8</div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="filter-footer">
+            <div class="clear-btn" onclick="clearFilters()">Clear Filters</div>
+        </div>
+
+    </div>
+
+    <script>
+        // 1. Toggle Dropdowns
+        function toggleSelect(element) {
+            // Close others
+            const allSelects = document.querySelectorAll('.custom-select');
+            allSelects.forEach(el => {
+                if (el !== element) el.classList.remove('active');
+            });
+            // Toggle current
+            element.classList.toggle('active');
+        }
+
+        // 2. Select Date logic (Moves the blue circle)
+        function selectDate(element) {
+            // Don't select muted dates
+            if (element.classList.contains('muted')) return;
+
+            // Remove 'selected' from all dates
+            const allDates = document.querySelectorAll('.cal-date');
+            allDates.forEach(d => d.classList.remove('selected'));
+
+            // Add 'selected' to clicked date
+            element.classList.add('selected');
+        }
+
+        // 3. Clear Filters Logic
+        function clearFilters() {
+            // Reset Dropdown Values to Default Image State
+            document.getElementById('val-category').innerText = 'Technical Support';
+            document.getElementById('val-status').innerText = 'All';
+            document.getElementById('val-priority').innerText = 'All';
+            document.getElementById('val-dept').innerText = 'MISD';
+            document.getElementById('val-agent').innerText = 'All';
+            document.getElementById('val-created').innerText = '1 Nov - 4 Nov';
+
+            // Reset Calendar Visuals
+            const allDates = document.querySelectorAll('.cal-date');
+            allDates.forEach(d => {
+                d.classList.remove('selected');
+                d.classList.remove('range-text'); // Remove all text highlights
+            });
+
+            // Re-apply the specific defaults from the image
+            // 1,2,3,4 are blue text. 5 is selected.
+            const grid = document.getElementById('calendarGrid');
+            const dates = grid.children;
+            
+            // Indices based on the grid structure (28,29,30,31 are 0,1,2,3)
+            // 1st is index 4, 2nd is index 5, etc.
+            dates[4].classList.add('range-text'); // 1
+            dates[5].classList.add('range-text'); // 2
+            dates[6].classList.add('range-text'); // 3
+            dates[7].classList.add('range-text'); // 4
+            dates[8].classList.add('selected');   // 5
+
+            // Close all dropdowns
+            const allSelects = document.querySelectorAll('.custom-select');
+            allSelects.forEach(el => el.classList.remove('active'));
+        }
+    </script>
+
+</body>
+</html>
