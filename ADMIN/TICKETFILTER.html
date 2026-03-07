@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Inventory Filters</title>
+    <title>Ticket Filters</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         :root {
@@ -41,7 +41,7 @@
         }
 
         .filter-icon-top {
-            color:blue;
+            color: var(--hams-blue);
             font-size: 18px;
             margin-bottom: 15px;
         }
@@ -77,7 +77,7 @@
             border-color: #bbb;
             background-color: #fafafa;
         }
-        
+
         .custom-select.active {
             border-color: var(--hams-blue);
             box-shadow: 0 0 0 1px var(--hams-blue) inset;
@@ -171,12 +171,14 @@
             color: #ccc;
         }
 
+        /* Solid blue circle (Selected) */
         .cal-date.selected {
             background-color: var(--hams-blue);
             color: white;
         }
 
-        .cal-date.highlight {
+        /* Blue Text (Range) */
+        .cal-date.range-text {
             color: var(--hams-blue);
         }
 
@@ -200,39 +202,39 @@
 </head>
 <body>
 
-    <div class="filter-panel" id="filterPanel">
+    <div class="filter-panel" id="ticketFilterPanel">
         
         <div class="filter-icon-top">
             <i class="fas fa-filter"></i>
         </div>
 
         <div class="filter-header">
-            <div class="filter-title">Inventory Filters</div>
+            <div class="filter-title">Ticket Filters</div>
         </div>
 
         <div class="filter-group">
             
             <div class="custom-select" onclick="toggleSelect(this)">
                 <span class="select-label">Category:</span>
-                <span class="select-value" id="val-category">Consumable</span>
+                <span class="select-value" id="val-category">Technical Support</span>
                 <i class="fas fa-chevron-down select-icon"></i>
             </div>
 
             <div class="custom-select" onclick="toggleSelect(this)">
-                <span class="select-label">Item:</span>
-                <span class="select-value" id="val-item">Printer Ink</span>
+                <span class="select-label">Status:</span>
+                <span class="select-value" id="val-status">All</span>
                 <i class="fas fa-chevron-down select-icon"></i>
             </div>
 
             <div class="custom-select" onclick="toggleSelect(this)">
-                <span class="select-label">Delivered by:</span>
-                <span class="select-value" id="val-delivered">All</span>
+                <span class="select-label">Priority:</span>
+                <span class="select-value" id="val-priority">All</span>
                 <i class="fas fa-chevron-down select-icon"></i>
             </div>
 
             <div class="custom-select" onclick="toggleSelect(this)">
-                <span class="select-label">Quantity:</span>
-                <span class="select-value" id="val-quantity">All</span>
+                <span class="select-label">Department:</span>
+                <span class="select-value" id="val-dept">MISD</span>
                 <i class="fas fa-chevron-down select-icon"></i>
             </div>
 
@@ -243,8 +245,8 @@
             </div>
 
             <div class="custom-select" onclick="toggleSelect(this)">
-                <span class="select-label">Date Delivered:</span>
-                <span class="select-value" id="val-date">3 Nov</span>
+                <span class="select-label">Created:</span>
+                <span class="select-value" id="val-created">1 Nov - 4 Nov</span>
                 <i class="fas fa-chevron-down select-icon"></i>
             </div>
 
@@ -260,11 +262,11 @@
                     <div class="cal-date muted">29</div>
                     <div class="cal-date muted">30</div>
                     <div class="cal-date muted">31</div>
-                    <div class="cal-date" onclick="selectDate(this)">1</div>
-                    <div class="cal-date" onclick="selectDate(this)">2</div>
-                    <div class="cal-date highlight" id="defaultHighlight" onclick="selectDate(this)">3</div>
+                    <div class="cal-date range-text" onclick="selectDate(this)">1</div>
+                    <div class="cal-date range-text" onclick="selectDate(this)">2</div>
+                    <div class="cal-date range-text" onclick="selectDate(this)">3</div>
 
-                    <div class="cal-date" onclick="selectDate(this)">4</div>
+                    <div class="cal-date range-text" onclick="selectDate(this)">4</div>
                     <div class="cal-date selected" id="defaultSelected" onclick="selectDate(this)">5</div>
                     <div class="cal-date" onclick="selectDate(this)">6</div>
                     <div class="cal-date" onclick="selectDate(this)">7</div>
@@ -315,54 +317,46 @@
     </div>
 
     <script>
-        // 1. Dropdown Toggle Logic
         function toggleSelect(element) {
-            // Close others
             const allSelects = document.querySelectorAll('.custom-select');
             allSelects.forEach(el => {
-                if (el !== element) {
-                    el.classList.remove('active');
-                }
+                if (el !== element) el.classList.remove('active');
             });
-            // Toggle current
             element.classList.toggle('active');
         }
 
-        // 2. Calendar Date Selection Logic
         function selectDate(element) {
-            // Don't interact with muted dates
             if (element.classList.contains('muted')) return;
 
-            // Remove 'selected' from all
             const allDates = document.querySelectorAll('.cal-date');
             allDates.forEach(d => d.classList.remove('selected'));
 
-            // Add 'selected' to clicked date
             element.classList.add('selected');
         }
 
-        // 3. Clear Filters Logic
         function clearFilters() {
-            // Reset dropdowns to image defaults
-            document.getElementById('val-category').innerText = 'Consumable';
-            document.getElementById('val-item').innerText = 'Printer Ink';
-            document.getElementById('val-delivered').innerText = 'All';
-            document.getElementById('val-quantity').innerText = 'All';
+            document.getElementById('val-category').innerText = 'Technical Support';
+            document.getElementById('val-status').innerText = 'All';
+            document.getElementById('val-priority').innerText = 'All';
+            document.getElementById('val-dept').innerText = 'MISD';
             document.getElementById('val-agent').innerText = 'All';
-            document.getElementById('val-date').innerText = '3 Nov';
+            document.getElementById('val-created').innerText = '1 Nov - 4 Nov';
 
-            // Reset Calendar Visuals
             const allDates = document.querySelectorAll('.cal-date');
             allDates.forEach(d => {
                 d.classList.remove('selected');
-                d.classList.remove('highlight');
+                d.classList.remove('range-text'); 
             });
 
-            // Re-apply defaults from HTML structure (ID based)
-            document.getElementById('defaultHighlight').classList.add('highlight');
-            document.getElementById('defaultSelected').classList.add('selected');
+            const grid = document.getElementById('calendarGrid');
+            const dates = grid.children;
+            
+            dates[4].classList.add('range-text'); 
+            dates[5].classList.add('range-text'); 
+            dates[6].classList.add('range-text'); 
+            dates[7].classList.add('range-text'); 
+            dates[8].classList.add('selected'); 
 
-            // Close all open dropdowns
             const allSelects = document.querySelectorAll('.custom-select');
             allSelects.forEach(el => el.classList.remove('active'));
         }

@@ -207,38 +207,38 @@
         </div>
 
         <div class="filter-header">
-            <div class="filter-title">Inventory Filters</div>
+            <div class="filter-title">Maintenance Log Filters</div>
         </div>
 
         <div class="filter-group">
             
             <div class="custom-select" onclick="toggleSelect(this)">
-                <span class="select-label">Category:</span>
-                <span class="select-value" id="val-category">Consumable</span>
+                <span class="select-label">Asset Name:</span>
+                <span class="select-value" id="val-assetname">All</span>
                 <i class="fas fa-chevron-down select-icon"></i>
             </div>
 
             <div class="custom-select" onclick="toggleSelect(this)">
-                <span class="select-label">Item:</span>
-                <span class="select-value" id="val-item">Printer Ink</span>
+                <span class="select-label">Technician:</span>
+                <span class="select-value" id="val-technician">All</span>
                 <i class="fas fa-chevron-down select-icon"></i>
             </div>
 
             <div class="custom-select" onclick="toggleSelect(this)">
-                <span class="select-label">Delivered by:</span>
-                <span class="select-value" id="val-delivered">All</span>
+                <span class="select-label">Maintenance Type:</span>
+                <span class="select-value" id="val-type">All</span>
                 <i class="fas fa-chevron-down select-icon"></i>
             </div>
 
             <div class="custom-select" onclick="toggleSelect(this)">
-                <span class="select-label">Quantity:</span>
-                <span class="select-value" id="val-quantity">All</span>
+                <span class="select-label">Priority:</span>
+                <span class="select-value" id="val-priority">All</span>
                 <i class="fas fa-chevron-down select-icon"></i>
             </div>
 
             <div class="custom-select" onclick="toggleSelect(this)">
-                <span class="select-label">Agent:</span>
-                <span class="select-value" id="val-agent">All</span>
+                <span class="select-label">Status:</span>
+                <span class="select-value" id="val-status">All</span>
                 <i class="fas fa-chevron-down select-icon"></i>
             </div>
 
@@ -324,45 +324,36 @@
                     el.classList.remove('active');
                 }
             });
-            // Toggle current
+            
             element.classList.toggle('active');
         }
 
-        // 2. Calendar Date Selection Logic
         function selectDate(element) {
-            // Don't interact with muted dates
             if (element.classList.contains('muted')) return;
 
-            // Remove 'selected' from all
             const allDates = document.querySelectorAll('.cal-date');
             allDates.forEach(d => d.classList.remove('selected'));
 
-            // Add 'selected' to clicked date
             element.classList.add('selected');
         }
 
-        // 3. Clear Filters Logic
         function clearFilters() {
-            // Reset dropdowns to image defaults
-            document.getElementById('val-category').innerText = 'Consumable';
-            document.getElementById('val-item').innerText = 'Printer Ink';
-            document.getElementById('val-delivered').innerText = 'All';
-            document.getElementById('val-quantity').innerText = 'All';
-            document.getElementById('val-agent').innerText = 'All';
+            document.getElementById('val-assetname').innerText = 'Consumable';
+            document.getElementById('val-technician').innerText = 'Printer Ink';
+            document.getElementById('val-type').innerText = 'All';
+            document.getElementById('val-priority').innerText = 'All';
+            document.getElementById('val-status').innerText = 'All';
             document.getElementById('val-date').innerText = '3 Nov';
 
-            // Reset Calendar Visuals
             const allDates = document.querySelectorAll('.cal-date');
             allDates.forEach(d => {
                 d.classList.remove('selected');
                 d.classList.remove('highlight');
             });
 
-            // Re-apply defaults from HTML structure (ID based)
             document.getElementById('defaultHighlight').classList.add('highlight');
             document.getElementById('defaultSelected').classList.add('selected');
 
-            // Close all open dropdowns
             const allSelects = document.querySelectorAll('.custom-select');
             allSelects.forEach(el => el.classList.remove('active'));
         }
