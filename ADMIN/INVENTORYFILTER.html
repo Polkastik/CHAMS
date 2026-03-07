@@ -324,26 +324,20 @@
                     el.classList.remove('active');
                 }
             });
-            // Toggle current
+            
             element.classList.toggle('active');
         }
 
-        // 2. Calendar Date Selection Logic
         function selectDate(element) {
-            // Don't interact with muted dates
             if (element.classList.contains('muted')) return;
 
-            // Remove 'selected' from all
             const allDates = document.querySelectorAll('.cal-date');
             allDates.forEach(d => d.classList.remove('selected'));
 
-            // Add 'selected' to clicked date
             element.classList.add('selected');
         }
 
-        // 3. Clear Filters Logic
         function clearFilters() {
-            // Reset dropdowns to image defaults
             document.getElementById('val-category').innerText = 'Consumable';
             document.getElementById('val-item').innerText = 'Printer Ink';
             document.getElementById('val-delivered').innerText = 'All';
@@ -351,18 +345,15 @@
             document.getElementById('val-agent').innerText = 'All';
             document.getElementById('val-date').innerText = '3 Nov';
 
-            // Reset Calendar Visuals
             const allDates = document.querySelectorAll('.cal-date');
             allDates.forEach(d => {
                 d.classList.remove('selected');
                 d.classList.remove('highlight');
             });
 
-            // Re-apply defaults from HTML structure (ID based)
             document.getElementById('defaultHighlight').classList.add('highlight');
             document.getElementById('defaultSelected').classList.add('selected');
 
-            // Close all open dropdowns
             const allSelects = document.querySelectorAll('.custom-select');
             allSelects.forEach(el => el.classList.remove('active'));
         }

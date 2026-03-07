@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Inventory Filters</title>
+    <title>Activity Log Filters</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         :root {
@@ -12,6 +12,7 @@
             --text-dark: #333;
             --text-light: #aaa;
             --border-color: #e0e0e0;
+            --bg-hover: #f5f7fa;
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Arial Narrow', sans-serif; }
@@ -41,7 +42,7 @@
         }
 
         .filter-icon-top {
-            color:blue;
+            color: var(--hams-blue);
             font-size: 18px;
             margin-bottom: 15px;
         }
@@ -57,7 +58,7 @@
         .filter-group {
             display: flex;
             flex-direction: column;
-            gap: 12px;
+            gap: 15px;
         }
 
         .custom-select {
@@ -66,7 +67,7 @@
             align-items: center;
             border: 1px solid var(--border-color);
             border-radius: 6px;
-            padding: 10px 15px;
+            padding: 12px 15px;
             cursor: pointer;
             background: white;
             transition: all 0.2s;
@@ -77,30 +78,26 @@
             border-color: #bbb;
             background-color: #fafafa;
         }
-        
+
         .custom-select.active {
             border-color: var(--hams-blue);
             box-shadow: 0 0 0 1px var(--hams-blue) inset;
         }
 
         .select-label {
-            color: var(--text-light);
-            font-size: 13px;
+            color: #aaa;
+            font-size: 14px;
             font-weight: bold;
             margin-right: 10px;
-            white-space: nowrap;
         }
 
         .select-value {
             color: black;
             font-weight: bold;
-            font-size: 13px;
+            font-size: 14px;
             flex-grow: 1;
             text-align: left;
             padding-left: 5px;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
         }
 
         .select-icon {
@@ -136,7 +133,7 @@
         .cal-nav {
             color: #ddd;
             cursor: pointer;
-            font-size: 10px;
+            font-size: 12px;
             padding: 5px;
         }
         .cal-nav:hover { color: var(--hams-blue); }
@@ -145,16 +142,16 @@
             display: grid;
             grid-template-columns: repeat(7, 1fr);
             text-align: center;
-            row-gap: 8px;
+            row-gap: 10px;
         }
 
         .cal-date {
-            font-size: 12px;
+            font-size: 13px;
             font-weight: bold;
             color: #333;
             cursor: pointer;
-            width: 24px;
-            height: 24px;
+            width: 25px;
+            height: 25px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -171,11 +168,13 @@
             color: #ccc;
         }
 
+        /* Blue Selection Circle */
         .cal-date.selected {
             background-color: var(--hams-blue);
             color: white;
         }
 
+        /* Blue Text Highlight */
         .cal-date.highlight {
             color: var(--hams-blue);
         }
@@ -190,7 +189,7 @@
         .clear-btn {
             color: black;
             font-weight: bold;
-            font-size: 12px;
+            font-size: 13px;
             text-decoration: none;
             cursor: pointer;
         }
@@ -200,50 +199,38 @@
 </head>
 <body>
 
-    <div class="filter-panel" id="filterPanel">
+    <div class="filter-panel" id="activityFilterPanel">
         
         <div class="filter-icon-top">
             <i class="fas fa-filter"></i>
         </div>
 
         <div class="filter-header">
-            <div class="filter-title">Inventory Filters</div>
+            <div class="filter-title">Activity Log Filters</div>
         </div>
 
         <div class="filter-group">
             
             <div class="custom-select" onclick="toggleSelect(this)">
-                <span class="select-label">Category:</span>
-                <span class="select-value" id="val-category">Consumable</span>
+                <span class="select-label">Name:</span>
+                <span class="select-value" id="val-name">All</span>
                 <i class="fas fa-chevron-down select-icon"></i>
             </div>
 
             <div class="custom-select" onclick="toggleSelect(this)">
-                <span class="select-label">Item:</span>
-                <span class="select-value" id="val-item">Printer Ink</span>
+                <span class="select-label">Role:</span>
+                <span class="select-value" id="val-role">All</span>
                 <i class="fas fa-chevron-down select-icon"></i>
             </div>
 
             <div class="custom-select" onclick="toggleSelect(this)">
-                <span class="select-label">Delivered by:</span>
-                <span class="select-value" id="val-delivered">All</span>
+                <span class="select-label">Activity Type :</span>
+                <span class="select-value" id="val-type">All</span>
                 <i class="fas fa-chevron-down select-icon"></i>
             </div>
 
             <div class="custom-select" onclick="toggleSelect(this)">
-                <span class="select-label">Quantity:</span>
-                <span class="select-value" id="val-quantity">All</span>
-                <i class="fas fa-chevron-down select-icon"></i>
-            </div>
-
-            <div class="custom-select" onclick="toggleSelect(this)">
-                <span class="select-label">Agent:</span>
-                <span class="select-value" id="val-agent">All</span>
-                <i class="fas fa-chevron-down select-icon"></i>
-            </div>
-
-            <div class="custom-select" onclick="toggleSelect(this)">
-                <span class="select-label">Date Delivered:</span>
+                <span class="select-label">Date Range:</span>
                 <span class="select-value" id="val-date">3 Nov</span>
                 <i class="fas fa-chevron-down select-icon"></i>
             </div>
@@ -260,9 +247,9 @@
                     <div class="cal-date muted">29</div>
                     <div class="cal-date muted">30</div>
                     <div class="cal-date muted">31</div>
-                    <div class="cal-date" onclick="selectDate(this)">1</div>
-                    <div class="cal-date" onclick="selectDate(this)">2</div>
-                    <div class="cal-date highlight" id="defaultHighlight" onclick="selectDate(this)">3</div>
+                    <div class="cal-date highlight" id="date-1" onclick="selectDate(this)">1</div>
+                    <div class="cal-date highlight" id="date-2" onclick="selectDate(this)">2</div>
+                    <div class="cal-date highlight" id="date-3" onclick="selectDate(this)">3</div>
 
                     <div class="cal-date" onclick="selectDate(this)">4</div>
                     <div class="cal-date selected" id="defaultSelected" onclick="selectDate(this)">5</div>
@@ -315,54 +302,40 @@
     </div>
 
     <script>
-        // 1. Dropdown Toggle Logic
         function toggleSelect(element) {
-            // Close others
             const allSelects = document.querySelectorAll('.custom-select');
             allSelects.forEach(el => {
-                if (el !== element) {
-                    el.classList.remove('active');
-                }
+                if (el !== element) el.classList.remove('active');
             });
-            // Toggle current
             element.classList.toggle('active');
         }
 
-        // 2. Calendar Date Selection Logic
         function selectDate(element) {
-            // Don't interact with muted dates
             if (element.classList.contains('muted')) return;
 
-            // Remove 'selected' from all
             const allDates = document.querySelectorAll('.cal-date');
             allDates.forEach(d => d.classList.remove('selected'));
 
-            // Add 'selected' to clicked date
             element.classList.add('selected');
         }
 
-        // 3. Clear Filters Logic
         function clearFilters() {
-            // Reset dropdowns to image defaults
-            document.getElementById('val-category').innerText = 'Consumable';
-            document.getElementById('val-item').innerText = 'Printer Ink';
-            document.getElementById('val-delivered').innerText = 'All';
-            document.getElementById('val-quantity').innerText = 'All';
-            document.getElementById('val-agent').innerText = 'All';
+            document.getElementById('val-name').innerText = 'All';
+            document.getElementById('val-role').innerText = 'All';
+            document.getElementById('val-type').innerText = 'All';
             document.getElementById('val-date').innerText = '3 Nov';
 
-            // Reset Calendar Visuals
             const allDates = document.querySelectorAll('.cal-date');
             allDates.forEach(d => {
                 d.classList.remove('selected');
                 d.classList.remove('highlight');
             });
 
-            // Re-apply defaults from HTML structure (ID based)
-            document.getElementById('defaultHighlight').classList.add('highlight');
+            document.getElementById('date-1').classList.add('highlight');
+            document.getElementById('date-2').classList.add('highlight');
+            document.getElementById('date-3').classList.add('highlight');
             document.getElementById('defaultSelected').classList.add('selected');
 
-            // Close all open dropdowns
             const allSelects = document.querySelectorAll('.custom-select');
             allSelects.forEach(el => el.classList.remove('active'));
         }
