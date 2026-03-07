@@ -41,6 +41,8 @@ body{
     color:#fff;
 }
 
+.filter-row { display: flex; justify-content: flex-end; padding-right: 5px; margin-bottom: 1vh; }
+        .filter-row i { color:blue; font-size: 2.5vh; cursor: pointer; }
 
 .menu-icon{
     font-size: 2vw;
@@ -243,11 +245,16 @@ body{
 
 
 .toolbar{
+    background:#fff;
+    padding:1.5vh 2%;
+    border-radius:0.5vw;
     display:flex;
     justify-content:space-between;
-    margin-bottom: 2vh;
-    font-size: 0.85vw;
+    align-items:center;
+    box-shadow:0 0.1vw 0.3vw rgba(0,0,0,0.1);
+    margin-bottom:2vh;
 }
+
 
 
 .toolbar-left{
@@ -400,6 +407,9 @@ body{
                 <div onclick="toggleSort()">Sort by: Date <i class="fas fa-caret-down" style="font-size: 1vw;"></i></div>
             </div>
             <div>1–1 of 1</div>
+        </div>
+<div class="filter-row">
+            <i class="fas fa-filter"></i>
         </div>
 
 

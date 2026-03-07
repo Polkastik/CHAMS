@@ -176,7 +176,7 @@ body{
 
 
 .menu-item:hover { background: #f0f4f8; }
-.menu-item i { font-size: 1w; }
+.menu-item i { font-size: 1vw; }
 
 
 .sidebar.collapsed .menu-item{
@@ -296,6 +296,8 @@ tbody td{
     color:#333;
     vertical-align: middle;
 }
+.filter-row { display: flex; justify-content: flex-end; padding-right: 5px; margin-bottom: 1vh; }
+        .filter-row i { color:blue; font-size: 2.5vh; cursor: pointer; }
 
 
 .edit-btn{
@@ -378,6 +380,9 @@ tbody td{
             <i class="fas fa-arrow-left"></i> INVENTORY TRACKER
         </div>
 
+<div class="filter-row">
+            <i class="fas fa-filter"></i>
+        </div>
 
         <div class="table-wrapper">
             <table>
