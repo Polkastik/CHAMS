@@ -52,10 +52,10 @@ body{
 
 
 .logo img{
-    height: 4.5vh;
-    width: auto;
+    height:20vh;
+    width:auto;
+   
 }
-
 
 .search-box input{
     width: 18vw;
@@ -366,7 +366,7 @@ body{
 <div class="topbar">
     <div class="top-left">
         <i class="fas fa-bars menu-icon" onclick="toggleMenu()"></i>
-        <div class="logo"><img src="C:\Users\Admin\Downloads/CHAMS.JPG" alt="CHAMS Logo"></div>
+        <div class="logo"><img src="CHAMS.png" alt="CHAMS Logo"></div>
     </div>
     <div class="search-box">
         <input type="text" placeholder="Search...">
@@ -385,31 +385,54 @@ body{
             <div class="profile-role">ADMIN</div>
         </div>
 
+<div class="menu">
+    <a href="DASHBOARD.html" style="text-decoration: none;">
+        <div class="menu-item"><i class="fas fa-home"></i> <span>HOME</span></div>
+    </a>
 
-        <div class="menu">
-            <div class="menu-item"><i class="fas fa-home"></i> <span>HOME</span></div>
-            <div class="menu-item"><i class="fas fa-ticket-alt"></i> <span>TICKETS</span></div>
-            <div class="menu-item"><i class="fas fa-box"></i> <span>INVENTORY</span></div>
-            <div class="menu-item hide-on-collapse"><i class="fas fa-search"></i> <span>INVENTORY TRACKER</span></div>
-            <div class="menu-item"><i class="fas fa-clipboard-list"></i> <span>MAINTENANCE LOG</span></div>
-            <div class="menu-item hide-on-collapse"><i class="fas fa-history"></i> <span>ACTIVITY LOG</span></div>
-            <div class="menu-item"><i class="fas fa-bell"></i> <span>NOTIFICATION</span></div>
-            <div class="menu-item"><i class="fas fa-cog"></i> <span>SETTINGS</span></div>
-            <div class="menu-item hide-on-collapse"><i class="fas fa-question-circle"></i> <span>FAQs</span></div>
-        </div>
+    <a href="TiICKET.html" style="text-decoration: none;">
+        <div class="menu-item"><i class="fas fa-ticket-alt"></i> <span>TICKETS</span></div>
+    </a>
 
+    <a href="INVENTORY.html" style="text-decoration: none;">
+        <div class="menu-item"><i class="fas fa-box"></i> <span>INVENTORY</span></div>
+    </a>
+    
+    <a href="INVENTORYTRACKER.html" style="text-decoration: none;" class="hide-on-collapse">
+        <div class="menu-item"><i class="fas fa-search"></i> <span>INVENTORY TRACKER</span></div>
+    </a>
+    
+    <a href="MAINTENANCELOG.html" style="text-decoration: none;">
+        <div class="menu-item"><i class="fas fa-clipboard-list"></i> <span>MAINTENANCE LOG</span></div>
+    </a>
 
-        <div class="signout hide-on-collapse">
-            <div class="signout-item"><i class="fas fa-sign-out-alt"></i> <span>SIGN OUT</span></div>
-        </div>
+    <a href="ACTIVITYLOG.html" style="text-decoration: none;" class="hide-on-collapse">
+        <div class="menu-item"><i class="fas fa-history"></i> <span>ACTIVITY LOG</span></div>
+    </a>
+    
+    <a href="NOTIFICATION.html" style="text-decoration: none;">
+        <div class="menu-item"><i class="fas fa-bell"></i> <span>NOTIFICATION</span></div>
+    </a>
+
+    <a href="SETTINGS.html" style="text-decoration: none;">
+        <div class="menu-item"><i class="fas fa-cog"></i> <span>SETTINGS</span></div>
+    </a>
+    
+    <a href="FAQS.html" style="text-decoration: none;" class="hide-on-collapse">
+        <div class="menu-item"><i class="fas fa-question-circle"></i> <span>FAQs</span></div>
+    </a>
+</div>
+      <a href="LOG-IN.html" style="text-decoration: none;" class="signout hide-on-collapse">
+    <i class="fas fa-sign-out-alt"></i> <span>SIGN OUT</span>
+</a>
+
     </div>
 
 
     <div class="content">
-        <div class="breadcrumb" onclick="window.history.back()">
+        <div class="breadcrumb" onclick="window.location.href='INVENTORYTRACKER.html'">
             <i class="fas fa-chevron-left"></i> INVENTORY TRACKER
         </div>
-
 
         <div class="details-card">
             <div class="detail-group"><div class="label">Item Name:</div> <div class="value">PC</div></div>
@@ -421,16 +444,14 @@ body{
             <div class="detail-group"><div class="label">Date Delivered:</div> <div class="value">11/03/25</div></div>
         </div>
 
-
         <div class="status-row">
             <div class="status-item">
                 <div style="width: 8vw;">DEFECTS:</div>
                 <div class="status-badge badge-none">NONE</div>
-                <button class="attachment-btn">
+                <button class="attachment-btn" onclick="alert('Opening attachment...')">
                     See Attachment <i class="fas fa-file-alt"></i>
                 </button>
             </div>
-
 
             <div class="status-item">
                 <div style="width: 8vw;">SERIAL NO:</div>
@@ -438,15 +459,16 @@ body{
             </div>
         </div>
 
-
         <div class="footer-actions">
-            <button class="action-btn btn-edit">
+            <button class="action-btn btn-edit" onclick="window.location.href='INVENTORYTRACKEREDIT.html'">
                 EDIT <i class="fas fa-pen"></i>
             </button>
-            <button class="action-btn btn-download">
+            
+            <button class="action-btn btn-download" onclick="alert('Downloading details...')">
                 DOWNLOAD <i class="fas fa-download"></i>
             </button>
         </div>
+    </div>
     </div>
 </div>
 

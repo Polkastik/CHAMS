@@ -53,8 +53,9 @@ body{
 
 
 .logo img{
-    height: 4.5vh;
-    width: auto;
+    height:20vh;
+    width:auto;
+   
 }
 
 
@@ -93,6 +94,44 @@ body{
     padding: 2vh 0;
 }
 
+.filter-panel {
+    position: absolute;
+    top: 15vh;
+    right: 3%;
+    background: white;
+    width: 320px;
+    padding: 25px;
+    border-radius: 8px;
+    box-shadow: 0 5px 25px rgba(0,0,0,0.2);
+    z-index: 1000;
+    display: none; 
+    font-family: 'Arial Narrow', sans-serif;
+}
+
+.filter-icon-top { color: blue; font-size: 18px; margin-bottom: 15px; }
+.filter-title { color: #222; font-size: 18px; font-weight: bold; margin-bottom: 20px; letter-spacing: 0.5px; }
+
+.filter-group { display: flex; flex-direction: column; gap: 12px; }
+.custom-select {
+    display: flex; justify-content: space-between; align-items: center;
+    border: 1px solid #e0e0e0; border-radius: 6px;
+    padding: 10px 15px; cursor: pointer; background: white;
+}
+.custom-select.active { border-color: #0b4a7a; box-shadow: 0 0 0 1px #0b4a7a inset; }
+.select-label { color: #aaa; font-size: 13px; font-weight: bold; }
+.select-value { color: black; font-weight: bold; font-size: 13px; flex-grow: 1; padding-left: 8px; }
+
+.calendar-wrapper { border: 1px solid #e0e0e0; border-radius: 6px; padding: 15px; margin-top: 5px; }
+.cal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; font-weight: bold; font-size: 14px; color: black; }
+.cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); text-align: center; row-gap: 8px; }
+.cal-date { font-size: 12px; font-weight: bold; cursor: pointer; width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; margin: 0 auto; border-radius: 50%; }
+.cal-date.muted { color: #ccc; }
+.cal-date.selected { background-color: #0b4a7a; color: white; }
+.cal-date.highlight { color: #0b4a7a; }
+
+.filter-footer { display: flex; justify-content: flex-end; margin-top: 15px; }
+.clear-btn { color: black; font-weight: bold; font-size: 12px; cursor: pointer; text-decoration: none; }
+.clear-btn:hover { text-decoration: underline; }
 
 .sidebar.collapsed .hide-on-collapse,
 .sidebar.collapsed .profile-role,
@@ -170,7 +209,6 @@ body{
 .profile-role{ font-size: 0.8vw; color:#0b4a7a; margin-top: 0.5vh; }
 
 
-/* --- MENU --- */
 .menu{ flex:1; }
 
 
@@ -316,6 +354,11 @@ body{
     border-radius:50%;
     margin-left:0.5vw;
 }
+.page-header i:hover {
+    color: #3498db;
+    transform: scale(1.2);
+    transition: 0.2s ease;
+}
 
 
 .item-actions{
@@ -347,7 +390,7 @@ body{
     <div class="top-left">
         <i class="fas fa-bars menu-icon" onclick="toggleMenu()"></i>
         <div class="logo">
-           <img src="C:\Users\Admin\Downloads/CHAMS.JPG" alt="Logo">
+           <img src="CHAMS.png" alt="Logo">
         </div>
     </div>
     <div class="search-box">
@@ -369,36 +412,54 @@ body{
 
 
         <div class="menu">
-            <div class="menu-item"><i class="fas fa-home"></i> <span class="menu-text">HOME</span></div>
-            <div class="menu-item"><i class="fas fa-ticket-alt"></i> <span class="menu-text">TICKETS</span></div>
-            <div class="menu-item"><i class="fas fa-box"></i> <span class="menu-text">INVENTORY </span></div>
-           
-            <div class="menu-item hide-on-collapse"><i class="fas fa-search"></i> <span class="menu-text">INVENTORY TRACKER</span></div>
-           
-            <div class="menu-item"><i class="fas fa-clipboard-list"></i> <span class="menu-text">MAINTENANCE LOG</span></div>
-           
-            <div class="menu-item hide-on-collapse"><i class="fas fa-history"></i> <span class="menu-text">ACTIVITY</span></div>
-           
-            <div class="menu-item">
-                <i class="fas fa-bell"></i> <span class="menu-text">NOTIFICATION</span>
-                <div class="notification-dot"></div>
-            </div>
-            <div class="menu-item"><i class="fas fa-cog"></i> <span class="menu-text">SETTINGS</span></div>
-           
-            <div class="menu-item hide-on-collapse"><i class="fas fa-question-circle"></i> <span class="menu-text">FAQs</span></div>
-        </div>
+    <a href="DASHBOARD.html" style="text-decoration: none;">
+        <div class="menu-item"><i class="fas fa-home"></i> <span>HOME</span></div>
+    </a>
 
+    <a href="TiICKET.html" style="text-decoration: none;">
+        <div class="menu-item"><i class="fas fa-ticket-alt"></i> <span>TICKETS</span></div>
+    </a>
 
-        <div class="signout hide-on-collapse">
-            <i class="fas fa-sign-out-alt"></i> <span class="menu-text">SIGN OUT</span>
-        </div>
+    <a href="INVENTORY.html" style="text-decoration: none;">
+        <div class="menu-item"><i class="fas fa-box"></i> <span>INVENTORY</span></div>
+    </a>
+    
+    <a href="INVENTORYTRACKER.html" style="text-decoration: none;" class="hide-on-collapse">
+        <div class="menu-item"><i class="fas fa-search"></i> <span>INVENTORY TRACKER</span></div>
+    </a>
+    
+    <a href="MAINTENANCELOG.html" style="text-decoration: none;">
+        <div class="menu-item"><i class="fas fa-clipboard-list"></i> <span>MAINTENANCE LOG</span></div>
+    </a>
+
+    <a href="ACTIVITYLOG.html" style="text-decoration: none;" class="hide-on-collapse">
+        <div class="menu-item"><i class="fas fa-history"></i> <span>ACTIVITY LOG</span></div>
+    </a>
+    
+    <a href="NOTIFICATION.html" style="text-decoration: none;">
+        <div class="menu-item"><i class="fas fa-bell"></i> <span>NOTIFICATION</span></div>
+    </a>
+
+    <a href="SETTINGS.html" style="text-decoration: none;">
+        <div class="menu-item"><i class="fas fa-cog"></i> <span>SETTINGS</span></div>
+    </a>
+    
+    <a href="FAQS.html" style="text-decoration: none;" class="hide-on-collapse">
+        <div class="menu-item"><i class="fas fa-question-circle"></i> <span>FAQs</span></div>
+    </a>
+</div>
+      <a href="LOG-IN.html" style="text-decoration: none;" class="signout hide-on-collapse">
+    <i class="fas fa-sign-out-alt"></i> <span>SIGN OUT</span>
+</a>
+
     </div>
 
 
     <div class="content" id="content">
         <div class="page-header">
-            <i class="fas fa-chevron-left" style="font-size: 1.5vw;"></i> INVENTORY
-        </div>
+    <i class="fas fa-chevron-left" style="font-size: 1.5vw; cursor: pointer;" onclick="window.location.href='DASHBOARD.html'"></i> 
+    INVENTORY
+</div>
 
 
         <div class="toolbar">
@@ -409,33 +470,82 @@ body{
             <div>1–1 of 1</div>
         </div>
 <div class="filter-row">
-            <i class="fas fa-filter"></i>
+    <i class="fas fa-filter" onclick="toggleFilterOverlay()"></i>
+</div>
+
+<div class="filter-panel" id="filterPanel">
+    <div class="filter-icon-top"><i class="fas fa-filter"></i></div>
+    <div class="filter-title">Inventory Filters</div>
+
+    <div class="filter-group">
+        <div class="custom-select" onclick="toggleSelect(this)">
+            <span class="select-label">Category:</span>
+            <span class="select-value" id="val-category">Consumable</span>
+            <i class="fas fa-chevron-down"></i>
+        </div>
+        <div class="custom-select" onclick="toggleSelect(this)">
+            <span class="select-label">Item:</span>
+            <span class="select-value" id="val-item">Printer Ink</span>
+            <i class="fas fa-chevron-down"></i>
+        </div>
+        <div class="custom-select" onclick="toggleSelect(this)">
+            <span class="select-label">Delivered by:</span>
+            <span class="select-value" id="val-delivered">All</span>
+            <i class="fas fa-chevron-down"></i>
+        </div>
+        <div class="custom-select" onclick="toggleSelect(this)">
+            <span class="select-label">Date Delivered:</span>
+            <span class="select-value" id="val-date">3 Nov</span>
+            <i class="fas fa-chevron-down"></i>
         </div>
 
+        <div class="calendar-wrapper">
+            <div class="cal-header">
+                <i class="fas fa-chevron-left"></i>
+                <span>November 2025</span>
+                <i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="cal-grid">
+                <div class="cal-date muted">28</div><div class="cal-date muted">29</div><div class="cal-date muted">30</div><div class="cal-date muted">31</div>
+                <div class="cal-date">1</div><div class="cal-date">2</div><div class="cal-date highlight" id="defaultHighlight">3</div>
+                <div class="cal-date">4</div><div class="cal-date selected" id="defaultSelected">5</div>
+                <div class="cal-date">6</div><div class="cal-date">7</div><div class="cal-date">8</div>
+                <div class="cal-date">9</div><div class="cal-date">10</div>
+            </div>
+        </div>
+    </div>
 
-        <div class="inventory-list" id="inventoryList">
+    <div class="filter-footer">
+        <div class="clear-btn" onclick="clearFilters()">Clear Filters</div>
+    </div>
+</div>
+
+
+        <div class="inventory-list" id="inventoryList"> 
             <div class="inventory-item" data-date="2024-11-03">
-                <input type="checkbox" class="item-checkbox">
-                <div class="item-icon">
-                    <i class="fas fa-print"></i>
-                </div>
+    <input type="checkbox" class="item-checkbox">
 
+        <div class="item-icon">
+            <i class="fas fa-print"></i>
+        </div>
 
-                 <div class="item-details">
-                    <div class="item-title">
-                        Printer Ink <span class="status-dot"></span>
-                    </div>
-                    <div class="item-meta">
-                        <div><b>Input by:</b> San MI Admin</div>
-                        <div><b>Supplier:</b> Red Horse Co.</div>
-                        <div><b>Serial No.:</b> N/A</div>
-                    </div>
-                </div>
+        <div class="item-details">
+            <div class="item-title">
+                Printer Ink <span class="status-dot"></span>
+            </div>
+            <div class="item-meta">
+                <div><b>Input by:</b> San MI Admin</div>
+                <div><b>Supplier:</b> Red Horse Co.</div>
+                <div><b>Serial No.:</b> N/A</div>
+            </div>
+        </div>
 
-
-                <div class="item-actions">
-                    <div>3 Nov 14:24</div>
-                    <i class="fas fa-lock" style="font-size:1.2vw;"></i>
+        <div class="item-actions">
+            <div>3 Nov 14:24</div>
+            <i class="fas fa-lock" style="font-size:1.2vw;"></i>
+        </div>
+    </a>
+</div>
                 </div>
             </div>
         </div>
@@ -448,24 +558,47 @@ function toggleMenu(){
     document.getElementById("sidebar").classList.toggle("collapsed");
 }
 
-
 function toggleEdit(){
     document.getElementById("content").classList.toggle("edit-mode");
 }
 
+function toggleFilterOverlay() {
+    const panel = document.getElementById("filterPanel");
+    panel.style.display = (panel.style.display === "block") ? "none" : "block";
+}
 
+function toggleSelect(element) {
+    const allSelects = document.querySelectorAll('.custom-select');
+    allSelects.forEach(el => { if (el !== element) el.classList.remove('active'); });
+    element.classList.toggle('active');
+}
+
+function clearFilters() {
+    document.getElementById('val-category').innerText = 'Consumable';
+    document.getElementById('val-item').innerText = 'Printer Ink';
+    document.getElementById('val-delivered').innerText = 'All';
+    document.getElementById('val-date').innerText = '3 Nov';
+    toggleFilterOverlay(); 
+}
+
+window.addEventListener('click', function(e) {
+    const panel = document.getElementById("filterPanel");
+    const filterBtn = document.querySelector(".filter-row i");
+    if (panel.style.display === "block" && !panel.contains(e.target) && e.target !== filterBtn) {
+        panel.style.display = "none";
+    }
+});
 let newestFirst = true;
 function toggleSort(){
     const list = document.getElementById("inventoryList");
     const items = Array.from(list.children);
 
-
     items.sort((a,b)=>{
-        return newestFirst
-            ? new Date(b.dataset.date) - new Date(a.dataset.date)
-            : new Date(a.dataset.date) - new Date(b.dataset.date);
+        const dateA = a.dataset.date ? new Date(a.dataset.date) : 0;
+        const dateB = b.dataset.date ? new Date(b.dataset.date) : 0;
+        
+        return newestFirst ? dateB - dateA : dateA - dateB;
     });
-
 
     newestFirst = !newestFirst;
     items.forEach(i => list.appendChild(i));

@@ -49,9 +49,9 @@ body{
 
 
 .logo img{
-    height: 5vh;
+    height: 20vh;
     width: auto;
-    object-fit: contain;
+    
 }
 
 
@@ -220,6 +220,18 @@ body{
     padding: 1vh 5%;
     cursor: pointer;
 }
+.edit-btn:hover {
+    background: #fdd835; 
+    border-color: #0b4a7a;
+    transform: translateY(-2px);
+    transition: 0.2s;
+}
+
+.download:hover {
+    background: #b3d7ff; 
+    transform: translateY(-2px);
+    transition: 0.2s;
+}
 
 
 .sidebar.collapsed .signout {
@@ -289,7 +301,7 @@ body{
             <i class="fas fa-bars"></i>
         </div>
         <div class="logo">
-            <img src="C:\Users\Admin\Downloads/CHAMS.JPG" alt="Logo">
+            <img src="CHAMS.png" alt="Logo">
         </div>
     </div>
     <div class="search-box"><input type="text" placeholder="Search..."></div>
@@ -311,36 +323,54 @@ body{
     </div>
 
 
-    <div class="menu">
+   <div class="menu">
+    <a href="DASHBOARD.html" style="text-decoration: none;">
         <div class="menu-item"><i class="fas fa-home"></i> <span>HOME</span></div>
+    </a>
+
+    <a href="TiICKET.html" style="text-decoration: none;">
         <div class="menu-item"><i class="fas fa-ticket-alt"></i> <span>TICKETS</span></div>
+    </a>
+
+    <a href="INVENTORY.html" style="text-decoration: none;">
         <div class="menu-item"><i class="fas fa-box"></i> <span>INVENTORY</span></div>
-       
-        <div class="menu-item hide-on-collapse"><i class="fas fa-search"></i> <span>INVENTORY TRACKER</span></div>
-       
+    </a>
+    
+    <a href="INVENTORYTRACKER.html" style="text-decoration: none;" class="hide-on-collapse">
+        <div class="menu-item"><i class="fas fa-search"></i> <span>INVENTORY TRACKER</span></div>
+    </a>
+    
+    <a href="MAINTENANCELOG.html" style="text-decoration: none;">
         <div class="menu-item"><i class="fas fa-clipboard-list"></i> <span>MAINTENANCE LOG</span></div>
-       
-        <div class="menu-item hide-on-collapse"><i class="fas fa-history"></i> <span>ACTIVITY LOG</span></div>
-       
-        <div class="menu-item">
-            <i class="fas fa-bell"></i> <span>NOTIFICATION</span> <span class="notification-dot"></span>
-        </div>
+    </a>
+
+    <a href="ACTIVITYLOG.html" style="text-decoration: none;" class="hide-on-collapse">
+        <div class="menu-item"><i class="fas fa-history"></i> <span>ACTIVITY LOG</span></div>
+    </a>
+    
+    <a href="NOTIFICATION.html" style="text-decoration: none;">
+        <div class="menu-item"><i class="fas fa-bell"></i> <span>NOTIFICATION</span></div>
+    </a>
+
+    <a href="SETTINGS.html" style="text-decoration: none;">
         <div class="menu-item"><i class="fas fa-cog"></i> <span>SETTINGS</span></div>
-       
-        <div class="menu-item hide-on-collapse"><i class="fas fa-question-circle"></i> <span>FAQs</span></div>
-    </div>
+    </a>
+    
+    <a href="FAQS.html" style="text-decoration: none;" class="hide-on-collapse">
+        <div class="menu-item"><i class="fas fa-question-circle"></i> <span>FAQs</span></div>
+    </a>
+</div>
+      <a href="LOG-IN.html" style="text-decoration: none;" class="signout hide-on-collapse">
+    <i class="fas fa-sign-out-alt"></i> <span>SIGN OUT</span>
+</a>
 
-
-    <div class="signout hide-on-collapse">
-        <i class="fas fa-sign-out-alt"></i> <span>SIGN OUT</span>
-    </div>
 </div>
 
 
 <div class="content">
     <div class="page-title">
-        <i class="fas fa-chevron-left" onclick="window.history.back()" style="cursor:pointer;"></i> TICKETS
-    </div>
+    <i class="fas fa-chevron-left" onclick="window.location.href='TiICKET.html'" style="cursor:pointer;"></i> TICKETS
+</div>
 
 
     <div class="info-card">
@@ -371,9 +401,13 @@ body{
     </div>
 
 
-    <div class="actions">
-        <div class="btn edit-btn">EDIT <i class="fas fa-pen"></i></div>
-        <div class="btn download">DOWNLOAD <i class="fas fa-download"></i></div>
+   <div class="actions">
+    <div class="btn edit-btn" onclick="window.location.href='TICKETEDIT.html'">
+        EDIT <i class="fas fa-pen"></i>
+    </div>
+    
+    <div class="btn download">
+        DOWNLOAD <i class="fas fa-download"></i>
     </div>
 </div>
 

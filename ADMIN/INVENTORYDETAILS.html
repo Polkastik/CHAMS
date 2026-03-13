@@ -51,9 +51,10 @@ body{
 
 
 .logo img{
-    height:4.5vh;
+    height:20vh;
+    width:auto;
+   
 }
-
 
 .search-box input{
     width:15vw;
@@ -312,6 +313,11 @@ body{
     cursor:pointer;
     transition: 0.2s;
 }
+.page-title i:hover {
+    color: #3498db; 
+    transform: scale(1.1); 
+    transition: 0.2s;
+}
 
 
 .btn.edit{ background:#0b4a7a; }
@@ -330,7 +336,7 @@ body{
             <i class="fa-solid fa-bars"></i>
         </div>
         <div class="logo">
-            <img src="C:\Users\Admin\Downloads\CHAMS.JPG" alt="Logo">
+            <img src="CHAMS.png" alt="Logo">
         </div>
     </div>
     <div class="search-box">
@@ -353,36 +359,55 @@ body{
     </div>
 
 
-     <div class="menu">
+    <div class="menu">
+    <a href="DASHBOARD.html" style="text-decoration: none;">
         <div class="menu-item"><i class="fas fa-home"></i> <span>HOME</span></div>
+    </a>
+
+    <a href="TiICKET.html" style="text-decoration: none;">
         <div class="menu-item"><i class="fas fa-ticket-alt"></i> <span>TICKETS</span></div>
+    </a>
+
+    <a href="INVENTORY.html" style="text-decoration: none;">
         <div class="menu-item"><i class="fas fa-box"></i> <span>INVENTORY</span></div>
-       
-        <div class="menu-item hide-on-collapse"><i class="fas fa-search"></i> <span>INVENTORY TRACKER</span></div>
-       
+    </a>
+    
+    <a href="INVENTORYTRACKER.html" style="text-decoration: none;" class="hide-on-collapse">
+        <div class="menu-item"><i class="fas fa-search"></i> <span>INVENTORY TRACKER</span></div>
+    </a>
+    
+    <a href="MAINTENANCELOG.html" style="text-decoration: none;">
         <div class="menu-item"><i class="fas fa-clipboard-list"></i> <span>MAINTENANCE LOG</span></div>
-       
-        <div class="menu-item hide-on-collapse"><i class="fas fa-history"></i> <span>ACTIVITY LOG</span></div>
-       
+    </a>
+
+    <a href="ACTIVITYLOG.html" style="text-decoration: none;" class="hide-on-collapse">
+        <div class="menu-item"><i class="fas fa-history"></i> <span>ACTIVITY LOG</span></div>
+    </a>
+    
+    <a href="NOTIFICATION.html" style="text-decoration: none;">
         <div class="menu-item"><i class="fas fa-bell"></i> <span>NOTIFICATION</span></div>
+    </a>
+
+    <a href="SETTINGS.html" style="text-decoration: none;">
         <div class="menu-item"><i class="fas fa-cog"></i> <span>SETTINGS</span></div>
-       
-        <div class="menu-item hide-on-collapse"><i class="fas fa-question-circle"></i> <span>FAQs</span></div>
-    </div>
+    </a>
+    
+    <a href="FAQS.html" style="text-decoration: none;" class="hide-on-collapse">
+        <div class="menu-item"><i class="fas fa-question-circle"></i> <span>FAQs</span></div>
+    </a>
+</div>
+      <a href="LOG-IN.html" style="text-decoration: none;" class="signout hide-on-collapse">
+    <i class="fas fa-sign-out-alt"></i> <span>SIGN OUT</span>
+</a>
 
-
-    <div class="signout hide-on-collapse">
-        <div class="signout-item"><i class="fas fa-sign-out-alt"></i> <span>SIGN OUT</span></div>
-    </div>
 </div>
 
 
 <div class="content">
     <div class="page-title">
-        <i class="fa-solid fa-chevron-left"></i>
-        INVENTORY
-    </div>
-
+    <i class="fa-solid fa-chevron-left" onclick="window.location.href='INVENTORY.html'"></i>
+    INVENTORY
+</div>
 
     <div class="inventory-card">
         <div class="info-grid">
@@ -424,6 +449,9 @@ body{
 function toggleMenu(){
     document.getElementById("sidebar").classList.toggle("collapsed");
 }
+document.querySelector('.btn.edit').addEventListener('click', function() {
+    alert("Edit mode enabled. You can now modify the Item details.");
+});
 </script>
 
 

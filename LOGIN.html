@@ -100,15 +100,10 @@
 
 
         .logo-img {
-            width: 200px; /* Adjust width as needed */
+            width: 200px;
             height: auto;
            
-            /* LOGO BLENDING TRICK:
-               The logo has a black background. The panel is white.
-               1. invert(1): Turns Black BG to White, Blue text to Orange.
-               2. hue-rotate(180deg): Turns Orange text back to Blue.
-               3. mix-blend-mode: multiply; Makes the new White BG transparent.
-            */
+           
             filter: invert(1) hue-rotate(180deg);
             mix-blend-mode: multiply;
         }
@@ -193,7 +188,7 @@
 
     <div class="right-panel">
         <div class="logo-area">
-            <img src="CHAMS LOGO.jpg" alt="CHAMS Logo" class="logo-img">
+            <img src="CHAMS.png" alt="CHAMS Logo" class="logo-img">
         </div>
 
 
