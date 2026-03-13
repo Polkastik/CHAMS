@@ -2,395 +2,227 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>CHAMS – Notification</title>
+<title>CHAMS – Notification System</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
 
 <style>
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-    font-family:"Segoe UI", Roboto, Arial, sans-serif;
-}
+    *{ margin:0; padding:0; box-sizing:border-box; font-family:"Segoe UI", Roboto, Arial, sans-serif; }
+    
+    body {
+        background: #1f1f1f; 
+        overflow: hidden;
+        width: 100%;
+        height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
 
-body{
-    background:#1f1f1f;
-    overflow:hidden;
-    width:100%;
-    height:100vh;
-}
+    #notifOverlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        background: rgba(0, 0, 0, 0.7); 
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 1000;
+    }
 
+    .notification-panel {
+        background: #0b4a7a;
+        width: 35vw;
+        min-width: 450px;
+        padding: 6vh 3vw;
+        border-radius: 1.5vw;
+        text-align: center;
+        box-shadow: 0 2vw 5vw rgba(0, 0, 0, 0.8);
+        color: white;
+        position: relative; /* Needed for the X button positioning */
+        animation: zoomIn 0.3s ease-out;
+    }
 
-.topbar{
-    height:8vh;
-    background:#0b4a7a;
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    padding:0 2%;
-}
+    /* --- NEW X BUTTON STYLING --- */
+    .close-notif-x {
+        position: absolute;
+        top: 20px;
+        right: 25px;
+        font-size: 1.8vw;
+        cursor: pointer;
+        color: rgba(255, 255, 255, 0.7);
+        transition: 0.3s ease;
+    }
 
-.top-left{
-    display:flex;
-    align-items:center;
-    gap:1.2vw;
-    color:#fff;
-}
+    .close-notif-x:hover {
+        color: #ff2d8d; /* Pink highlight on hover */
+        transform: scale(1.2) rotate(90deg);
+    }
 
-.menu-icon{
-    font-size:2vw;
-    cursor:pointer;
-}
+    @keyframes zoomIn {
+        from { transform: scale(0.8); opacity: 0; }
+        to { transform: scale(1); opacity: 1; }
+    }
 
-.logo img{
-    height:4.5vh;
-}
+    .notification-panel i.main-bell { font-size: 5vw; margin-bottom: 2vh; display: block; }
+    .notif-title { font-size: 2vw; font-weight: bold; margin-bottom: 4vh; letter-spacing: 1px; }
 
-.search-box input{
-    width:15vw;
-    height:4vh;
-    border-radius:0.3vw;
-    border:none;
-    padding:0 1vw;
-    outline:none;
-    font-size:0.8vw;
-}
+    #notifList { width: 100%; max-height: 40vh; overflow-y: auto; padding-right: 5px; }
 
+    .notif-item {
+        background: rgba(255, 255, 255, 0.95);
+        color: #333;
+        padding: 2.5vh 1.5vw;
+        margin-bottom: 2vh;
+        border-radius: 0.8vw;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        cursor: pointer;
+        font-weight: 700;
+        font-size: 1.2vw;
+        transition: 0.2s ease;
+    }
 
-.container{
-    display:flex;
-    height:92vh;
-    width:100%;
-}
+    .notif-item:hover { background: #ffffff; transform: translateY(-3px); }
+    .notif-item i { color: #0b4a7a; font-size: 1vw; }
 
+    .clear-btn {
+        margin-top: 3vh;
+        background: #ffffff;
+        border: none;
+        padding: 1.5vh 3vw;
+        border-radius: 3vw;
+        font-weight: 800;
+        color: #0b4a7a;
+        cursor: pointer;
+        font-size: 1vw;
+        text-transform: uppercase;
+        transition: 0.3s;
+    }
+    .clear-btn:hover { background: #e6e6e6; }
 
-.sidebar{
-    width:18%;
-    background:#ffffff;
-    padding:2.5vh 1.2%;
-    display:flex;
-    flex-direction:column;
-    transition:width 0.3s ease;
-    border-right:0.1vw solid #ddd;
-}
+    /* --- STOCK MODAL --- */
+    .stock-modal {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        background: rgba(0, 0, 0, 0.85);
+        z-index: 2000;
+    }
 
-.sidebar.collapsed{
-    width:6vw;
-}
+    .stock-container {
+        background: #ff7a00;
+        width: 42vw;
+        padding: 6vh 4vw;
+        border-radius: 2vw;
+        text-align: center;
+        color: white;
+    }
 
-.sidebar.collapsed .hide-on-collapse,
-.sidebar.collapsed .profile-role,
-.sidebar.collapsed .real-name{
-    display:none !important;
-}
+    .stock-message {
+        background: #e2caa1;
+        color: #222;
+        padding: 4vh;
+        border-radius: 1vw;
+        margin-top: 2vh;
+        font-size: 1.3vw;
+        text-align: left;
+        font-weight: 600;
+    }
 
-.sidebar.collapsed .profile-label{
-    display:block !important;
-    font-size:0.65vw;
-    font-weight:800;
-    color:#0b4a7a;
-}
+    .close-alert-btn {
+        margin-top: 4vh;
+        padding: 1.8vh 4vw;
+        border: none;
+        background: #0b4a7a;
+        color: #fff;
+        border-radius: 1vw;
+        cursor: pointer;
+        font-weight: bold;
+    }
 
-.sidebar.collapsed .menu-item{
-    flex-direction:column;
-    justify-content:center;
-}
-
-.sidebar.collapsed .menu-text{
-    font-size:0.6vw !important;
-}
-
-
-.profile-card{
-    text-align:center;
-    margin-bottom:3vh;
-}
-
-.avatar-circle{
-    width:5.5vw;
-    height:5.5vw;
-    border-radius:50%;
-    background:#0b4a7a;
-    margin:0 auto 1.5vh;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    color:#fff;
-    font-size:3vw;
-}
-
-.profile-name{font-weight:600;font-size:1.1vw;}
-.profile-label{display:none;}
-.profile-role{font-size:0.8vw;color:#0b4a7a;margin-top:0.5vh;}
-
-/* MENU */
-
-.menu{flex:1;}
-
-.menu-item{
-    display:flex;
-    align-items:center;
-    gap:0.8vw;
-    padding:1.2vh 5%;
-    font-size:0.9vw;
-    font-weight:600;
-    color:#0b4a7a;
-    border-radius:0.5vw;
-    cursor:pointer;
-}
-
-.menu-item:hover{background:#f0f4f8;}
-
-.menu-item i{font-size:1.5vw;}
-
-.notification-dot{
-    width:0.6vw;
-    height:0.6vw;
-    background:#ff2d8d;
-    border-radius:50%;
-    margin-left:auto;
-}
-
-
-.content{
-    flex:1;
-    background:#f5f6f8;
-    padding:3vh 3%;
-    overflow:auto;
-}
-
-
-.page-header{
-    font-size:1.4vw;
-    font-weight:600;
-    color:#0b4a7a;
-    margin-bottom:2vh;
-    display:flex;
-    align-items:center;
-    gap:0.5vw;
-}
-
-
-.center-box{
-    display:flex;
-    justify-content:center;
-    margin-top:6vh;
-}
-
-.notification-panel{
-    background:#0b4a7a;
-    width:30vw;
-    padding:4vh;
-    border-radius:0.7vw;
-    text-align:center;
-    box-shadow:0 0.8vw 2vw rgba(0,0,0,0.4);
-}
-
-.notification-panel i{
-    font-size:2vw;
-    margin-bottom:2vh;
-}
-
-.notif-item{
-    background:#e6e6e6;
-    padding:1.2vh;
-    margin-bottom:1.5vh;
-    border-radius:0.3vw;
-    display:flex;
-    justify-content:space-between;
-    cursor:pointer;
-}
-
-.clear-btn{
-    margin-top:1vh;
-    background:#fff;
-    border:none;
-    padding:0.8vh 1.8vw;
-    border-radius:1vw;
-    font-weight:600;
-    color:#0b4a7a;
-    cursor:pointer;
-}
-.signout{
-    margin-top:2.5vh;
-    display:flex;
-    align-items:center;
-    gap: 0.8vw;
-    font-weight:700;
-    font-size:0.9vw;
-    color:#0b4a7a;
-    cursor:pointer;
-    padding:1vh 5%;
-}
-
-
-.stock-modal{
-    position:fixed;
-    top:0;
-    left:0;
-    width:100%;
-    height:100%;
-    display:none;
-    align-items:center;
-    justify-content:center;
-    background:rgba(0,0,0,0.4);
-}
-
-.stock-container{
-    background:#ff7a00;
-    width:30vw;
-    padding:3vh 2vw;
-    border-radius:0.7vw;
-    text-align:center;
-}
-
-.stock-message{
-    background:#e2caa1;
-    padding:3vh;
-    border-radius:1vw;
-    margin-top:2vh;
-}
-
-.close-btn{
-    margin-top:2vh;
-    padding:1vh 2vw;
-    border:none;
-    background:#0b4a7a;
-    color:#fff;
-    border-radius:0.5vw;
-    cursor:pointer;
-}
-
+    #notifList::-webkit-scrollbar { width: 6px; }
+    #notifList::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.3); border-radius: 10px; }
 </style>
 </head>
 
 <body>
 
+    <div id="notifOverlay">
+        <div class="notification-panel">
+            
+            <i class="fas fa-times close-notif-x" onclick="closeNotif()" title="Back to Home"></i>
 
-<div class="topbar">
-<div class="top-left">
-<i class="fas fa-bars menu-icon" onclick="toggleMenu()"></i>
-<div class="logo">
-<img src="C:\Users\Admin\Downloads\CHAMS.JPG">
-</div>
-</div>
+            <i class="fas fa-bell main-bell"></i>
+            <div class="notif-title">NOTIFICATIONS</div>
 
-<div class="search-box">
-<input type="text" placeholder="Search...">
-</div>
-</div>
+            <div id="notifList">
+                <div class="notif-item" onclick="openStockAlert()">
+                    <span>⚠️ Low Stock Alert!</span>
+                    <i class="fas fa-arrow-right"></i>
+                </div>
 
-<div class="container">
+                <div class="notif-item">
+                    <span>🎫 Ticket Status Updated</span>
+                    <i class="fas fa-arrow-right"></i>
+                </div>
 
+                <div class="notif-item">
+                    <span>📅 Maintenance Due Today</span>
+                    <i class="fas fa-arrow-right"></i>
+                </div>
+            </div>
 
-<div class="sidebar" id="sidebar">
-
-<div class="profile-card">
-<div class="avatar-circle">
-<i class="fas fa-user"></i>
-</div>
-
-<div class="profile-name real-name">Jose L</div>
-<div class="profile-label">PROFILE</div>
-<div class="profile-role">ADMIN</div>
-</div>
-
-<div class="menu">
-        <div class="menu-item"><i class="fas fa-home"></i> <span>HOME</span></div>
-        <div class="menu-item"><i class="fas fa-ticket-alt"></i> <span>TICKETS</span></div>
-        <div class="menu-item"><i class="fas fa-box"></i> <span>INVENTORY</span></div>
-        <div class="menu-item hide-on-collapse"><i class="fas fa-search"></i> <span>INVENTORY TRACKER</span></div>
-        <div class="menu-item"><i class="fas fa-clipboard-list"></i> <span>MAINTENANCE LOG</span></div>
-        <div class="menu-item hide-on-collapse"><i class="fas fa-history"></i> <span>ACTIVITY LOG</span></div>
-        <div class="menu-item">
-            <i class="fas fa-bell"></i> <span>NOTIFICATION</span>
-            <div class="notification-dot"></div>
+            <button class="clear-btn" onclick="clearAll()">Clear All</button>
         </div>
-        <div class="menu-item"><i class="fas fa-cog"></i> <span>SETTINGS</span></div>
-        <div class="menu-item hide-on-collapse"><i class="fas fa-question-circle"></i> <span>FAQs</span></div>
     </div>
 
-
-    <div class="signout hide-on-collapse">
-        <i class="fas fa-sign-out-alt"></i> <span>SIGN OUT</span>
+    <div class="stock-modal" id="stockModal">
+        <div class="stock-container">
+            <i class="fas fa-exclamation-triangle" style="font-size: 4vw; margin-bottom: 2vh;"></i>
+            <h1 style="font-size: 2.5vw; margin-bottom: 10px;">STOCK ALERT</h1>
+            <div class="stock-message">
+                <b>CRITICAL ITEMS DETECTED:</b>
+                <br><br>
+                • Printer Ink (2 remaining)<br>
+                • Bond Paper (5 remaining)<br>
+                • Ethernet Cables (1 remaining)
+            </div>
+            <button class="close-alert-btn" onclick="closeStock()">CLOSE ALERT</button>
+        </div>
     </div>
-</div>
 
+    <script>
+        // Redirect back to home
+        function closeNotif() {
+            window.location.href = "DASHBOARD.html";
+        }
 
-<div class="content">
+        function openStockAlert() {
+            document.getElementById("stockModal").style.display = "flex";
+        }
 
-<div class="page-header">
-<i class="fas fa-chevron-left"></i> NOTIFICATION
-</div>
+        function closeStock() {
+            document.getElementById("stockModal").style.display = "none";
+        }
 
-<div class="center-box">
-
-<div class="notification-panel">
-
-<i class="fas fa-bell"></i>
-
-<div class="notif-item" onclick="openStockAlert()">
-Low Stock Alert!
-<span>x</span>
-</div>
-
-<div class="notif-item">
-Ticket Status Updated
-<span>x</span>
-</div>
-
-<button class="clear-btn">CLEAR ALL</button>
-
-</div>
-
-</div>
-
-</div>
-
-</div>
-
-
-<div class="stock-modal" id="stockModal">
-
-<div class="stock-container">
-
-<i class="fas fa-bell"></i>
-
-<div class="stock-message">
-
-<b>ALERT: STOCK IS BELOW ORDER THRESHOLD ON FOLLOWING ITEMS:</b>
-
-<br><br>
-
-Printer Ink (2 remaining)
-
-<br><br>
-
-Bond Paper (5 remaining)
-
-</div>
-
-<button class="close-btn" onclick="closeStock()">Close</button>
-
-</div>
-
-</div>
-
-<script>
-
-function toggleMenu(){
-document.getElementById("sidebar").classList.toggle("collapsed");
-}
-
-function openStockAlert(){
-document.getElementById("stockModal").style.display="flex";
-}
-
-function closeStock(){
-document.getElementById("stockModal").style.display="none";
-}
-
-</script>
+        function clearAll() {
+            const list = document.getElementById("notifList");
+            list.innerHTML = `
+                <div style="padding: 20px; opacity: 0.6; font-style: italic; font-size: 1.2vw;">
+                    No new notifications
+                </div>
+            `;
+            document.querySelector(".clear-btn").style.display = "none";
+        }
+    </script>
 
 </body>
 </html>
