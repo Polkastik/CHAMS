@@ -1,12 +1,12 @@
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <title>CHAMS – FAQs</title>
 
-
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-
 
 <style>
 *{
@@ -16,14 +16,12 @@
     font-family:"Segoe UI", Arial, sans-serif;
 }
 
-
 body{
     background:#1f1f1f;
     overflow:hidden;
     width:100%;
     height:100vh;
 }
-
 
 .topbar{
     height:8vh;
@@ -35,14 +33,12 @@ body{
     z-index: 100;
 }
 
-
 .top-left{
     display:flex;
     align-items:center;
     gap:1.2vw;
     color:#fff;
 }
-
 
 .menu-icon{
     font-size:2.2vw;
@@ -52,12 +48,10 @@ body{
     user-select:none;
 }
 
-
 .logo img{
     height:4.5vh;
     width:auto;
 }
-
 
 .search-box input{
     width:15vw;
@@ -69,13 +63,11 @@ body{
     font-size:0.85vw;
 }
 
-
 .container{
     display:flex;
     height:92vh;
     width:100%;
 }
-
 
 .sidebar{
     width:18%;
@@ -88,19 +80,16 @@ body{
     border-right: 1px solid #e0e0e0;
 }
 
-
 .sidebar.collapsed{
     width:6.5vw;
     padding:2vh 0;
 }
-
 
 .sidebar.collapsed .hide-on-collapse,
 .sidebar.collapsed .profile-role,
 .sidebar.collapsed .real-name {
     display: none !important;
 }
-
 
 .sidebar.collapsed .profile-label {
     display: block !important;
@@ -110,23 +99,12 @@ body{
     margin-top: 2px;
 }
 
-
 .profile-card{
     background:#fff;
     padding:2.5vh 5%;
     text-align:center;
     margin-bottom:3vh;
-    transition: 0.3s;
 }
-
-
-.sidebar.collapsed .profile-card {
-    border: none;
-    padding: 1vh 0;
-    background: transparent;
-    margin-bottom: 1vh;
-}
-
 
 .avatar {
     width: 5.5vw;
@@ -139,31 +117,19 @@ body{
     justify-content: center;
     color: #fff;
     font-size: 2.5vw;
-    transition: 0.3s;
 }
-
-
-.sidebar.collapsed .avatar {
-    width: 3.5vw;
-    height: 3.5vw;
-    font-size: 1.5vw;
-    margin-bottom: 0;
-}
-
 
 .profile-name{ font-weight:700; font-size:1.1vw; color: #333; }
-.profile-label { display: none; }
-.profile-role{
-    font-size: 0.7vw;
-    color: #0b4a7a;
-    font-weight: 700;
+.profile-label { display: none; } 
+.profile-role{ 
+    font-size: 0.7vw; 
+    color: #0b4a7a; 
+    font-weight: 700; 
     text-transform: uppercase;
     margin-top: 0.5vh;
 }
 
-
 .menu{ flex:1; }
-
 
 .menu-item{
     display:flex;
@@ -178,15 +144,11 @@ body{
     margin-bottom: 0.5vh;
     transition:0.2s;
     white-space:nowrap;
-    position: relative;
 }
-
 
 .menu-item:hover{ background:#eef2f6; }
 .menu-item i{ font-size:1.3vw; width: 1.5vw; text-align: center; }
 
-
-/* COLLAPSED MENU STYLE */
 .sidebar.collapsed .menu-item{
     flex-direction:column;
     padding: 1.2vh 0;
@@ -195,7 +157,6 @@ body{
     gap: 2px;
     font-size: 0.65vw;
 }
-
 
 .signout{
     margin-top:2.2vh;
@@ -209,7 +170,6 @@ body{
     cursor:pointer;
 }
 
-
 .sidebar.collapsed .signout {
     flex-direction: column;
     padding: 1vh 0;
@@ -217,14 +177,12 @@ body{
     gap: 2px;
 }
 
-
 .content{
     flex:1;
     background:#f5f6f8;
     padding:4vh 5%;
     overflow-y:auto;
 }
-
 
 .page-header{
     display:flex;
@@ -237,7 +195,6 @@ body{
     cursor:pointer;
 }
 
-
 .faq-container{
     background:#ffffff;
     border-radius:1vw;
@@ -245,16 +202,13 @@ body{
     box-shadow:0 0.5vw 2vw rgba(0,0,0,0.05);
 }
 
-
 .faq-title{
     text-align:center;
     font-size:2.4vw;
     font-weight:900;
     margin-bottom:5vh;
     color:#0b4a7a;
-    letter-spacing: -0.05vw;
 }
-
 
 .search-faq{
     display:flex;
@@ -264,15 +218,7 @@ body{
     padding:1.8vh 2vw;
     margin-bottom:5vh;
     background:#fff;
-    transition: 0.3s;
 }
-
-
-.search-faq:focus-within {
-    border-color: #0b4a7a;
-    box-shadow: 0 0 0 0.3vw rgba(11, 74, 122, 0.1);
-}
-
 
 .search-faq input{
     flex:1;
@@ -281,19 +227,16 @@ body{
     font-size:1.05vw;
 }
 
-
 .search-faq i{
     font-size:1.6vw;
     color:#bbb;
 }
 
-
 .faq-list{
     display:flex;
     flex-direction:column;
-    gap:1.5vh;
+    gap:1vh;
 }
-
 
 .faq-item{
     border: 1px solid #eee;
@@ -307,30 +250,26 @@ body{
     display:flex;
     justify-content:space-between;
     align-items:center;
-    transition:all 0.25s ease;
 }
-
 
 .faq-item:hover{
     background:#fff;
     border-color:#0b4a7a;
-    transform: translateX(0.5vw);
-    box-shadow: 0 0.4vw 1.2vw rgba(0,0,0,0.05);
-    color: #0b4a7a;
 }
 
-
-.faq-item i{
-    font-size:1.1vw;
-    color:#0b4a7a;
-    transition: 0.2s;
+.faq-answer{
+    display:none;
+    padding:1.5vh 2vw;
+    font-size:0.9vw;
+    font-weight:500;
+    color:#555;
+    background:#fff;
+    border-left:3px solid #0b4a7a;
 }
 </style>
 </head>
 
-
 <body>
-
 
 <div class="topbar">
     <div class="top-left">
@@ -338,92 +277,171 @@ body{
             <i class="fa-solid fa-bars"></i>
         </div>
         <div class="logo">
-            <img src="C:\Users\Admin\Downloads/CHAMS.JPG" alt="CHAMS Logo">
+            <img src="C:\Users\Admin\Downloads\CHAMS.JPG">
         </div>
     </div>
-
 
     <div class="search-box">
         <input type="text" placeholder="Global search...">
     </div>
 </div>
 
-
 <div class="container">
-    <div class="sidebar" id="sidebar">
-        <div class="profile-card">
-            <div class="avatar">
-                <i class="fa-solid fa-user"></i>
-            </div>
-            <div class="profile-name real-name">Jose L</div>
-            <div class="profile-label">PROFILE</div>
-            <div class="profile-role">ADMIN</div>
-        </div>
 
+<div class="sidebar" id="sidebar">
 
-        <div class="menu">
-            <div class="menu-item"><i class="fas fa-home"></i> <span>HOME</span></div>
-            <div class="menu-item"><i class="fas fa-ticket-alt"></i> <span>TICKETS</span></div>
-            <div class="menu-item"><i class="fas fa-box"></i> <span>INVENTORY</span></div>
-           
-            <div class="menu-item hide-on-collapse"><i class="fas fa-search"></i> <span>INVENTORY TRACKER</span></div>
-           
-            <div class="menu-item"><i class="fas fa-clipboard-list"></i> <span>MAINTENANCE LOG</span></div>
-           
-            <div class="menu-item hide-on-collapse"><i class="fas fa-history"></i> <span>ACTIVITY LOG</span></div>
-           
-            <div class="menu-item"><i class="fas fa-bell"></i> <span>NOTIFICATION</span></div>
-            <div class="menu-item"><i class="fas fa-cog"></i> <span>SETTINGS</span></div>
-           
-            <div class="menu-item hide-on-collapse"><i class="fas fa-question-circle"></i> <span>FAQs</span></div>
-        </div>
-
-
-        <div class="signout hide-on-collapse">
-            <i class="fas fa-sign-out-alt"></i> <span>SIGN OUT</span>
-        </div>
-    </div>
-
-
-    <div class="content">
-        <div class="page-header" onclick="window.history.back()">
-            <i class="fa-solid fa-arrow-left"></i> FAQs
-        </div>
-
-
-        <div class="faq-container">
-            <div class="faq-title">HOW CAN WE HELP?</div>
-
-
-            <div class="search-faq">
-                <input type="text" placeholder="Search for a question or keyword...">
-                <i class="fa-solid fa-magnifying-glass"></i>
-            </div>
-
-
-            <div class="faq-list">
-                <div class="faq-item">How do I submit a new support ticket? <i class="fa-solid fa-chevron-right"></i></div>
-                <div class="faq-item">Where can I view the current status of my open tickets? <i class="fa-solid fa-chevron-right"></i></div>
-                <div class="faq-item">How do I add or update an item in the Inventory section? <i class="fa-solid fa-chevron-right"></i></div>
-                <div class="faq-item">What should I do if an inventory item is showing as "Out of Stock"? <i class="fa-solid fa-chevron-right"></i></div>
-                <div class="faq-item">Where do I go to change my account password or staff profile details? <i class="fa-solid fa-chevron-right"></i></div>
-                <div class="faq-item">Who should I contact if I encounter a "System Error" message? <i class="fa-solid fa-chevron-right"></i></div>
-                <div class="faq-item">Is there a way to filter tickets by priority or date? <i class="fa-solid fa-chevron-right"></i></div>
-            </div>
-        </div>
-    </div>
+<div class="profile-card">
+<div class="avatar">
+<i class="fa-solid fa-user"></i>
+</div>
+<div class="profile-name real-name">Jose L</div>
+<div class="profile-label">PROFILE</div>
+<div class="profile-role">ADMIN</div>
 </div>
 
+<div class="menu">
+    <a href="DASHBOARD.html" style="text-decoration: none;">
+        <div class="menu-item"><i class="fas fa-home"></i> <span>HOME</span></div>
+    </a>
+
+    <a href="TiICKET.html" style="text-decoration: none;">
+        <div class="menu-item"><i class="fas fa-ticket-alt"></i> <span>TICKETS</span></div>
+    </a>
+
+    <a href="INVENTORY.html" style="text-decoration: none;">
+        <div class="menu-item"><i class="fas fa-box"></i> <span>INVENTORY</span></div>
+    </a>
+    
+    <a href="INVENTORYTRACKER.html" style="text-decoration: none;" class="hide-on-collapse">
+        <div class="menu-item"><i class="fas fa-search"></i> <span>INVENTORY TRACKER</span></div>
+    </a>
+    
+    <a href="MAINTENANCELOG.html" style="text-decoration: none;">
+        <div class="menu-item"><i class="fas fa-clipboard-list"></i> <span>MAINTENANCE LOG</span></div>
+    </a>
+
+    <a href="ACTIVITYLOG.html" style="text-decoration: none;" class="hide-on-collapse">
+        <div class="menu-item"><i class="fas fa-history"></i> <span>ACTIVITY LOG</span></div>
+    </a>
+    
+    <a href="NOTIFICATION.html" style="text-decoration: none;">
+        <div class="menu-item"><i class="fas fa-bell"></i> <span>NOTIFICATION</span></div>
+    </a>
+
+    <a href="SETTINGS.html" style="text-decoration: none;">
+        <div class="menu-item"><i class="fas fa-cog"></i> <span>SETTINGS</span></div>
+    </a>
+    
+    <a href="FAQS.html" style="text-decoration: none;" class="hide-on-collapse">
+        <div class="menu-item"><i class="fas fa-question-circle"></i> <span>FAQs</span></div>
+    </a>
+</div>
+      <a href="LOG-IN.html" style="text-decoration: none;" class="signout hide-on-collapse">
+    <i class="fas fa-sign-out-alt"></i> <span>SIGN OUT</span>
+</a>
+
+</div>
+
+<div class="content">
+
+<div class="page-header" onclick="window.history.back()">
+<i class="fa-solid fa-arrow-left"></i> FAQs
+</div>
+
+<div class="faq-container">
+
+<div class="faq-title">HOW CAN WE HELP?</div>
+
+<div class="search-faq">
+<input type="text" placeholder="Search for a question or keyword...">
+<i class="fa-solid fa-magnifying-glass"></i>
+</div>
+
+<div class="faq-list">
+
+<div class="faq-item">How do I submit a new support ticket? <i class="fa-solid fa-chevron-right"></i></div>
+<div class="faq-answer">
+To submit a new support ticket, go to the <b>Tickets</b> section in the sidebar and click <b>Create New Ticket</b>. Fill in the required details such as the issue description, category, and priority level, then click Submit.
+</div>
+
+<div class="faq-item">Where can I view the current status of my open tickets? <i class="fa-solid fa-chevron-right"></i></div>
+<div class="faq-answer">
+You can check the status of your requests in the <b>Tickets</b> section. Each ticket will show its current status such as Pending, In Progress, or Resolved along with updates from the support team.
+</div>
+
+<div class="faq-item">How do I add or update an item in the Inventory section? <i class="fa-solid fa-chevron-right"></i></div>
+<div class="faq-answer">
+Navigate to <b>Inventory</b> in the sidebar. To add a new item, click <b>Add Item</b> and enter the necessary details. To update an existing item, select the item and click <b>Edit</b>.
+</div>
+
+<div class="faq-item">What should I do if an inventory item is showing as "Out of Stock"? <i class="fa-solid fa-chevron-right"></i></div>
+<div class="faq-answer">
+If an item is marked <b>Out of Stock</b>, check the inventory records or coordinate with the responsible department for restocking. Once available, update the quantity in the inventory system.
+</div>
+
+<div class="faq-item">Where do I go to change my account password or staff profile details? <i class="fa-solid fa-chevron-right"></i></div>
+<div class="faq-answer">
+Go to the <b>Settings</b> section from the sidebar. From there, you can update your password, personal information, and staff profile details.
+</div>
+
+<div class="faq-item">Who should I contact if I encounter a "System Error" message? <i class="fa-solid fa-chevron-right"></i></div>
+<div class="faq-answer">
+If you encounter a system error, create a <b>support ticket</b> in the Tickets section and provide details about the error so the technical team can investigate and resolve the issue.
+</div>
+
+<div class="faq-item">Is there a way to filter tickets by priority or date? <i class="fa-solid fa-chevron-right"></i></div>
+<div class="faq-answer">
+Yes. In the <b>Tickets</b> section, you can use the filter options to sort tickets by priority, date, or status to quickly locate specific requests.
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
 
 <script>
-function toggleMenu(){
-    document.getElementById("sidebar").classList.toggle("collapsed");
-}
-</script>
 
+function toggleMenu(){
+document.getElementById("sidebar").classList.toggle("collapsed");
+}
+
+const faqItems = document.querySelectorAll(".faq-item");
+
+faqItems.forEach(item=>{
+item.addEventListener("click",()=>{
+const answer = item.nextElementSibling;
+answer.style.display = answer.style.display === "block" ? "none" : "block";
+});
+});
+
+
+// FAQ SEARCH FUNCTION
+const searchInput = document.querySelector(".search-faq input");
+const questions = document.querySelectorAll(".faq-item");
+
+searchInput.addEventListener("keyup", function(){
+
+let searchValue = searchInput.value.toLowerCase();
+
+questions.forEach(function(q){
+
+let text = q.textContent.toLowerCase();
+
+if(text.includes(searchValue)){
+q.style.display = "flex";
+q.nextElementSibling.style.display = "none";
+}else{
+q.style.display = "none";
+q.nextElementSibling.style.display = "none";
+}
+
+});
+
+});
+
+</script>
 
 </body>
 </html>
-
-
-

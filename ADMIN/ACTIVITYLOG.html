@@ -52,8 +52,9 @@ body{
 
 
 .logo img{
-    height:4.5vh;
+    height:20vh;
     width:auto;
+   
 }
 
 
@@ -93,7 +94,6 @@ body{
 }
 
 
-/* Elements to hide on collapse */
 .sidebar.collapsed .hide-on-collapse,
 .sidebar.collapsed .profile-role,
 .sidebar.collapsed .real-name {
@@ -189,7 +189,7 @@ body{
 }
 
 
-/* COLLAPSED MENU STYLE */
+
 .sidebar.collapsed .menu-item{
     flex-direction:column;
     padding: 1.2vh 0;
@@ -326,6 +326,11 @@ body{
     line-height:1.6;
     color:#444;
 }
+.page-title i:hover {
+    color: #3498db; /* Changes color to a lighter blue */
+    transform: scale(1.1); /* Slightly enlarges the icon */
+    transition: 0.2s;
+}
 
 
 .activity-details strong{
@@ -334,6 +339,38 @@ body{
     color:#0b4a7a;
 }
 
+/* --- OVERLAY FILTER PANEL --- */
+.filter-overlay {
+    position: absolute;
+    top: 140px; /* Aligns with the filter icon */
+    right: 4%;
+    width: 320px;
+    background: white;
+    padding: 25px;
+    border-radius: 8px;
+    box-shadow: 0 5px 25px rgba(0,0,0,0.15);
+    z-index: 1000;
+    display: none; /* Hidden by default */
+}
+
+/* Internal Filter Elements */
+.filter-overlay .filter-icon-top { color: #00407a; font-size: 18px; margin-bottom: 15px; }
+.filter-overlay .filter-title { color: #222; font-size: 18px; font-weight: bold; margin-bottom: 25px; }
+.filter-overlay .custom-select { 
+    display: flex; justify-content: space-between; align-items: center; 
+    border: 1px solid #e0e0e0; border-radius: 6px; padding: 12px 15px; 
+    margin-bottom: 15px; cursor: pointer; background: white; 
+}
+.filter-overlay .select-label { color: #aaa; font-size: 14px; font-weight: bold; margin-right: 10px; }
+.filter-overlay .select-value { color: black; font-weight: bold; font-size: 14px; flex-grow: 1; }
+.filter-overlay .calendar-wrapper { border: 1px solid #e0e0e0; border-radius: 6px; padding: 15px; }
+.filter-overlay .cal-header { display: flex; justify-content: space-between; font-weight: bold; margin-bottom: 10px; font-size: 14px; }
+.filter-overlay .cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); text-align: center; row-gap: 8px; }
+.filter-overlay .cal-date { font-size: 13px; font-weight: bold; cursor: pointer; padding: 5px; }
+.filter-overlay .cal-date.muted { color: #ccc; }
+.filter-overlay .cal-date.selected { background: #00407a; color: white; border-radius: 50%; }
+.filter-overlay .cal-date.highlight { color: #00407a; }
+.filter-overlay .clear-btn { text-align: right; margin-top: 15px; font-weight: bold; font-size: 13px; cursor: pointer; }
 
 .ticket-tag{ color:#0b4a7a; font-weight:700; }
 .status-high{ color:#d11a2a; font-weight:800; }
@@ -358,7 +395,7 @@ body{
     <div class="top-left">
         <i class="fas fa-bars menu-icon" onclick="toggleMenu()"></i>
         <div class="logo">
-            <img src="C:\Users\Admin\Downloads/CHAMS.JPG" alt="CHAMS Logo">
+            <img src="CHAMS.png" alt="CHAMS Logo">
         </div>
     </div>
     <div class="search-box">
@@ -380,38 +417,53 @@ body{
         </div>
 
 
-        <div class="menu">
-            <div class="menu-item"><i class="fas fa-home"></i> <span>HOME</span></div>
-            <div class="menu-item"><i class="fas fa-ticket-alt"></i> <span>TICKETS</span></div>
-            <div class="menu-item"><i class="fas fa-box"></i> <span>INVENTORY</span></div>
-           
-            <div class="menu-item hide-on-collapse"><i class="fas fa-search"></i> <span>INVENTORY TRACKER</span></div>
-           
-            <div class="menu-item"><i class="fas fa-clipboard-list"></i> <span>MAINTENANCE LOG</span></div>
-           
-            <div class="menu-item hide-on-collapse"><i class="fas fa-history"></i> <span>ACTIVITY LOG</span></div>
-           
-            <div class="menu-item">
-                <i class="fas fa-bell"></i> <span>NOTIFICATION</span>
-                <span class="notification-dot"></span>
-            </div>
-            <div class="menu-item"><i class="fas fa-cog"></i> <span>SETTINGS</span></div>
-           
-            <div class="menu-item hide-on-collapse"><i class="fas fa-question-circle"></i> <span>FAQs</span></div>
-        </div>
+       <div class="menu">
+    <a href="DASHBOARD.html" style="text-decoration: none;">
+        <div class="menu-item"><i class="fas fa-home"></i> <span>HOME</span></div>
+    </a>
 
+    <a href="TiICKET.html" style="text-decoration: none;">
+        <div class="menu-item"><i class="fas fa-ticket-alt"></i> <span>TICKETS</span></div>
+    </a>
 
-        <div class="signout hide-on-collapse">
-            <i class="fas fa-sign-out-alt"></i> <span>SIGN OUT</span>
-        </div>
+    <a href="INVENTORY.html" style="text-decoration: none;">
+        <div class="menu-item"><i class="fas fa-box"></i> <span>INVENTORY</span></div>
+    </a>
+    
+    <a href="INVENTORYTRACKER.html" style="text-decoration: none;" class="hide-on-collapse">
+        <div class="menu-item"><i class="fas fa-search"></i> <span>INVENTORY TRACKER</span></div>
+    </a>
+    
+    <a href="MAINTENANCELOG.html" style="text-decoration: none;">
+        <div class="menu-item"><i class="fas fa-clipboard-list"></i> <span>MAINTENANCE LOG</span></div>
+    </a>
+
+    <a href="ACTIVITYLOG.html" style="text-decoration: none;" class="hide-on-collapse">
+        <div class="menu-item"><i class="fas fa-history"></i> <span>ACTIVITY LOG</span></div>
+    </a>
+    
+    <a href="NOTIFICATION.html" style="text-decoration: none;">
+        <div class="menu-item"><i class="fas fa-bell"></i> <span>NOTIFICATION</span></div>
+    </a>
+
+    <a href="SETTINGS.html" style="text-decoration: none;">
+        <div class="menu-item"><i class="fas fa-cog"></i> <span>SETTINGS</span></div>
+    </a>
+    
+    <a href="FAQS.html" style="text-decoration: none;" class="hide-on-collapse">
+        <div class="menu-item"><i class="fas fa-question-circle"></i> <span>FAQs</span></div>
+    </a>
+</div>
+      <a href="LOG-IN.html" style="text-decoration: none;" class="signout hide-on-collapse">
+    <i class="fas fa-sign-out-alt"></i> <span>SIGN OUT</span>
+</a>
+
+</div>
+
+       <div class="content">
+    <div class="page-header"> <i class="fa-solid fa-chevron-left" onclick="window.location.href='DASHBOARD.html'"></i>
+        ACTIVITY LOG
     </div>
-
-
-    <div class="content">
-        <div class="page-header" onclick="window.history.back()">
-            <i class="fas fa-arrow-left"></i> ACTIVITY LOG
-        </div>
-
 
          <div class="toolbar">
         <div class="toolbar-left">
@@ -420,9 +472,103 @@ body{
         </div>
         <div>1-3 of 3</div>
     </div>
- <div class="filter-row">
-            <i class="fas fa-filter"></i>
+<div class="filter-row">
+    <i class="fas fa-filter" onclick="toggleFilterOverlay()"></i>
+
+    <div class="filter-overlay" id="filterOverlay">
+        <div class="filter-icon-top"><i class="fas fa-filter"></i></div>
+        <div class="filter-title">Activity Log Filters</div>
+
+       <div class="filter-group">
+            
+            <div class="custom-select" onclick="toggleSelect(this)">
+                <span class="select-label">Name:</span>
+                <span class="select-value" id="val-name">All</span>
+                <i class="fas fa-chevron-down select-icon"></i>
+            </div>
+
+            <div class="custom-select" onclick="toggleSelect(this)">
+                <span class="select-label">Role:</span>
+                <span class="select-value" id="val-role">All</span>
+                <i class="fas fa-chevron-down select-icon"></i>
+            </div>
+
+            <div class="custom-select" onclick="toggleSelect(this)">
+                <span class="select-label">Activity Type :</span>
+                <span class="select-value" id="val-type">All</span>
+                <i class="fas fa-chevron-down select-icon"></i>
+            </div>
+
+            <div class="custom-select" onclick="toggleSelect(this)">
+                <span class="select-label">Date Range:</span>
+                <span class="select-value" id="val-date">3 Nov</span>
+                <i class="fas fa-chevron-down select-icon"></i>
+            </div>
+
+            <div class="calendar-wrapper">
+                <div class="cal-header">
+                    <i class="fas fa-chevron-left cal-nav"></i>
+                    <span>November 2025</span>
+                    <i class="fas fa-chevron-right cal-nav"></i>
+                </div>
+                
+                <div class="cal-grid" id="calendarGrid">
+                    <div class="cal-date muted">28</div>
+                    <div class="cal-date muted">29</div>
+                    <div class="cal-date muted">30</div>
+                    <div class="cal-date muted">31</div>
+                    <div class="cal-date highlight" id="date-1" onclick="selectDate(this)">1</div>
+                    <div class="cal-date highlight" id="date-2" onclick="selectDate(this)">2</div>
+                    <div class="cal-date highlight" id="date-3" onclick="selectDate(this)">3</div>
+
+                    <div class="cal-date" onclick="selectDate(this)">4</div>
+                    <div class="cal-date selected" id="defaultSelected" onclick="selectDate(this)">5</div>
+                    <div class="cal-date" onclick="selectDate(this)">6</div>
+                    <div class="cal-date" onclick="selectDate(this)">7</div>
+                    <div class="cal-date" onclick="selectDate(this)">8</div>
+                    <div class="cal-date" onclick="selectDate(this)">9</div>
+                    <div class="cal-date" onclick="selectDate(this)">10</div>
+
+                    <div class="cal-date" onclick="selectDate(this)">11</div>
+                    <div class="cal-date" onclick="selectDate(this)">12</div>
+                    <div class="cal-date" onclick="selectDate(this)">13</div>
+                    <div class="cal-date" onclick="selectDate(this)">14</div>
+                    <div class="cal-date" onclick="selectDate(this)">15</div>
+                    <div class="cal-date" onclick="selectDate(this)">16</div>
+                    <div class="cal-date" onclick="selectDate(this)">17</div>
+
+                    <div class="cal-date" onclick="selectDate(this)">18</div>
+                    <div class="cal-date" onclick="selectDate(this)">19</div>
+                    <div class="cal-date" onclick="selectDate(this)">20</div>
+                    <div class="cal-date" onclick="selectDate(this)">21</div>
+                    <div class="cal-date" onclick="selectDate(this)">22</div>
+                    <div class="cal-date" onclick="selectDate(this)">23</div>
+                    <div class="cal-date" onclick="selectDate(this)">24</div>
+
+                    <div class="cal-date" onclick="selectDate(this)">25</div>
+                    <div class="cal-date" onclick="selectDate(this)">26</div>
+                    <div class="cal-date" onclick="selectDate(this)">27</div>
+                    <div class="cal-date" onclick="selectDate(this)">28</div>
+                    <div class="cal-date" onclick="selectDate(this)">29</div>
+                    <div class="cal-date" onclick="selectDate(this)">30</div>
+                    <div class="cal-date muted">1</div>
+
+                    <div class="cal-date muted">2</div>
+                    <div class="cal-date muted">3</div>
+                    <div class="cal-date muted">4</div>
+                    <div class="cal-date muted">5</div>
+                    <div class="cal-date muted">6</div>
+                    <div class="cal-date muted">7</div>
+                    <div class="cal-date muted">8</div>
+                </div>
+            </div>
         </div>
+
+        <div class="filter-footer">
+            <div class="clear-btn" onclick="toggleFilterOverlay()">Clear Filters</div>
+        </div>
+    </div>
+</div>
 
 
         <div class="activity-list">
@@ -495,6 +641,62 @@ body{
 
 
 <script>
+    function toggleFilterOverlay() {
+    const filter = document.getElementById('filterOverlay');
+    if (filter.style.display === 'block') {
+        filter.style.display = 'none';
+    } else {
+        filter.style.display = 'block';
+    }
+}
+  function toggleSelect(element) {
+            const allSelects = document.querySelectorAll('.custom-select');
+            allSelects.forEach(el => {
+                if (el !== element) el.classList.remove('active');
+            });
+            element.classList.toggle('active');
+        }
+
+        function selectDate(element) {
+            if (element.classList.contains('muted')) return;
+
+            const allDates = document.querySelectorAll('.cal-date');
+            allDates.forEach(d => d.classList.remove('selected'));
+
+            element.classList.add('selected');
+        }
+
+        function clearFilters() {
+            document.getElementById('val-name').innerText = 'All';
+            document.getElementById('val-role').innerText = 'All';
+            document.getElementById('val-type').innerText = 'All';
+            document.getElementById('val-date').innerText = '3 Nov';
+
+            const allDates = document.querySelectorAll('.cal-date');
+            allDates.forEach(d => {
+                d.classList.remove('selected');
+                d.classList.remove('highlight');
+            });
+
+            document.getElementById('date-1').classList.add('highlight');
+            document.getElementById('date-2').classList.add('highlight');
+            document.getElementById('date-3').classList.add('highlight');
+            document.getElementById('defaultSelected').classList.add('selected');
+
+            const allSelects = document.querySelectorAll('.custom-select');
+            allSelects.forEach(el => el.classList.remove('active'));
+        }
+
+window.onclick = function(event) {
+    const filter = document.getElementById('filterOverlay');
+    const filterBtn = document.querySelector('.filter-row i');
+    if (event.target !== filter && !filter.contains(event.target) && event.target !== filterBtn) {
+        filter.style.display = 'none';
+    }
+}
+    document.querySelector('.btn.edit').addEventListener('click', function() {
+    alert("Edit mode enabled. You can now modify the Item details.");
+});
 function toggleMenu(){
     document.getElementById("sidebar").classList.toggle("collapsed");
 }

@@ -52,10 +52,10 @@ body{
 
 
 .logo img{
-    height: 4.5vh;
-    width: auto;
+    height:20vh;
+    width:auto;
+   
 }
-
 
 .search-box input{
     width: 18vw;
@@ -324,6 +324,17 @@ body{
     cursor: pointer;
     color: #0b4a7a;
 }
+  select.status-pill {
+        border: none;
+        outline: none;
+        cursor: pointer;
+        appearance: none;
+        -webkit-appearance: none;
+        text-align: center;
+        text-align-last: center;
+    }
+    .pill-red { background: #dc3545; }
+    .pill-orange { background: #f39c12; }
 
 
 .upload-btn{
@@ -384,7 +395,7 @@ body{
 <div class="topbar">
     <div class="top-left">
         <i class="fas fa-bars menu-icon" onclick="toggleMenu()"></i>
-        <div class="logo"><img src="C:\Users\Admin\Downloads/CHAMS.JPG" alt="CHAMS Logo"></div>
+        <div class="logo"><img src="CHAMS.png" alt="CHAMS Logo"></div>
     </div>
     <div class="search-box">
         <input type="text" placeholder="Search Inventory...">
@@ -404,24 +415,47 @@ body{
         </div>
 
 
-        <div class="menu">
-            <div class="menu-item"><i class="fas fa-home"></i> <span>HOME</span></div>
-            <div class="menu-item"><i class="fas fa-ticket-alt"></i> <span>TICKETS</span></div>
-            <div class="menu-item"><i class="fas fa-box"></i> <span>INVENTORY</span></div>
-            <div class="menu-item hide-on-collapse"><i class="fas fa-search"></i> <span>INVENTORY TRACKER</span></div>
-            <div class="menu-item"><i class="fas fa-clipboard-list"></i> <span>MAINTENANCE LOG</span></div>
-            <div class="menu-item hide-on-collapse"><i class="fas fa-history"></i> <span>ACTIVITY LOG</span></div>
-            <div class="menu-item"><i class="fas fa-bell"></i> <span>NOTIFICATION</span></div>
-            <div class="menu-item"><i class="fas fa-cog"></i> <span>SETTINGS</span></div>
-            <div class="menu-item hide-on-collapse"><i class="fas fa-question-circle"></i> <span>FAQs</span></div>
-        </div>
+       <div class="menu">
+    <a href="DASHBOARD.html" style="text-decoration: none;">
+        <div class="menu-item"><i class="fas fa-home"></i> <span>HOME</span></div>
+    </a>
 
+    <a href="TiICKET.html" style="text-decoration: none;">
+        <div class="menu-item"><i class="fas fa-ticket-alt"></i> <span>TICKETS</span></div>
+    </a>
 
-        <div class="signout hide-on-collapse">
-            <div class="signout-item"><i class="fas fa-sign-out-alt"></i> <span>SIGN OUT</span></div>
-        </div>
-    </div>
+    <a href="INVENTORY.html" style="text-decoration: none;">
+        <div class="menu-item"><i class="fas fa-box"></i> <span>INVENTORY</span></div>
+    </a>
+    
+    <a href="INVENTORYTRACKER.html" style="text-decoration: none;" class="hide-on-collapse">
+        <div class="menu-item"><i class="fas fa-search"></i> <span>INVENTORY TRACKER</span></div>
+    </a>
+    
+    <a href="MAINTENANCELOG.html" style="text-decoration: none;">
+        <div class="menu-item"><i class="fas fa-clipboard-list"></i> <span>MAINTENANCE LOG</span></div>
+    </a>
 
+    <a href="ACTIVITYLOG.html" style="text-decoration: none;" class="hide-on-collapse">
+        <div class="menu-item"><i class="fas fa-history"></i> <span>ACTIVITY LOG</span></div>
+    </a>
+    
+    <a href="NOTIFICATION.html" style="text-decoration: none;">
+        <div class="menu-item"><i class="fas fa-bell"></i> <span>NOTIFICATION</span></div>
+    </a>
+
+    <a href="SETTINGS.html" style="text-decoration: none;">
+        <div class="menu-item"><i class="fas fa-cog"></i> <span>SETTINGS</span></div>
+    </a>
+    
+    <a href="FAQS.html" style="text-decoration: none;" class="hide-on-collapse">
+        <div class="menu-item"><i class="fas fa-question-circle"></i> <span>FAQs</span></div>
+    </a>
+</div>
+      <a href="LOG-IN.html" style="text-decoration: none;" class="signout hide-on-collapse">
+    <i class="fas fa-sign-out-alt"></i> <span>SIGN OUT</span>
+</a>
+</div>
 
     <div class="content">
         <div class="page-header" onclick="window.history.back()" style="cursor:pointer;">
@@ -439,36 +473,43 @@ body{
             <div class="input-group"><div class="field-label">Date Delivered:</div> <input class="field-input" value="11/03/25"></div>
 
 
-            <i class="fas fa-pen-to-square card-edit-icon"></i>
-        </div>
+            </div>
 
 
-        <div class="status-container">
+       <div class="status-container">
             <div class="status-row">
                 <div style="width: 8vw;">DEFECTS:</div>
-                <div class="status-pill pill-green">NONE</div>
-                <i class="fas fa-pen-to-square inline-edit-icon"></i>
+                <select class="status-pill pill-green" id="defectDropdown" onchange="updateDefectStyle()">
+                    <option value="NONE" selected>NONE</option>
+                    <option value="SCREEN">SCREEN ISSUE</option>
+                    <option value="BATTERY">BATTERY FAILURE</option>
+                    <option value="KEYBOARD">KEYBOARD DEFECT</option>
+                    <option value="OTHER">OTHER</option>
+                </select>
 
-
-                <button class="upload-btn">
-                    Upload Attachment <i class="fas fa-upload"></i>
+                <input type="file" id="fileUpload" style="display:none" onchange="handleFileUpload(this)">
+                <button class="upload-btn" onclick="document.getElementById('fileUpload').click()">
+                    See Attachment <i class="fas fa-upload"></i>
                 </button>
             </div>
 
-
             <div class="status-row">
                 <div style="width: 8vw;">SERIAL NO:</div>
-                <div class="status-pill pill-blue">15512</div>
-                <i class="fas fa-pen-to-square inline-edit-icon"></i>
+                <select class="status-pill pill-blue" id="serialDropdown" style="appearance: none; -webkit-appearance: none; cursor: pointer; border:none; outline:none;">
+                    <option value="15512" selected>15512</option>
+                    <option value="15513">15513</option>
+                    <option value="15514">15514</option>
+                    <option value="15515">15515</option>
+                </select>
+                <i class="fas fa-chevron-down" style="margin-left: -2.5vw; color: white; pointer-events: none; font-size: 0.8vw;"></i>
             </div>
         </div>
 
-
         <div class="footer-actions">
-            <button class="btn btn-cancel" onclick="window.history.back()">
+            <button class="btn btn-cancel" onclick="window.location.href='INVENTORYTRACKER.html'">
                 <i class="fas fa-times-circle"></i> CANCEL
             </button>
-            <button class="btn btn-save">
+            <button class="btn btn-save" onclick="saveChanges()">
                 <i class="fas fa-save"></i> SAVE CHANGES
             </button>
         </div>
@@ -476,9 +517,35 @@ body{
 </div>
 
 
+  
 <script>
 function toggleMenu(){
     document.getElementById("sidebar").classList.toggle("collapsed");
+}
+
+function updateDefectStyle() {
+    const dropdown = document.getElementById("defectDropdown");
+    dropdown.classList.remove("pill-green", "pill-red", "pill-orange");
+    
+    if (dropdown.value === "NONE") {
+        dropdown.classList.add("pill-green");
+    } else if (dropdown.value === "OTHER") {
+        dropdown.classList.add("pill-orange");
+    } else {
+        dropdown.classList.add("pill-red");
+    }
+}
+
+function saveChanges() {
+    const itemName = document.querySelector('input[value="PC"]').value;
+    alert("Success! Changes for " + itemName + " have been saved.");
+    window.location.href = "INVENTORYTRACKER.html";
+}
+
+function handleFileUpload(input) {
+    if (input.files && input.files[0]) {
+        alert("File ready for upload: " + input.files[0].name);
+    }
 }
 </script>
 
