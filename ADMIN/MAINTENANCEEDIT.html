@@ -1,528 +1,649 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>CHAMS – Edit Maintenance Log</title>
+    <meta charset="UTF-8">
+    <title>CHAMS – Edit Maintenance Log</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"/>
 
+    <style>
+        /* --- CORE STYLES --- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Segoe UI", Arial, sans-serif;
+        }
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"/>
+        body {
+            background: #f4f7f9;
+            overflow: hidden;
+            width: 100%;
+            height: 100vh;
+        }
 
+        /* --- TOPBAR --- */
+        .topbar {
+            height: 8vh;
+            background: #0b4a7a;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 2.5%;
+            z-index: 100;
+        }
 
-<style>
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-    font-family:"Segoe UI", Arial, sans-serif;
-}
+        .top-left {
+            display: flex;
+            align-items: center;
+            gap: 1.2vw;
+            color: #fff;
+        }
 
+        .menu-icon { cursor: pointer; display: flex; align-items: center; font-size: 2.2vw; user-select: none; }
 
-body{
-    background:#1f1f1f;
-    overflow:hidden;
-    width: 100%;
-    height: 100vh;
-}
-
-
-.topbar{
-    height: 8vh;
-    background:#0b4a7a;
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    padding:0 2%;
-    z-index: 100;
-}
-
-
-.top-left{
-    display:flex;
-    align-items:center;
-    gap: 1.2vw;
-    color:#fff;
-}
-
-
-.menu-icon{
-    font-size: 2.2vw;
-    cursor:pointer;
-    display: flex;
-    align-items: center;
-}
-
-
-.logo img{
-    height:20vh;
-    width:auto;
-   
-}
-
-
-.search-box input{
-    width: 15vw;
-    height: 4vh;
-    border-radius: 0.3vw;
-    border:none;
-    padding:0 1vw;
-    outline:none;
-    font-size: 0.85vw;
-}
-
-
-.container{
-    display:flex;
-    height: 92vh;
-    width: 100%;
-}
-
-
-.sidebar{
-    width: 18%;
-    background:#ffffff;
-    padding: 2.5vh 1.2%;
-    display:flex;
-    flex-direction:column;
-    transition: 0.3s ease;
-    overflow:hidden;
-    border-right: 1px solid #ddd;
-}
-
-
-.sidebar.collapsed{
-    width: 6.5vw;
-    padding: 2vh 0;
-}
-
-
-.sidebar.collapsed .hide-on-collapse,
-.sidebar.collapsed .profile-role,
-.sidebar.collapsed .real-name {
-    display: none !important;
-}
-
-
-.sidebar.collapsed .profile-label {
-    display: block !important;
-    font-size: 0.7vw;
-    font-weight: 800;
-    color: #0b4a7a;
-    margin-top: 2px;
-}
-
-
-.profile-card{
-    background:#fff;
-    border-radius: 0.8vw;
-    padding: 2.5vh 5%;
-    text-align:center;
-    margin-bottom: 3vh;
-    transition: 0.3s;
-}
-
-
-.sidebar.collapsed .profile-card{
-    box-shadow: none;
-    padding: 1vh 0;
-    background: transparent;
-}
-
-
-.avatar-circle{
-    width: 6vw;
-    height: 6vw;
-    border-radius: 50%;
-    background:#0b4a7a;
-    margin: 0 auto 1.5vh;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    color:#fff;
-    transition: 0.3s;
-}
-
-
-.sidebar.collapsed .avatar-circle{
-    width: 3.5vw;
-    height: 3.5vw;
-    margin-bottom: 0;
-}
-
-
-.avatar-circle i { font-size: 3.5vw; transition: 0.3s; }
-.sidebar.collapsed .avatar-circle i { font-size: 1.8vw; }
-
-
-.profile-name { font-weight: 600; font-size: 1.1vw; }
-.profile-label { display: none; } /* Hidden in full view */
-.profile-role { font-size: 0.8vw; color:#0b4a7a; margin-top: 0.5vh; font-weight: 700; }
-
-
-.menu{ flex:1; }
-
-
-.menu-item{
-    display:flex;
-    flex-direction: row;
-    align-items:center;
-    gap: 0.8vw;
-    padding: 1.2vh 5%;
-    font-size: 0.9vw;
-    color:#0b4a7a;
-    border-radius: 0.5vw;
-    cursor: pointer;
-    transition: 0.2s;
+        .logo img {
+            height: 20vh;
+            width: auto;
+        }
+.search-wrapper {
     position: relative;
-}
-
-
-.menu-item:hover { background: #f0f4f8; }
-.menu-item i { font-size: 1.4vw; }
-
-
-.sidebar.collapsed .menu-item{
-    flex-direction: column;
-    padding: 1.2vh 0;
-    justify-content: center;
-    text-align: center;
-    gap: 2px;
-}
-
-
-.sidebar.collapsed .menu-item i { font-size: 1.6vw; }
-
-
-.menu-item-text{
-    transition: all 0.3s;
-}
-
-
-.sidebar.collapsed .menu-item-text{
-    font-size: 0.65vw;
-    margin-top: 0.3vh;
-}
-
-
-.notification-dot{
-    width: 0.6vw;
-    height: 0.6vw;
-    background:#ff2d8d;
-    border-radius: 50%;
-    margin-left:auto;
-}
-
-
-.sidebar.collapsed .notification-dot{
-    position: absolute;
-    top: 5px;
-    right: 25%;
-    margin: 0;
-}
-
-
-.signout{
-    margin-top: 2.5vh;
-    display:flex;
-    flex-direction: row;
-    gap: 0.8vw;
-    color:#0b4a7a;
-    font-size: 0.9vw;
-    font-weight: 600;
+    display: flex;
     align-items: center;
-    cursor: pointer;
-    padding: 1vh 5%;
+}
+
+.search-box input {
+    width: 18vw;
+    height: 4vh;
+    border-radius: 0.4vw;
+    border: none;
+    padding: 0 2.5vw 0 1vw;
+    outline: none;
+    font-size: 0.85vw;
+}
+
+.search-wrapper i {
+    position: absolute;
+    right: 0.8vw;
+    color: #0b4a7a;
+    font-size: 0.9vw;
+    pointer-events: none; 
+}
+        /* --- SIDEBAR --- */
+        .container {
+            display: flex;
+            height: 92vh;
+            width: 100%;
+        }
+        /* ALL NOTIFICATION & MODAL STYLES */
+#notifOverlay {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100vw; height: 100vh;
+    background: rgba(0, 0, 0, 0.7); 
+    display: none; /* Initially hidden */
+    align-items: center; justify-content: center;
+    z-index: 3000;
+}
+
+.notification-panel {
+    background: #0b4a7a;
+    width: 35vw; min-width: 450px;
+    padding: 6vh 3vw; border-radius: 1.5vw;
+    text-align: center; color: white;
+    position: relative; animation: zoomIn 0.3s ease-out;
+    box-shadow: 0 2vw 5vw rgba(0, 0, 0, 0.8);
+}
+
+.close-notif-x { position: absolute; top: 20px; right: 25px; font-size: 1.8vw; cursor: pointer; color: rgba(255, 255, 255, 0.7); transition: 0.3s ease; }
+.close-notif-x:hover { color: #ff2d8d; transform: scale(1.2) rotate(90deg); }
+
+.notification-panel i.main-bell { font-size: 5vw; margin-bottom: 2vh; display: block; }
+.notif-title { font-size: 2vw; font-weight: bold; margin-bottom: 4vh; letter-spacing: 1px; }
+#notifList { width: 100%; max-height: 40vh; overflow-y: auto; }
+
+.notif-item {
+    background: rgba(255, 255, 255, 0.95); color: #333;
+    padding: 2.5vh 1.5vw; margin-bottom: 2vh;
+    border-radius: 0.8vw; display: flex;
+    justify-content: space-between; align-items: center;
+    cursor: pointer; font-weight: 700; font-size: 1.2vw;
+}
+
+/* SUB-MODAL STYLES */
+.modal-overlay {
+    position: fixed; top: 0; left: 0;
+    width: 100%; height: 100%;
+    display: none; align-items: center; justify-content: center;
+    background: rgba(0, 0, 0, 0.85); z-index: 4000;
+}
+.modal-container { width: 42vw; padding: 5vh 3vw; border-radius: 1.5vw; text-align: center; color: white; position: relative; }
+.bg-ticket { background: #0b4a7a; border: 1px solid rgba(255,255,255,0.2); }
+.bg-stock { background: #ff7a00; }
+.modal-message { background: #fff; color: #333; padding: 3vh 2vw; border-radius: 1vw; margin-top: 2vh; font-size: 1.1vw; text-align: left; }
+.status-row { display: flex; align-items: center; gap: 12px; margin-bottom: 15px; padding-bottom: 10px; border-bottom: 1px solid #eee; }
+.badge { padding: 4px 10px; font-size: 0.7vw; font-weight: 800; border-radius: 4px; color: #fff; text-transform: uppercase; }
+.assigned { background: #0b4a7a; } .unresolved { background: #ff2d8d; }
+.overdue-tag { background: #ff2d8d; font-size: 0.6vw; padding: 2px 6px; border-radius: 3px; }
+.close-btn { margin-top: 3vh; padding: 1.5vh 3vw; border: none; background: #fff; color: #0b4a7a; border-radius: 2vw; cursor: pointer; font-weight: 800; font-size: 1vw; }
+.clear-btn { margin-top: 3vh; background: transparent; border: 1px solid #fff; padding: 1vh 2vw; border-radius: 2vw; color: #fff; cursor: pointer; font-size: 0.9vw; }
+
+@keyframes zoomIn { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+
+      .sidebar {
+    width: 18%;
+    background: #ffffff;
+    padding: 2.5vh 1.2%;
+    display: flex;
+    flex-direction: column; /* Stack children vertically */
+    height: 92vh; /* Matches the container height */
+    transition: 0.3s ease;
+    border-right: 1px solid #e0e0e0;
+    overflow: hidden; /* Prevent the whole sidebar from scrolling */
 }
 
 
-.sidebar.collapsed .signout{
-    flex-direction: column;
-    font-size: 0.65vw;
-    gap: 2px;
-    padding: 1vh 0;
-}
+        .sidebar.collapsed {
+            width: 6.5vw;
+            padding: 2vh 0;
+        }
 
+        .profile-card {
+            background: #fff;
+            padding: 2.5vh 5%;
+            text-align: center;
+            margin-bottom: 3vh;
+            transition: 0.3s ease;
+        }
 
-.content{
-    flex:1;
-    background:#f5f6f8;
-    padding: 4vh 5%;
-    overflow:auto;
-}
+        .sidebar.collapsed .profile-card {
+            background: transparent;
+            padding: 1vh 0;
+            margin-bottom: 1vh;
+        }
 
+        .avatar {
+            width: 5.5vw;
+            height: 5.5vw;
+            border-radius: 50%;
+            background: #0b4a7a;
+            margin: 0 auto 1.2vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 2.5vw;
+            transition: 0.3s;
+        }
 
-.page-header{
-    font-weight: 700;
-    font-size: 1.4vw;
-    margin-bottom: 3vh;
-    color: #333;
-}
+        .sidebar.collapsed .avatar {
+            width: 3.5vw;
+            height: 3.5vw;
+            font-size: 1.5vw;
+        }
 
+        .profile-name { font-weight: 700; font-size: 1vw; color: #333; }
+        .profile-label { display: none; }
+        .profile-role { font-size: 0.7vw; color: #0b4a7a; font-weight: 700; margin-top: 0.5vh; text-transform: uppercase; }
 
-.info-box{
-    background:#fff;
-    border: 0.1vh solid #ddd;
-    border-radius: 0.5vw;
-    padding: 3vh 3%;
-    box-shadow: 0 0.2vw 0.5vw rgba(0,0,0,0.1);
-    margin-bottom: 3.5vh;
-    position:relative;
-}
+        .sidebar.collapsed .profile-name,
+        .sidebar.collapsed .profile-role {
+            display: none !important;
+        }
 
+        .sidebar.collapsed .profile-label {
+            display: block !important;
+            font-size: 0.7vw;
+            font-weight: 800;
+            color: #0b4a7a;
+            margin-top: 2px;
+        }
 
-.info-row{
-    display:flex;
-    justify-content:space-between;
-    margin-bottom: 2.5vh;
-}
+        .menu { flex: 1; }
 
+        .menu-item {
+            display: flex;
+            align-items: center;
+            gap: 0.8vw;
+            padding: 1.4vh 10%;
+            font-size: 0.85vw;
+            font-weight: 600;
+            color: #0b4a7a;
+            cursor: pointer;
+            border-radius: 0.6vw;
+            margin-bottom: 0.5vh;
+            transition: 0.2s;
+            white-space: nowrap;
+            text-decoration: none;
+        }
 
-.field{ width:48%; }
+        .menu-item i {
+            font-size: 1.3vw;
+            width: 1.5vw;
+            text-align: center;
+        }
 
+        .menu-item:hover { background: #eef2f6; }
 
-.label{
-    font-size: 0.8vw;
-    color:#888;
-    margin-bottom: 0.8vh;
-    font-weight: 600;
-    text-transform: uppercase;
-}
+        .sidebar.collapsed .menu-item {
+            flex-direction: column;
+            padding: 1.2vh 0;
+            justify-content: center;
+            gap: 2px;
+        }
 
+        .sidebar.collapsed .menu-item span {
+            display: block !important;
+            font-size: 0.65vw;
+            font-weight: 800;
+        }
 
-.value{
-    font-size: 1vw;
-    font-weight: 700;
-    color: #333;
-}
-
-
-.edit-icon{
-    position:absolute;
-    right: -3.5vw;
-    top:50%;
-    transform:translateY(-50%);
-    cursor:pointer;
+        .sidebar.collapsed .hide-on-collapse {
+            display: none !important;
+        }
+ .signout {
+    margin-top: auto; /* Ensures it stays at the bottom of the flexbox */
+    padding: 1.5vh 10%;
     color: #0b4a7a;
     display: flex;
     align-items: center;
-    transition: transform 0.2s;
-}
-
-
-.edit-icon:hover { transform: translateY(-50%) scale(1.1); }
-.edit-icon i { font-size: 1.8vw; }
-
-
-.desc-box{
-    background:#fff;
-    border: 0.1vh solid #ddd;
-    border-radius: 0.5vw;
-    padding: 2.5vh 2.5%;
-    min-height: 12vh;
-    box-shadow: 0 0.2vw 0.5vw rgba(0,0,0,0.1);
-    margin-bottom: 4vh;
-    position:relative;
-    font-size: 1vw;
-    line-height: 1.5;
-}
-
-
-.badge{
-    display:inline-block;
-    padding: 1.2vh 3.5vw;
-    border-radius: 1.2vw;
-    font-weight: 700;
-    color:#fff;
-    font-size: 0.85vw;
-    margin-right: 1vw;
-    text-align: center;
-}
-
-
-.high{ background:#ff0000; }
-.resolved{ background:#5f7f3a; }
-
-
-.actions{
-    display:flex;
-    justify-content:flex-end;
-    gap: 1.5vw;
-    margin-top: 6vh;
-}
-
-
-.btn{
-    display:flex;
-    align-items:center;
     gap: 0.8vw;
-    padding: 1.2vh 2.5vw;
-    border-radius: 1vw;
     font-weight: 700;
-    cursor:pointer;
-    box-shadow: 0 0.3vw 0.6vw rgba(0,0,0,0.2);
     font-size: 0.9vw;
-    border: 0.2vw solid #0b4a7a;
-    transition: 0.2s;
+    cursor: pointer;
+    text-decoration: none;
+    border-top: 1px solid #f0f0f0; /* Optional: separates it from the list */
+}
+.signout:hover {
+    background: #fff0f0; /* Light red tint on hover for clarity */
+    color: #d11a2a;
 }
 
+        .sidebar.collapsed .signout {
+            flex-direction: column;
+            padding: 1vh 0;
+            gap: 2px;
+        }
 
-.btn:active { transform: translateY(2px); }
+        /* --- CONTENT AREA --- */
+        .content {
+            flex: 1;
+            padding: 4vh 3%;
+            overflow-y: auto;
+        }
 
+        .title {
+            display: flex;
+            align-items: center;
+            gap: 0.8vw;
+            margin-bottom: 3vh;
+            color: #0b4a7a;
+            font-weight: 800;
+            font-size: 1.2vw;
+            cursor: pointer;
+        }
 
-.btn-cancel{
-    background:#e53935;
-    color:#fff;
+        .card {
+            background: #fff;
+            border-radius: 0.6vw;
+            padding: 3vh 3%;
+            box-shadow: 0 0.2vw 0.8vw rgba(0,0,0,0.05);
+            border: 1px solid #e0e0e0;
+        }
+
+        /* --- INPUT STYLES --- */
+        .info-box {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            row-gap: 3vh;
+            column-gap: 2vw;
+        }
+        /* --- PROFILE SYNC STYLES --- */
+.profile-area-sync {
+    text-align: center;
+    padding: 2vh 5%;
+    transition: opacity 0.2s;
 }
 
-
-.btn-save{
-    background:#5f7f3a;
-    color:#fff;
+.profile-icon-big {
+    font-size: 4.5vw; /* Large icon size */
+    color: #0b4a7a;
+    margin-bottom: 1vh;
 }
-</style>
+
+.sidebar.collapsed .profile-icon-big {
+    font-size: 2.5vw;
+}
+
+.profile-name-sync {
+    font-weight: bold;
+    color: #003366;
+    margin-bottom: 1vh;
+    font-size: 0.95vw;
+    text-transform: none; /* Keeps name casing natural */
+}
+
+.staff-badge {
+    background: white;
+    border: 1px solid #ccc;
+    border-radius: 1vw;
+    padding: 0.2vh 0.8vw;
+    font-size: 0.65vw;
+    display: inline-block;
+    color: #003366;
+    font-weight: bold;
+    white-space: nowrap;
+}
+
+.staff-badge i {
+    font-size: 0.6vw;
+    margin-left: 3px;
+    color: #888;
+}
+
+/* Ensure sidebar collapse handles the badge */
+.sidebar.collapsed .profile-name-sync,
+.sidebar.collapsed .staff-badge {
+    display: none;
+}
+
+        .label { font-size: 0.75vw; color: #888; font-weight: 700; margin-bottom: 0.5vh; text-transform: uppercase; }
+
+        .edit-input {
+            width: 100%;
+            padding: 1.2vh 1vw;
+            border: 1.5px solid #ddd;
+            border-radius: 0.4vw;
+            font-size: 0.9vw;
+            font-weight: 600;
+            color: #333;
+            outline: none;
+            transition: 0.2s;
+        }
+
+        .edit-input:focus { border-color: #0b4a7a; }
+
+        .edit-textarea {
+            width: 100%;
+            height: 12vh;
+            resize: none;
+            border: 1.5px solid #ddd;
+            border-radius: 0.6vw;
+            padding: 2vh;
+            font-size: 0.9vw;
+            font-weight: 600;
+            color: #444;
+            outline: none;
+        }
+
+        /* --- DROPDOWN BADGES --- */
+        .badge-select {
+            padding: 0.8vh 1vw;
+            border-radius: 0.3vw;
+            font-size: 0.75vw;
+            font-weight: 800;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            outline: none;
+        }
+
+        .priority-high { background: #e61111; }
+        .status-resolved { background: #2e7d32; }
+
+        .row { display: flex; align-items: center; gap: 3vw; margin-top: 3vh; }
+
+        .upload-section { margin-left: auto; }
+        .attach-btn {
+            border: 1.5px solid #0b4a7a;
+            padding: 1vh 1.5vw;
+            border-radius: 0.5vw;
+            background: #fff;
+            color: #0b4a7a;
+            font-weight: 700;
+            cursor: pointer;
+            font-size: 0.8vw;
+            display: flex;
+            align-items: center;
+            gap: 0.5vw;
+        }
+
+        /* --- ACTIONS (SYNCED WITH TICKET EDIT) --- */
+        .actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 1.5vw;
+            margin-top: 5vh;
+        }
+
+        .btn-action {
+            padding: 1.2vh 2.5vw;
+            border-radius: 0.5vw;
+            font-weight: 800;
+            font-size: 0.85vw;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.6vw;
+            transition: 0.2s;
+            border: none;
+        }
+
+        /* Cancel Button: Light Pink/Red Background */
+        .cancel { 
+            background: #f8d7da; 
+            color: #721c24; 
+            border: 1px solid #f5c6cb; 
+        }
+        .cancel:hover { background: #f5c6cb; }
+
+        /* Save Button: Light Green Background */
+        .save { 
+            background: #d4edda; 
+            color: #155724; 
+            border: 1px solid #c3e6cb; 
+        }
+        .save:hover { background: #c3e6cb; }
+
+    </style>
 </head>
-
 
 <body>
 
-
-<div class="topbar">
-    <div class="top-left">
-        <div class="menu-icon" id="toggleSidebar"><i class="fas fa-bars"></i></div>
-        <div class="logo"><img src="CHAMS.png" alt="CHAMS Logo"></div>
+    <div class="topbar">
+        <div class="top-left">
+            <i class="fas fa-bars menu-icon" onclick="toggleMenu()"></i>
+            <div class="logo">
+                <img src="CHAMS.png" alt="Logo">
+            </div>
+        </div>
+        <div class="search-box">
+        <div class="search-wrapper">
+            <input type="text">
+            <i class="fas fa-search"></i>
+        </div>
+        </div>
     </div>
-    <div class="search-box"><input type="text" placeholder="Search..."></div>
-</div>
 
-
-<div class="container">
-    <div class="sidebar" id="sidebar">
-        <div class="profile-card">
-            <div class="avatar-circle"><i class="fas fa-user"></i></div>
-            <div class="profile-name real-name">Jose L</div>
-            <div class="profile-label">PROFILE</div>
-            <div class="profile-role">ADMIN</div>
+    <div class="container">
+        <div class="sidebar" id="sidebar">
+         <div class="profile-card" onclick="window.location.href='PROFILE.html'" style="cursor: pointer;">
+    <div class="profile-area-sync">
+        <div class="profile-icon-big">
+            <i class="fas fa-user-circle"></i>
         </div>
-
-
-       <div class="menu">
-    <a href="DASHBOARD.html" style="text-decoration: none;">
-        <div class="menu-item"><i class="fas fa-home"></i> <span>HOME</span></div>
-    </a>
-
-    <a href="TiICKET.html" style="text-decoration: none;">
-        <div class="menu-item"><i class="fas fa-ticket-alt"></i> <span>TICKETS</span></div>
-    </a>
-
-    <a href="INVENTORY.html" style="text-decoration: none;">
-        <div class="menu-item"><i class="fas fa-box"></i> <span>INVENTORY</span></div>
-    </a>
-    
-    <a href="INVENTORYTRACKER.html" style="text-decoration: none;" class="hide-on-collapse">
-        <div class="menu-item"><i class="fas fa-search"></i> <span>INVENTORY TRACKER</span></div>
-    </a>
-    
-    <a href="MAINTENANCELOG.html" style="text-decoration: none;">
-        <div class="menu-item"><i class="fas fa-clipboard-list"></i> <span>MAINTENANCE LOG</span></div>
-    </a>
-
-    <a href="ACTIVITYLOG.html" style="text-decoration: none;" class="hide-on-collapse">
-        <div class="menu-item"><i class="fas fa-history"></i> <span>ACTIVITY LOG</span></div>
-    </a>
-    
-    <a href="NOTIFICATION.html" style="text-decoration: none;">
-        <div class="menu-item"><i class="fas fa-bell"></i> <span>NOTIFICATION</span></div>
-    </a>
-
-    <a href="SETTINGS.html" style="text-decoration: none;">
-        <div class="menu-item"><i class="fas fa-cog"></i> <span>SETTINGS</span></div>
-    </a>
-    
-    <a href="FAQS.html" style="text-decoration: none;" class="hide-on-collapse">
-        <div class="menu-item"><i class="fas fa-question-circle"></i> <span>FAQs</span></div>
-    </a>
-</div>
-      <a href="LOG-IN.html" style="text-decoration: none;" class="signout hide-on-collapse">
-    <i class="fas fa-sign-out-alt"></i> <span>SIGN OUT</span>
-</a>
-
-</div>
-
-
-    <div class="content">
-        <div class="page-header">MAINTENANCE LOG</div>
-
-
-        <div class="info-box">
-            <div class="info-row">
-                <div class="field">
-                    <div class="label">Asset Name:</div>
-                    <div class="value">Reception Printer</div>
-                </div>
-                <div class="field">
-                    <div class="label">Maintenance Type:</div>
-                    <div class="value">Preventive</div>
-                </div>
-            </div>
-
-
-            <div class="info-row">
-                <div class="field">
-                    <div class="label">Created at:</div>
-                    <div class="value">1 Nov 2025 13:12</div>
-                </div>
-                <div class="field">
-                    <div class="label">Next Maintenance:</div>
-                    <div class="value">1 Feb 2026 13:12</div>
-                </div>
-            </div>
-
-
-                <i class="fas fa-pen-to-square inline-edit-icon"></i>
+        
+        <div class="profile-name-sync real-name">JOSE L.</div>
+        
+        <div class="staff-badge">
+            ADMIN | 2.0.1 <i class="fas fa-cog"></i>
         </div>
-
-
-        <div class="label">Maintenance Description:</div>
-        <div class="desc-box">
-            Quarterly cleaning & Calibration
-                <i class="fas fa-pen-to-square inline-edit-icon"></i>
-        </div>
-
-
-        <div class="label">Priority:</div>
-        <div style="display: flex; align-items: center;">
-            <span class="badge high">HIGH</span>
-                <i class="fas fa-pen-to-square inline-edit-icon"></i>
-        </div>
-
-
-        <div style="margin-top: 3vh;" class="label">Status:</div>
-        <div style="display: flex; align-items: center;">
-            <span class="badge resolved">RESOLVED</span>
-            <i class="fas fa-pen-to-square inline-edit-icon" style="position:static; margin-left: 1vw;"></i>
-        </div>
-
-
-        <div class="actions">
-            <div class="btn btn-cancel" onclick="window.history.back()"><i class="fas fa-times"></i> CANCEL</div>
-            <div class="btn btn-save"><i class="fas fa-save"></i> SAVE CHANGES</div>
-        </div>
+        
+        <div class="profile-label">PROFILE</div>
     </div>
 </div>
 
+            <div class="menu">
+                <a href="DASHBOARD.html" class="menu-item"><i class="fas fa-home"></i> <span>HOME</span></a>
+                <a href="TICKET.html" class="menu-item"><i class="fas fa-ticket-alt"></i> <span>TICKETS</span></a>
+                <a href="INVENTORY.html" class="menu-item"><i class="fas fa-box"></i> <span>INVENTORY</span></a>
+                <a href="INVENTORYTRACKER.html" class="menu-item hide-on-collapse"><i class="fas fa-search"></i> <span>INVENTORY TRACKER</span></a>
+                <a href="MAINTENANCELOG.html" class="menu-item"><i class="fas fa-clipboard-list"></i> <span>MAINTENANCE LOG</span></a>
+                <a href="ACTIVITYLOG.html" class="menu-item hide-on-collapse"><i class="fas fa-history"></i> <span>ACTIVITY LOG</span></a>
+<div class="menu-item" onclick="openNotif()"><i class="fas fa-bell"></i> <span>NOTIFICATION</span></div>                <a href="SETTINGS.html" class="menu-item"><i class="fas fa-cog"></i> <span>SETTINGS</span></a>
+                <a href="FAQS.html" class="menu-item hide-on-collapse"><i class="fas fa-question-circle"></i> <span>FAQs</span></a>
+            </div>
 
-<script>
-const toggleBtn = document.getElementById('toggleSidebar');
-const sidebar = document.getElementById('sidebar');
+            <a href="LOG-IN.html" class="signout hide-on-collapse">
+                <i class="fas fa-sign-out-alt"></i> <span>SIGN OUT</span>
+            </a>
+        </div>
+<div id="notifOverlay">
+    <div class="notification-panel">
+        <i class="fas fa-times close-notif-x" onclick="closeNotif()"></i>
+        <i class="fas fa-bell main-bell"></i>
+        <div class="notif-title">NOTIFICATIONS</div>
+        <div id="notifList">
+            <div class="notif-item" onclick="openModal('stockModal')">
+                <span>⚠️ Low Stock Alert!</span>
+                <i class="fas fa-arrow-right"></i>
+            </div>
+            <div class="notif-item" onclick="openModal('ticketModal')">
+                <span>🎫 Ticket Status Updated</span>
+                <i class="fas fa-arrow-right"></i>
+            </div>
+        </div>
+        <button class="clear-btn" onclick="clearAllNotifs()">Clear All</button>
+    </div>
+</div>
 
+<div class="modal-overlay" id="ticketModal">
+    <div class="modal-container bg-ticket">
+        <i class="fas fa-clipboard-list" style="font-size: 3.5vw; margin-bottom: 2vh;"></i>
+        <h2 style="font-size: 1.8vw;">TICKET STATUS LOG</h2>
+        <div class="modal-message">
+            <span class="overdue-tag">OVERDUE</span>
+            <h3 style="font-size: 1.2vw; margin-top: 5px;">Eren Y</h3>
+            <div class="status-row"><i class="fas fa-check-circle" style="color: #0b4a7a;"></i><div style="flex:1;">Ticket Logged</div><span class="badge unresolved">Unresolved</span></div>
+            <div class="status-row"><i class="fas fa-user-check" style="color: #0b4a7a;"></i><div style="flex:1;">Assigned to Kenneth F</div><span class="badge assigned">Assigned</span></div>
+        </div>
+        <button class="close-btn" onclick="closeModal('ticketModal')">CLOSE LIST</button>
+    </div>
+</div>
 
-toggleBtn.addEventListener('click', () => {
-    sidebar.classList.toggle('collapsed');
-});
-</script>
+<div class="modal-overlay" id="stockModal">
+    <div class="modal-container bg-stock">
+        <i class="fas fa-box-open" style="font-size: 3.5vw; margin-bottom: 2vh;"></i>
+        <h2 style="font-size: 1.8vw;">INVENTORY ALERT</h2>
+        <div class="modal-message">
+            <b>Items below threshold:</b><br><br>
+            • Printer Ink (2 left)<br>• Bond Paper (5 reams left)
+        </div>
+        <button class="close-btn" style="color: #ff7a00" onclick="closeModal('stockModal')">CLOSE</button>
+    </div>
+</div>
+        <div class="content">
+            <div class="title" onclick="window.location.href='MAINTENANCELOG.html'">
+                <i class="fas fa-chevron-left"></i>MAINTENANCE LOG
+            </div>
 
+            <div class="card">
+                <div class="info-box">
+                    <div>
+                        <div class="label">Asset Name:</div>
+                        <input type="text" class="edit-input" value="Reception Printer">
+                    </div>
+                    <div>
+                        <div class="label">Maintenance Type:</div>
+                        <input type="text" class="edit-input" value="Preventive">
+                    </div>
+                    <div>
+                        <div class="label">Created At:</div>
+                        <input type="text" class="edit-input" value="1 Nov 2025 13:12">
+                    </div>
+                    <div>
+                        <div class="label">Next Maintenance:</div>
+                        <input type="text" class="edit-input" value="1 Feb 2026 13:12">
+                    </div>
+                </div>
 
+                <div style="margin-top: 3vh;">
+                    <div class="label">Maintenance Description:</div>
+                    <textarea class="edit-textarea">Quarterly cleaning & Calibration. Ensure all rollers are lubricated and firmware is updated.</textarea>
+                </div>
+
+                <div class="row">
+                    <div>
+                        <div class="label">Priority:</div>
+                        <select class="badge-select priority-high" id="prioritySelect">
+                            <option value="high" selected>HIGH</option>
+                            <option value="medium">MEDIUM</option>
+                            <option value="low">LOW</option>
+                        </select>
+                    </div>
+
+                    <div class="upload-section">
+                        <input type="file" id="fileUpload" style="display: none;" onchange="updateFileName(this)">
+                        <button class="attach-btn" onclick="document.getElementById('fileUpload').click()">
+                            <i class="fas fa-upload"></i> <span id="uploadBtnText">Change Attachment</span>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div>
+                        <div class="label">Status:</div>
+                        <select class="badge-select status-resolved" id="statusSelect">
+                            <option value="resolved" selected>RESOLVED</option>
+                            <option value="pending">PENDING</option>
+                            <option value="unresolved">UNRESOLVED</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="actions">
+                    <button class="btn-action cancel" onclick="window.location.href='MAINTENANCELOG.html'">
+                        <i class="fas fa-times"></i> CANCEL
+                    </button>
+                    <button class="btn-action save" onclick="saveData()">
+                        <i class="fas fa-save"></i> SAVE CHANGES
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function toggleMenu() {
+            document.getElementById("sidebar").classList.toggle("collapsed");
+        }
+        function openNotif() { document.getElementById("notifOverlay").style.display = "flex"; }
+function closeNotif() { document.getElementById("notifOverlay").style.display = "none"; }
+function openModal(id) { document.getElementById(id).style.display = "flex"; }
+function closeModal(id) { document.getElementById(id).style.display = "none"; }
+function clearAllNotifs() { document.getElementById("notifList").innerHTML = '<p style="padding: 20px; opacity: 0.5; color: white;">No notifications</p>'; }
+
+        function updateFileName(input) {
+            if (input.files && input.files[0]) {
+                document.getElementById('uploadBtnText').innerText = input.files[0].name;
+            }
+        }
+
+        document.getElementById('prioritySelect').addEventListener('change', function() {
+            if (this.value === 'high') this.style.background = '#e61111';
+            else if (this.value === 'medium') this.style.background = '#f9a825';
+            else this.style.background = '#2e7d32';
+        });
+
+        document.getElementById('statusSelect').addEventListener('change', function() {
+            if (this.value === 'resolved') this.style.background = '#2e7d32';
+            else if (this.value === 'pending') this.style.background = '#0b4a7a';
+            else this.style.background = '#e61111';
+        });
+
+        function saveData() {
+            alert("Changes saved successfully!");
+            window.location.href = 'MAINTENANCELOG.html';
+        }
+    </script>
 </body>
 </html>
-
-
-

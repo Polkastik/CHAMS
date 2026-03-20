@@ -1,447 +1,576 @@
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>CHAMS – FAQs</title>
+    <meta charset="UTF-8">
+    <title>CHAMS – FAQs</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Segoe UI", Arial, sans-serif;
+        }
 
-<style>
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-    font-family:"Segoe UI", Arial, sans-serif;
+        body {
+            background: #f4f7f9;
+            overflow: hidden;
+            width: 100%;
+            height: 100vh;
+        }
+
+        .topbar {
+            height: 8vh;
+            background: #0b4a7a;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 2.5%;
+            z-index: 100;
+        }
+
+        .top-left {
+            display: flex;
+            align-items: center;
+            gap: 1.2vw;
+            color: #fff;
+        }
+
+        .menu-icon {
+            font-size: 2.2vw;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            user-select: none;
+        }
+
+        .logo img {
+            height: 20vh;
+            width: auto;
+        }
+
+        .search-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .search-box input {
+            width: 18vw;
+            height: 4vh;
+            border-radius: 0.4vw;
+            border: none;
+            padding: 0 2.5vw 0 1vw;
+            outline: none;
+            font-size: 0.85vw;
+        }
+
+        .search-wrapper i {
+            position: absolute;
+            right: 0.8vw;
+            color: #0b4a7a;
+            font-size: 0.9vw;
+            pointer-events: none;
+        }
+
+        .container {
+            display: flex;
+            height: 92vh;
+            width: 100%;
+        }
+/* --- PROFILE SYNC STYLES --- */
+.profile-area-sync {
+    text-align: center;
+    padding: 2vh 5%;
+    transition: opacity 0.2s;
 }
 
-body{
-    background:#1f1f1f;
-    overflow:hidden;
-    width:100%;
-    height:100vh;
-}
-
-.topbar{
-    height:8vh;
-    background:#0b4a7a;
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    padding:0 2.5%;
-    z-index: 100;
-}
-
-.top-left{
-    display:flex;
-    align-items:center;
-    gap:1.2vw;
-    color:#fff;
-}
-
-.menu-icon{
-    font-size:2.2vw;
-    cursor:pointer;
-    display:flex;
-    align-items:center;
-    user-select:none;
-}
-
-.logo img{
-    height:4.5vh;
-    width:auto;
-}
-
-.search-box input{
-    width:15vw;
-    height:4vh;
-    border-radius:0.4vw;
-    border:none;
-    padding:0 1vw;
-    outline:none;
-    font-size:0.85vw;
-}
-
-.container{
-    display:flex;
-    height:92vh;
-    width:100%;
-}
-
-.sidebar{
-    width:18%;
-    background:#ffffff;
-    padding:2.5vh 1.2%;
-    display:flex;
-    flex-direction:column;
-    transition:0.3s ease;
-    overflow:hidden;
-    border-right: 1px solid #e0e0e0;
-}
-
-.sidebar.collapsed{
-    width:6.5vw;
-    padding:2vh 0;
-}
-
-.sidebar.collapsed .hide-on-collapse,
-.sidebar.collapsed .profile-role,
-.sidebar.collapsed .real-name {
-    display: none !important;
-}
-
-.sidebar.collapsed .profile-label {
-    display: block !important;
-    font-size: 0.7vw;
-    font-weight: 800;
+.profile-icon-big {
+    font-size: 4.5vw; /* Large icon size */
     color: #0b4a7a;
-    margin-top: 2px;
+    margin-bottom: 1vh;
 }
 
-.profile-card{
-    background:#fff;
-    padding:2.5vh 5%;
-    text-align:center;
-    margin-bottom:3vh;
-}
-
-.avatar {
-    width: 5.5vw;
-    height: 5.5vw;
-    border-radius: 50%;
-    background: #0b4a7a;
-    margin: 0 auto 1.2vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #fff;
+.sidebar.collapsed .profile-icon-big {
     font-size: 2.5vw;
 }
 
-.profile-name{ font-weight:700; font-size:1.1vw; color: #333; }
-.profile-label { display: none; } 
-.profile-role{ 
-    font-size: 0.7vw; 
-    color: #0b4a7a; 
-    font-weight: 700; 
-    text-transform: uppercase;
-    margin-top: 0.5vh;
+.profile-name-sync {
+    font-weight: bold;
+    color: #003366;
+    margin-bottom: 1vh;
+    font-size: 0.95vw;
+    text-transform: none; /* Keeps name casing natural */
 }
 
-.menu{ flex:1; }
-
-.menu-item{
-    display:flex;
-    align-items:center;
-    gap:1vw;
-    padding:1.4vh 10%;
-    font-size:0.9vw;
-    color:#0b4a7a;
-    font-weight: 600;
-    cursor:pointer;
-    border-radius:0.6vw;
-    margin-bottom: 0.5vh;
-    transition:0.2s;
-    white-space:nowrap;
-}
-
-.menu-item:hover{ background:#eef2f6; }
-.menu-item i{ font-size:1.3vw; width: 1.5vw; text-align: center; }
-
-.sidebar.collapsed .menu-item{
-    flex-direction:column;
-    padding: 1.2vh 0;
-    justify-content: center;
-    text-align: center;
-    gap: 2px;
+.staff-badge {
+    background: white;
+    border: 1px solid #ccc;
+    border-radius: 1vw;
+    padding: 0.2vh 0.8vw;
     font-size: 0.65vw;
+    display: inline-block;
+    color: #003366;
+    font-weight: bold;
+    white-space: nowrap;
 }
 
-.signout{
-    margin-top:2.2vh;
-    padding: 1vh 10%;
-    display:flex;
-    gap:1vw;
-    color:#0b4a7a;
-    font-size:0.95vw;
-    font-weight:700;
-    align-items:center;
-    cursor:pointer;
+.staff-badge i {
+    font-size: 0.6vw;
+    margin-left: 3px;
+    color: #888;
 }
 
-.sidebar.collapsed .signout {
-    flex-direction: column;
-    padding: 1vh 0;
-    font-size: 0.65vw;
-    gap: 2px;
+/* Ensure sidebar collapse handles the badge */
+.sidebar.collapsed .profile-name-sync,
+.sidebar.collapsed .staff-badge {
+    display: none;
+}
+       .sidebar {
+    width: 18%;
+    background: #ffffff;
+    padding: 2.5vh 1.2%;
+    display: flex;
+    flex-direction: column; /* Stack children vertically */
+    height: 92vh; /* Matches the container height */
+    transition: 0.3s ease;
+    border-right: 1px solid #e0e0e0;
+    overflow: hidden; /* Prevent the whole sidebar from scrolling */
 }
 
-.content{
-    flex:1;
-    background:#f5f6f8;
-    padding:4vh 5%;
-    overflow-y:auto;
+
+        .sidebar.collapsed {
+            width: 6.5vw;
+            padding: 2vh 0;
+        }
+
+        .profile-card {
+            background: #fff;
+            padding: 2.5vh 5%;
+            text-align: center;
+            margin-bottom: 3vh;
+            transition: 0.3s ease;
+        }
+
+        .sidebar.collapsed .profile-card {
+            background: transparent;
+            padding: 1vh 0;
+            margin-bottom: 1vh;
+        }
+
+        .avatar {
+            width: 5.5vw;
+            height: 5.5vw;
+            border-radius: 50%;
+            background: #0b4a7a;
+            margin: 0 auto 1.2vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 2.5vw;
+            transition: 0.3s;
+        }
+
+        .sidebar.collapsed .avatar {
+            width: 3.5vw;
+            height: 3.5vw;
+            font-size: 1.5vw;
+        }
+/* ALL NOTIFICATION & MODAL STYLES */
+#notifOverlay {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100vw; height: 100vh;
+    background: rgba(0, 0, 0, 0.7); 
+    display: none; /* Initially hidden */
+    align-items: center; justify-content: center;
+    z-index: 3000;
 }
 
-.page-header{
-    display:flex;
-    align-items:center;
-    gap:0.8vw;
-    font-weight:800;
-    font-size:1.5vw;
-    margin-bottom:4vh;
-    color:#0b4a7a;
-    cursor:pointer;
+.notification-panel {
+    background: #0b4a7a;
+    width: 35vw; min-width: 450px;
+    padding: 6vh 3vw; border-radius: 1.5vw;
+    text-align: center; color: white;
+    position: relative; animation: zoomIn 0.3s ease-out;
+    box-shadow: 0 2vw 5vw rgba(0, 0, 0, 0.8);
 }
 
-.faq-container{
-    background:#ffffff;
-    border-radius:1vw;
-    padding:6vh 8%;
-    box-shadow:0 0.5vw 2vw rgba(0,0,0,0.05);
+.close-notif-x { position: absolute; top: 20px; right: 25px; font-size: 1.8vw; cursor: pointer; color: rgba(255, 255, 255, 0.7); transition: 0.3s ease; }
+.close-notif-x:hover { color: #ff2d8d; transform: scale(1.2) rotate(90deg); }
+
+.notification-panel i.main-bell { font-size: 5vw; margin-bottom: 2vh; display: block; }
+.notif-title { font-size: 2vw; font-weight: bold; margin-bottom: 4vh; letter-spacing: 1px; }
+#notifList { width: 100%; max-height: 40vh; overflow-y: auto; }
+
+.notif-item {
+    background: rgba(255, 255, 255, 0.95); color: #333;
+    padding: 2.5vh 1.5vw; margin-bottom: 2vh;
+    border-radius: 0.8vw; display: flex;
+    justify-content: space-between; align-items: center;
+    cursor: pointer; font-weight: 700; font-size: 1.2vw;
 }
 
-.faq-title{
-    text-align:center;
-    font-size:2.4vw;
-    font-weight:900;
-    margin-bottom:5vh;
-    color:#0b4a7a;
+/* SUB-MODAL STYLES */
+.modal-overlay {
+    position: fixed; top: 0; left: 0;
+    width: 100%; height: 100%;
+    display: none; align-items: center; justify-content: center;
+    background: rgba(0, 0, 0, 0.85); z-index: 4000;
+}
+.modal-container { width: 42vw; padding: 5vh 3vw; border-radius: 1.5vw; text-align: center; color: white; position: relative; }
+.bg-ticket { background: #0b4a7a; border: 1px solid rgba(255,255,255,0.2); }
+.bg-stock { background: #ff7a00; }
+.modal-message { background: #fff; color: #333; padding: 3vh 2vw; border-radius: 1vw; margin-top: 2vh; font-size: 1.1vw; text-align: left; }
+.status-row { display: flex; align-items: center; gap: 12px; margin-bottom: 15px; padding-bottom: 10px; border-bottom: 1px solid #eee; }
+.badge { padding: 4px 10px; font-size: 0.7vw; font-weight: 800; border-radius: 4px; color: #fff; text-transform: uppercase; }
+.assigned { background: #0b4a7a; } .unresolved { background: #ff2d8d; }
+.overdue-tag { background: #ff2d8d; font-size: 0.6vw; padding: 2px 6px; border-radius: 3px; }
+.close-btn { margin-top: 3vh; padding: 1.5vh 3vw; border: none; background: #fff; color: #0b4a7a; border-radius: 2vw; cursor: pointer; font-weight: 800; font-size: 1vw; }
+.clear-btn { margin-top: 3vh; background: transparent; border: 1px solid #fff; padding: 1vh 2vw; border-radius: 2vw; color: #fff; cursor: pointer; font-size: 0.9vw; }
+
+@keyframes zoomIn { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+        .profile-name { font-weight: 700; font-size: 1vw; color: #333; }
+        .profile-label { display: none; }
+        .profile-role { font-size: 0.7vw; color: #0b4a7a; font-weight: 700; margin-top: 0.5vh; text-transform: uppercase; }
+
+        .sidebar.collapsed .profile-name,
+        .sidebar.collapsed .profile-role {
+            display: none !important;
+        }
+
+        .sidebar.collapsed .profile-label {
+            display: block !important;
+            font-size: 0.7vw;
+            font-weight: 800;
+            color: #0b4a7a;
+            margin-top: 2px;
+        }
+
+        .menu { flex: 1; }
+
+        .menu-item {
+            display: flex;
+            align-items: center;
+            gap: 0.8vw;
+            padding: 1.4vh 10%;
+            font-size: 0.85vw;
+            font-weight: 600;
+            color: #0b4a7a;
+            cursor: pointer;
+            border-radius: 0.6vw;
+            margin-bottom: 0.5vh;
+            transition: 0.2s;
+            white-space: nowrap;
+            text-decoration: none;
+        }
+
+        .menu-item i {
+            font-size: 1.3vw;
+            width: 1.5vw;
+            text-align: center;
+        }
+
+        .menu-item:hover { background: #eef2f6; }
+
+
+        .sidebar.collapsed .menu-item {
+            flex-direction: column;
+            padding: 1.2vh 0;
+            justify-content: center;
+            gap: 2px;
+        }
+
+        .sidebar.collapsed .menu-item span {
+            display: block !important;
+            font-size: 0.65vw;
+            font-weight: 800;
+        }
+
+        .sidebar.collapsed .hide-on-collapse {
+            display: none !important;
+        }
+ .signout {
+    margin-top: auto; /* Ensures it stays at the bottom of the flexbox */
+    padding: 1.5vh 10%;
+    color: #0b4a7a;
+    display: flex;
+    align-items: center;
+    gap: 0.8vw;
+    font-weight: 700;
+    font-size: 0.9vw;
+    cursor: pointer;
+    text-decoration: none;
+    border-top: 1px solid #f0f0f0; /* Optional: separates it from the list */
+}
+.signout:hover {
+    background: #fff0f0; /* Light red tint on hover for clarity */
+    color: #d11a2a;
 }
 
-.search-faq{
-    display:flex;
-    align-items:center;
-    border:0.12vw solid #ddd;
-    border-radius:0.8vw;
-    padding:1.8vh 2vw;
-    margin-bottom:5vh;
-    background:#fff;
-}
+        /* --- CONTENT AREA --- */
+        .content {
+            flex: 1;
+            padding: 4vh 4%;
+            overflow-y: auto;
+        }
 
-.search-faq input{
-    flex:1;
-    border:none;
-    outline:none;
-    font-size:1.05vw;
-}
+        .page-header {
+            display: flex;
+            align-items: center;
+            gap: 0.8vw;
+            font-weight: 800;
+            font-size: 1.5vw;
+            margin-bottom: 3vh;
+            color: #0b4a7a;
+            cursor: pointer;
+            transition: 0.2s;
+        }
 
-.search-faq i{
-    font-size:1.6vw;
-    color:#bbb;
-}
+        .page-header:hover { transform: translateX(-5px); }
 
-.faq-list{
-    display:flex;
-    flex-direction:column;
-    gap:1vh;
-}
+        .faq-container {
+            background: #ffffff;
+            border-radius: 1vw;
+            padding: 6vh 8%;
+            box-shadow: 0 0.5vw 2vw rgba(0,0,0,0.05);
+        }
 
-.faq-item{
-    border: 1px solid #eee;
-    border-radius:0.8vw;
-    padding:2.2vh 2vw;
-    background:#fafafa;
-    font-size:1vw;
-    font-weight:700;
-    color:#444;
-    cursor:pointer;
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-}
+        .faq-title {
+            text-align: center;
+            font-size: 2.2vw;
+            font-weight: 900;
+            margin-bottom: 4vh;
+            color: #0b4a7a;
+        }
 
-.faq-item:hover{
-    background:#fff;
-    border-color:#0b4a7a;
-}
+        .search-faq {
+            display: flex;
+            align-items: center;
+            border: 0.12vw solid #ddd;
+            border-radius: 0.8vw;
+            padding: 1.8vh 2vw;
+            margin-bottom: 4vh;
+            background: #fff;
+        }
 
-.faq-answer{
-    display:none;
-    padding:1.5vh 2vw;
-    font-size:0.9vw;
-    font-weight:500;
-    color:#555;
-    background:#fff;
-    border-left:3px solid #0b4a7a;
-}
-</style>
+        .search-faq input {
+            flex: 1;
+            border: none;
+            outline: none;
+            font-size: 1vw;
+        }
+
+        .faq-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1.2vh;
+        }
+
+        .faq-item {
+            border: 1px solid #eee;
+            border-radius: 0.8vw;
+            padding: 2.2vh 2vw;
+            background: #fafafa;
+            font-size: 1vw;
+            font-weight: 700;
+            color: #444;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: 0.2s;
+        }
+
+        .faq-item:hover {
+            background: #fff;
+            border-color: #0b4a7a;
+        }
+
+        .faq-answer {
+            display: none;
+            padding: 1.5vh 2vw;
+            font-size: 0.9vw;
+            font-weight: 500;
+            color: #555;
+            background: #fdfdfd;
+            border-left: 4px solid #0b4a7a;
+            line-height: 1.6;
+        }
+    </style>
 </head>
 
 <body>
 
-<div class="topbar">
-    <div class="top-left">
-        <div class="menu-icon" onclick="toggleMenu()">
-            <i class="fa-solid fa-bars"></i>
+    <div class="topbar">
+        <div class="top-left">
+            <i class="fas fa-bars menu-icon" onclick="toggleMenu()"></i>
+            <div class="logo">
+                <img src="CHAMS.png" alt="CHAMS Logo">
+            </div>
         </div>
-        <div class="logo">
-            <img src="C:\Users\Admin\Downloads\CHAMS.JPG">
+        <div class="search-box">
+            <div class="search-wrapper">
+                <input type="text">
+                <i class="fas fa-search"></i>
+            </div>
         </div>
     </div>
 
-    <div class="search-box">
-        <input type="text" placeholder="Global search...">
+    <div class="container">
+        <div class="sidebar" id="sidebar">
+           <div class="profile-card" onclick="window.location.href='PROFILE.html'" style="cursor: pointer;">
+    <div class="profile-area-sync">
+        <div class="profile-icon-big">
+            <i class="fas fa-user-circle"></i>
+        </div>
+        
+        <div class="profile-name-sync real-name">JOSE L.</div>
+        
+        <div class="staff-badge">
+            ADMIN | 2.0.1 <i class="fas fa-cog"></i>
+        </div>
+        
+        <div class="profile-label">PROFILE</div>
+    </div>
+</div>
+            <div class="menu">
+                <a href="DASHBOARD.html" class="menu-item"><i class="fas fa-home"></i> <span>HOME</span></a>
+                <a href="TICKET.html" class="menu-item"><i class="fas fa-ticket-alt"></i> <span>TICKETS</span></a>
+                <a href="INVENTORY.html" class="menu-item"><i class="fas fa-box"></i> <span>INVENTORY</span></a>
+                <a href="INVENTORYTRACKER.html" class="menu-item hide-on-collapse"><i class="fas fa-search"></i> <span>INVENTORY TRACKER</span></a>
+                <a href="MAINTENANCELOG.html" class="menu-item"><i class="fas fa-clipboard-list"></i> <span>MAINTENANCE LOG</span></a>
+                <a href="ACTIVITYLOG.html" class="menu-item hide-on-collapse"><i class="fas fa-history"></i> <span>ACTIVITY LOG</span></a>
+<div class="menu-item" onclick="openNotif()"><i class="fas fa-bell"></i> <span>NOTIFICATION</span></div>                <a href="SETTINGS.html" class="menu-item"><i class="fas fa-cog"></i> <span>SETTINGS</span></a>
+                <a href="FAQS.html" class="menu-item active"><i class="fas fa-question-circle"></i> <span>FAQs</span></a>
+            </div>
+
+            <a href="LOG-IN.html" class="signout hide-on-collapse">
+                <i class="fas fa-sign-out-alt"></i> <span>SIGN OUT</span>
+            </a>
+        </div>
+        <div id="notifOverlay">
+    <div class="notification-panel">
+        <i class="fas fa-times close-notif-x" onclick="closeNotif()"></i>
+        <i class="fas fa-bell main-bell"></i>
+        <div class="notif-title">NOTIFICATIONS</div>
+        <div id="notifList">
+            <div class="notif-item" onclick="openModal('stockModal')">
+                <span>⚠️ Low Stock Alert!</span>
+                <i class="fas fa-arrow-right"></i>
+            </div>
+            <div class="notif-item" onclick="openModal('ticketModal')">
+                <span>🎫 Ticket Status Updated</span>
+                <i class="fas fa-arrow-right"></i>
+            </div>
+        </div>
+        <button class="clear-btn" onclick="clearAllNotifs()">Clear All</button>
     </div>
 </div>
 
-<div class="container">
-
-<div class="sidebar" id="sidebar">
-
-<div class="profile-card">
-<div class="avatar">
-<i class="fa-solid fa-user"></i>
-</div>
-<div class="profile-name real-name">Jose L</div>
-<div class="profile-label">PROFILE</div>
-<div class="profile-role">ADMIN</div>
-</div>
-
-<div class="menu">
-    <a href="DASHBOARD.html" style="text-decoration: none;">
-        <div class="menu-item"><i class="fas fa-home"></i> <span>HOME</span></div>
-    </a>
-
-    <a href="TiICKET.html" style="text-decoration: none;">
-        <div class="menu-item"><i class="fas fa-ticket-alt"></i> <span>TICKETS</span></div>
-    </a>
-
-    <a href="INVENTORY.html" style="text-decoration: none;">
-        <div class="menu-item"><i class="fas fa-box"></i> <span>INVENTORY</span></div>
-    </a>
-    
-    <a href="INVENTORYTRACKER.html" style="text-decoration: none;" class="hide-on-collapse">
-        <div class="menu-item"><i class="fas fa-search"></i> <span>INVENTORY TRACKER</span></div>
-    </a>
-    
-    <a href="MAINTENANCELOG.html" style="text-decoration: none;">
-        <div class="menu-item"><i class="fas fa-clipboard-list"></i> <span>MAINTENANCE LOG</span></div>
-    </a>
-
-    <a href="ACTIVITYLOG.html" style="text-decoration: none;" class="hide-on-collapse">
-        <div class="menu-item"><i class="fas fa-history"></i> <span>ACTIVITY LOG</span></div>
-    </a>
-    
-    <a href="NOTIFICATION.html" style="text-decoration: none;">
-        <div class="menu-item"><i class="fas fa-bell"></i> <span>NOTIFICATION</span></div>
-    </a>
-
-    <a href="SETTINGS.html" style="text-decoration: none;">
-        <div class="menu-item"><i class="fas fa-cog"></i> <span>SETTINGS</span></div>
-    </a>
-    
-    <a href="FAQS.html" style="text-decoration: none;" class="hide-on-collapse">
-        <div class="menu-item"><i class="fas fa-question-circle"></i> <span>FAQs</span></div>
-    </a>
-</div>
-      <a href="LOG-IN.html" style="text-decoration: none;" class="signout hide-on-collapse">
-    <i class="fas fa-sign-out-alt"></i> <span>SIGN OUT</span>
-</a>
-
+<div class="modal-overlay" id="ticketModal">
+    <div class="modal-container bg-ticket">
+        <i class="fas fa-clipboard-list" style="font-size: 3.5vw; margin-bottom: 2vh;"></i>
+        <h2 style="font-size: 1.8vw;">TICKET STATUS LOG</h2>
+        <div class="modal-message">
+            <span class="overdue-tag">OVERDUE</span>
+            <h3 style="font-size: 1.2vw; margin-top: 5px;">Eren Y</h3>
+            <div class="status-row"><i class="fas fa-check-circle" style="color: #0b4a7a;"></i><div style="flex:1;">Ticket Logged</div><span class="badge unresolved">Unresolved</span></div>
+            <div class="status-row"><i class="fas fa-user-check" style="color: #0b4a7a;"></i><div style="flex:1;">Assigned to Kenneth F</div><span class="badge assigned">Assigned</span></div>
+        </div>
+        <button class="close-btn" onclick="closeModal('ticketModal')">CLOSE LIST</button>
+    </div>
 </div>
 
-<div class="content">
-
-<div class="page-header" onclick="window.history.back()">
-<i class="fa-solid fa-arrow-left"></i> FAQs
+<div class="modal-overlay" id="stockModal">
+    <div class="modal-container bg-stock">
+        <i class="fas fa-box-open" style="font-size: 3.5vw; margin-bottom: 2vh;"></i>
+        <h2 style="font-size: 1.8vw;">INVENTORY ALERT</h2>
+        <div class="modal-message">
+            <b>Items below threshold:</b><br><br>
+            • Printer Ink (2 left)<br>• Bond Paper (5 reams left)
+        </div>
+        <button class="close-btn" style="color: #ff7a00" onclick="closeModal('stockModal')">CLOSE</button>
+    </div>
 </div>
 
-<div class="faq-container">
+        <div class="content">
+            <div class="page-header" onclick="window.location.href='DASHBOARD.html'">
+                <i class="fa-solid fa-chevron-left"></i> FAQs
+            </div>
 
-<div class="faq-title">HOW CAN WE HELP?</div>
+            <div class="faq-container">
+                <div class="faq-title">HOW CAN WE HELP?</div>
 
-<div class="search-faq">
-<input type="text" placeholder="Search for a question or keyword...">
-<i class="fa-solid fa-magnifying-glass"></i>
-</div>
+                <div class="search-faq">
+                    <input type="text" placeholder="Search for a question or keyword...">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                </div>
 
-<div class="faq-list">
+                <div class="faq-list">
+                    <div class="faq-item">How do I submit a new support ticket? <i class="fa-solid fa-chevron-right"></i></div>
+                    <div class="faq-answer">
+                        To submit a new support ticket, go to the <b>Tickets</b> section in the sidebar and click <b>Create New Ticket</b>. Fill in the required details such as the issue description, category, and priority level, then click Submit.
+                    </div>
 
-<div class="faq-item">How do I submit a new support ticket? <i class="fa-solid fa-chevron-right"></i></div>
-<div class="faq-answer">
-To submit a new support ticket, go to the <b>Tickets</b> section in the sidebar and click <b>Create New Ticket</b>. Fill in the required details such as the issue description, category, and priority level, then click Submit.
-</div>
+                    <div class="faq-item">Where can I view the current status of my open tickets? <i class="fa-solid fa-chevron-right"></i></div>
+                    <div class="faq-answer">
+                        You can check the status of your requests in the <b>Tickets</b> section. Each ticket will show its current status such as Pending, In Progress, or Resolved.
+                    </div>
 
-<div class="faq-item">Where can I view the current status of my open tickets? <i class="fa-solid fa-chevron-right"></i></div>
-<div class="faq-answer">
-You can check the status of your requests in the <b>Tickets</b> section. Each ticket will show its current status such as Pending, In Progress, or Resolved along with updates from the support team.
-</div>
+                    <div class="faq-item">How do I update an item in the Inventory section? <i class="fa-solid fa-chevron-right"></i></div>
+                    <div class="faq-answer">
+                        Navigate to <b>Inventory</b> in the sidebar. To update an existing item, select the item and click <b>Edit</b> to adjust quantity or details.
+                    </div>
 
-<div class="faq-item">How do I add or update an item in the Inventory section? <i class="fa-solid fa-chevron-right"></i></div>
-<div class="faq-answer">
-Navigate to <b>Inventory</b> in the sidebar. To add a new item, click <b>Add Item</b> and enter the necessary details. To update an existing item, select the item and click <b>Edit</b>.
-</div>
+                    <div class="faq-item">Where do I change my staff profile details? <i class="fa-solid fa-chevron-right"></i></div>
+                    <div class="faq-answer">
+                        Go to the <b>Settings</b> section from the sidebar. From there, you can update your personal information and profile details.
+                    </div>
 
-<div class="faq-item">What should I do if an inventory item is showing as "Out of Stock"? <i class="fa-solid fa-chevron-right"></i></div>
-<div class="faq-answer">
-If an item is marked <b>Out of Stock</b>, check the inventory records or coordinate with the responsible department for restocking. Once available, update the quantity in the inventory system.
-</div>
+                    <div class="faq-item">Who do I contact for System Errors? <i class="fa-solid fa-chevron-right"></i></div>
+                    <div class="faq-answer">
+                        If you encounter a system error, create a <b>support ticket</b> in the Tickets section and provide details about the error so the technical team can investigate.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
-<div class="faq-item">Where do I go to change my account password or staff profile details? <i class="fa-solid fa-chevron-right"></i></div>
-<div class="faq-answer">
-Go to the <b>Settings</b> section from the sidebar. From there, you can update your password, personal information, and staff profile details.
-</div>
+    <script>
+        function toggleMenu() {
+            document.getElementById("sidebar").classList.toggle("collapsed");
+        }
+        function openNotif() { document.getElementById("notifOverlay").style.display = "flex"; }
+function closeNotif() { document.getElementById("notifOverlay").style.display = "none"; }
+function openModal(id) { document.getElementById(id).style.display = "flex"; }
+function closeModal(id) { document.getElementById(id).style.display = "none"; }
+function clearAllNotifs() { document.getElementById("notifList").innerHTML = '<p style="padding: 20px; opacity: 0.5; color: white;">No notifications</p>'; }
 
-<div class="faq-item">Who should I contact if I encounter a "System Error" message? <i class="fa-solid fa-chevron-right"></i></div>
-<div class="faq-answer">
-If you encounter a system error, create a <b>support ticket</b> in the Tickets section and provide details about the error so the technical team can investigate and resolve the issue.
-</div>
+        // Toggle FAQ answers
+        document.querySelectorAll(".faq-item").forEach(item => {
+            item.addEventListener("click", () => {
+                const answer = item.nextElementSibling;
+                answer.style.display = (answer.style.display === "block") ? "none" : "block";
+            });
+        });
 
-<div class="faq-item">Is there a way to filter tickets by priority or date? <i class="fa-solid fa-chevron-right"></i></div>
-<div class="faq-answer">
-Yes. In the <b>Tickets</b> section, you can use the filter options to sort tickets by priority, date, or status to quickly locate specific requests.
-</div>
-
-</div>
-
-</div>
-</div>
-
-</div>
-
-<script>
-
-function toggleMenu(){
-document.getElementById("sidebar").classList.toggle("collapsed");
-}
-
-const faqItems = document.querySelectorAll(".faq-item");
-
-faqItems.forEach(item=>{
-item.addEventListener("click",()=>{
-const answer = item.nextElementSibling;
-answer.style.display = answer.style.display === "block" ? "none" : "block";
-});
-});
-
-
-// FAQ SEARCH FUNCTION
-const searchInput = document.querySelector(".search-faq input");
-const questions = document.querySelectorAll(".faq-item");
-
-searchInput.addEventListener("keyup", function(){
-
-let searchValue = searchInput.value.toLowerCase();
-
-questions.forEach(function(q){
-
-let text = q.textContent.toLowerCase();
-
-if(text.includes(searchValue)){
-q.style.display = "flex";
-q.nextElementSibling.style.display = "none";
-}else{
-q.style.display = "none";
-q.nextElementSibling.style.display = "none";
-}
-
-});
-
-});
-
-</script>
-
+        // FAQ search logic
+        const searchInput = document.querySelector(".search-faq input");
+        searchInput.addEventListener("keyup", function() {
+            let val = searchInput.value.toLowerCase();
+            document.querySelectorAll(".faq-item").forEach(q => {
+                let text = q.textContent.toLowerCase();
+                if (text.includes(val)) {
+                    q.style.display = "flex";
+                } else {
+                    q.style.display = "none";
+                    q.nextElementSibling.style.display = "none";
+                }
+            });
+        });
+    </script>
 </body>
 </html>

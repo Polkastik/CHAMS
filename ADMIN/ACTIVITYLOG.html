@@ -1,393 +1,659 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>CHAMS – Activity Log</title>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <meta charset="UTF-8">
+    <title>CHAMS – Activity Log</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 
+    <style>
+        /* --- CORE STYLES --- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Segoe UI", Arial, sans-serif;
+        }
 
-<style>
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-    font-family:"Segoe UI", Arial, sans-serif;
-}
+        body {
+            background: #f4f7f9;
+            overflow: hidden;
+            width: 100%;
+            height: 100vh;
+        }
 
+        /* --- TOPBAR --- */
+        .topbar {
+            height: 8vh;
+            background: #0b4a7a;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 2.5%;
+            z-index: 100;
+        }
 
-body{
-    background:#1f1f1f;
-    overflow:hidden;
-    width:100%;
-    height:100vh;
-}
+        .top-left {
+            display: flex;
+            align-items: center;
+            gap: 1.2vw;
+            color: #fff;
+        }
 
+        .menu-icon {
+            font-size: 2.2vw;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            user-select: none;
+        }
 
-.topbar{
-    height:8vh;
-    background:#0b4a7a;
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    padding:0 2.5%;
-    z-index: 100;
-}
+        .logo img {
+            height: 20vh;
+            width: auto;
+        }
 
+        .search-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
 
-.top-left{
-    display:flex;
-    align-items:center;
-    gap:1.2vw;
-    color:#fff;
-}
+        .search-box input {
+            width: 18vw;
+            height: 4vh;
+            border-radius: 0.4vw;
+            border: none;
+            padding: 0 2.5vw 0 1vw;
+            outline: none;
+            font-size: 0.85vw;
+        }
 
+        .search-wrapper i {
+            position: absolute;
+            right: 0.8vw;
+            color: #0b4a7a;
+            font-size: 0.9vw;
+            pointer-events: none;
+        }
 
-.menu-icon{
-    font-size:2.2vw;
-    cursor:pointer;
-    display:flex;
-    align-items:center;
-    user-select:none;
-}
+        /* --- SIDEBAR --- */
+        .container {
+            display: flex;
+            height: 92vh;
+            width: 100%;
+        }
 
-
-.logo img{
-    height:20vh;
-    width:auto;
-   
-}
-
-
-.search-box input{
-    width:15vw;
-    height:4vh;
-    border-radius:0.4vw;
-    border:none;
-    padding:0 1vw;
-    outline:none;
-    font-size:0.85vw;
-}
-
-
-.container{
-    display:flex;
-    height:92vh;
-    width:100%;
-}
-
-
-.sidebar{
-    width:18%;
-    background:#ffffff;
-    padding:2.5vh 1.2%;
-    display:flex;
-    flex-direction:column;
-    transition:0.3s ease;
-    overflow:hidden;
+      .sidebar {
+    width: 18%;
+    background: #ffffff;
+    padding: 2.5vh 1.2%;
+    display: flex;
+    flex-direction: column; /* Stack children vertically */
+    height: 92vh; /* Matches the container height */
+    transition: 0.3s ease;
     border-right: 1px solid #e0e0e0;
+    overflow: hidden; /* Prevent the whole sidebar from scrolling */
 }
 
 
-.sidebar.collapsed{
-    width:6.5vw;
-    padding:2vh 0;
-}
+        .sidebar.collapsed {
+            width: 6.5vw;
+            padding: 2vh 0;
+        }
 
+        .profile-card {
+            background: #fff;
+            padding: 2.5vh 5%;
+            text-align: center;
+            margin-bottom: 3vh;
+            transition: 0.3s ease;
+        }
 
-.sidebar.collapsed .hide-on-collapse,
-.sidebar.collapsed .profile-role,
-.sidebar.collapsed .real-name {
-    display: none !important;
-}
+        .sidebar.collapsed .profile-card {
+            background: transparent;
+            padding: 1vh 0;
+            margin-bottom: 1vh;
+        }
 
+        .avatar {
+            width: 5.5vw;
+            height: 5.5vw;
+            border-radius: 50%;
+            background: #0b4a7a;
+            margin: 0 auto 1.2vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 2.5vw;
+            transition: 0.3s;
+        }
 
-.sidebar.collapsed .profile-label {
-    display: block !important;
-    font-size: 0.7vw;
-    font-weight: 800;
+        .sidebar.collapsed .avatar {
+            width: 3.5vw;
+            height: 3.5vw;
+            font-size: 1.5vw;
+        }
+
+        .profile-name { font-weight: 700; font-size: 1vw; color: #333; }
+        .profile-label { display: none; }
+        .profile-role { font-size: 0.7vw; color: #0b4a7a; font-weight: 700; margin-top: 0.5vh; text-transform: uppercase; }
+
+        .sidebar.collapsed .profile-name,
+        .sidebar.collapsed .profile-role {
+            display: none !important;
+        }
+
+        .sidebar.collapsed .profile-label {
+            display: block !important;
+            font-size: 0.7vw;
+            font-weight: 800;
+            color: #0b4a7a;
+            margin-top: 2px;
+        }
+
+        .menu { flex: 1; }
+
+        .menu-item {
+            display: flex;
+            align-items: center;
+            gap: 0.8vw;
+            padding: 1.4vh 10%;
+            font-size: 0.85vw;
+            font-weight: 600;
+            color: #0b4a7a;
+            cursor: pointer;
+            border-radius: 0.6vw;
+            margin-bottom: 0.5vh;
+            transition: 0.2s;
+            white-space: nowrap;
+            text-decoration: none;
+        }
+
+        .menu-item i {
+            font-size: 1.3vw;
+            width: 1.5vw;
+            text-align: center;
+        }
+
+        .menu-item:hover { background: #eef2f6; }
+
+        /* Highlight classes removed to prevent specific selection styling */
+
+        .sidebar.collapsed .menu-item {
+            flex-direction: column;
+            padding: 1.2vh 0;
+            justify-content: center;
+            gap: 2px;
+        }
+
+        .sidebar.collapsed .menu-item span {
+            display: block !important;
+            font-size: 0.65vw;
+            font-weight: 800;
+        }
+
+        .sidebar.collapsed .hide-on-collapse {
+            display: none !important;
+        }
+
+         .signout {
+    margin-top: auto; /* Ensures it stays at the bottom of the flexbox */
+    padding: 1.5vh 10%;
     color: #0b4a7a;
-    margin-top: 2px;
-}
-
-
-.profile-card{
-    background:#fff;
-    padding:2.5vh 5%;
-    text-align:center;
-    margin-bottom:3vh;
-    transition: 0.3s;
-}
-
-
-.sidebar.collapsed .profile-card {
-    border: none;
-    padding: 1vh 0;
-    background: transparent;
-}
-
-
-.avatar {
-    width: 6vw;
-    height: 6vw;
-    border-radius: 50%;
-    background: #0b4a7a;
-    margin: 0 auto 1vh;
     display: flex;
     align-items: center;
-    justify-content: center;
-    color: #fff;
-    font-size: 2.5vw;
-    transition: 0.3s;
-}
-
-
-.sidebar.collapsed .avatar {
-    width: 3.5vw;
-    height: 3.5vw;
-    font-size: 1.5vw;
-    margin-bottom: 0;
-}
-
-
-.profile-name { font-weight: 600; font-size: 1.1vw; color: #333; }
-.profile-label { display: none; }
-.profile-role { font-size: 0.8vw; color:#0b4a7a; font-weight: 700; margin-top: 0.5vh; }
-
-
-.menu{ flex:1; }
-
- .filter-row { display: flex; justify-content: flex-end; padding-right: 5px; margin-bottom: 1vh; }
-        .filter-row i { color:blue; font-size: 2.5vh; cursor: pointer; }
-
-.menu-item{
-    display:flex;
-    align-items:center;
-    gap:0.8vw;
-    padding:1.4vh 8%;
-    font-size:0.9vw;
-    color:#0b4a7a;
-    font-weight: 600;
-    cursor:pointer;
-    border-radius:0.6vw;
-    margin-bottom: 0.5vh;
-    transition:0.2s;
-    white-space:nowrap;
-    position: relative;
-}
-
-
-.menu-item:hover{ background:#eef2f6; }
-.menu-item i{ font-size:1.3vw; width: 1.5vw; text-align: center;}
-
-
-.notification-dot{
-    width:0.6vw;
-    height:0.6vw;
-    background:#ff2d8d;
-    border-radius:50%;
-    margin-left:auto;
-}
-
-
-
-.sidebar.collapsed .menu-item{
-    flex-direction:column;
-    padding: 1.2vh 0;
-    justify-content: center;
-    text-align: center;
-    gap: 2px;
-    font-size: 0.65vw;
-}
-
-
-.sidebar.collapsed .notification-dot{
-    margin: 0;
-    position: absolute;
-    right: 1.5vw;
-    top: 1vh;
-}
-
-
-.signout{
-    margin-top:2.2vh;
-    padding: 1vh 10%;
-    display:flex;
-    gap:1vw;
-    color:#0b4a7a;
-    font-size:0.95vw;
-    font-weight:700;
-    align-items:center;
-    cursor:pointer;
-}
-
-
-.sidebar.collapsed .signout {
-    flex-direction: column;
-    padding: 1vh 0;
-    font-size: 0.65vw;
-    gap: 2px;
-}
-
-
-.content{
-    flex:1;
-    background:#f5f6f8;
-    padding:4vh 4%;
-    overflow-y:auto;
-}
-.toolbar{
-    background:#fff;
-    padding:1.5vh 2%;
-    border-radius:0.5vw;
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    box-shadow:0 0.1vw 0.3vw rgba(0,0,0,0.1);
-    margin-bottom:2vh;
-}
-
-
-.toolbar-left span{
-    font-size:0.8vw;
-    font-weight:600;
-    color:#555;
-    cursor:pointer;
-    margin-right:2vw;
-}
-
-
-.toolbar-left span.disabled{ opacity:0.3; }
-
-
-
-.page-header{
-    display:flex;
-    align-items:center;
-    gap:0.8vw;
-    font-weight:800;
-    font-size:1.5vw;
-    margin-bottom:3vh;
-    color:#0b4a7a;
+    gap: 0.8vw;
+    font-weight: 700;
+    font-size: 0.9vw;
     cursor: pointer;
+    text-decoration: none;
+    border-top: 1px solid #f0f0f0; /* Optional: separates it from the list */
+}
+.signout:hover {
+    background: #fff0f0; /* Light red tint on hover for clarity */
+    color: #d11a2a;
 }
 
+        /* --- CONTENT AREA --- */
+        .content {
+            flex: 1;
+            padding: 4vh 4%;
+            overflow-y: auto;
+        }
+        /* --- PROFILE SYNC STYLES --- */
+        .profile-area-sync {
+            text-align: center;
+            padding: 2vh 5%;
+            transition: opacity 0.2s;
+        }
 
+        .profile-icon-big {
+            font-size: 4.5vw; /* Large icon size */
+            color: #0b4a7a;
+            margin-bottom: 1vh;
+        }
 
+        .sidebar.collapsed .profile-icon-big {
+            font-size: 2.5vw;
+        }
 
-.activity-list{
-    display:flex;
-    flex-direction:column;
-    gap:1.8vh;
+        .profile-name-sync {
+            font-weight: bold;
+            color: #003366;
+            margin-bottom: 1vh;
+            font-size: 0.95vw;
+            text-transform: none; /* Keeps name casing natural */
+        }
+
+        .staff-badge    {
+            background: white;
+            border: 1px solid #ccc;
+            border-radius: 1vw;
+            padding: 0.2vh 0.8vw;
+            font-size: 0.65vw;
+            display: inline-block;
+            color: #003366;
+            font-weight: bold;
+            white-space: nowrap;
+        }
+
+        .staff-badge i {
+            font-size: 0.6vw;
+            margin-left: 3px;
+            color: #888;
+        }
+
+        /* Ensure sidebar collapse handles the badge */
+        .sidebar.collapsed .profile-name-sync,
+        .sidebar.collapsed .staff-badge {
+            display: none;
+        }
+
+        .page-header {
+            display: flex;
+            align-items: center;
+            gap: 0.8vw;
+            font-weight: 800;
+            font-size: 1.5vw;
+            margin-bottom: 3vh;
+            color: #0b4a7a;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .page-header:hover { transform: translateX(-5px); }
+        /* ALL NOTIFICATION & MODAL STYLES */
+        #notifOverlay {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100vw; height: 100vh;
+            background: rgba(0, 0, 0, 0.7);
+            display: none; /* Initially hidden */
+            align-items: center; justify-content: center;
+            z-index: 3000;
+        }
+
+        .notification-panel {
+            background: #0b4a7a;
+            width: 35vw; min-width: 450px;
+            padding: 6vh 3vw; border-radius: 1.5vw;
+            text-align: center; color: white;
+            position: relative; animation: zoomIn 0.3s ease-out;
+            box-shadow: 0 2vw 5vw rgba(0, 0, 0, 0.8);
+        }
+
+        .close-notif-x { position: absolute; top: 20px; right: 25px; font-size: 1.8vw; cursor: pointer; color: rgba(255, 255, 255, 0.7); transition: 0.3s ease; }
+        .close-notif-x:hover { color: #ff2d8d; transform: scale(1.2) rotate(90deg); }
+
+        .notification-panel i.main-bell { font-size: 5vw; margin-bottom: 2vh; display: block; }
+        .notif-title { font-size: 2vw; font-weight: bold; margin-bottom: 4vh; letter-spacing: 1px; }
+        #notifList { width: 100%; max-height: 40vh; overflow-y: auto; }
+
+        .notif-item {
+            background: rgba(255, 255, 255, 0.95); color: #333;
+            padding: 2.5vh 1.5vw; margin-bottom: 2vh;
+            border-radius: 0.8vw; display: flex;
+            justify-content: space-between; align-items: center;
+            cursor: pointer; font-weight: 700; font-size: 1.2vw;
+        }
+
+        /* SUB-MODAL STYLES */
+        .modal-overlay {
+            position: fixed; top: 0; left: 0;
+            width: 100%; height: 100%;
+            display: none; align-items: center; justify-content: center;
+            background: rgba(0, 0, 0, 0.85); z-index: 4000;
+        }
+        .modal-container { width: 42vw; padding: 5vh 3vw; border-radius: 1.5vw; text-align: center; color: white; position: relative; }
+        .bg-ticket { background: #0b4a7a; border: 1px solid rgba(255,255,255,0.2); }
+        .bg-stock { background: #ff7a00; }
+        .modal-message { background: #fff; color: #333; padding: 3vh 2vw; border-radius: 1vw; margin-top: 2vh; font-size: 1.1vw; text-align: left; }
+        .status-row { display: flex; align-items: center; gap: 12px; margin-bottom: 15px; padding-bottom: 10px; border-bottom: 1px solid #eee; }
+        .badge { padding: 4px 10px; font-size: 0.7vw; font-weight: 800; border-radius: 4px; color: #fff; text-transform: uppercase; }
+        .assigned { background: #0b4a7a; } .unresolved { background: #ff2d8d; }
+        .overdue-tag { background: #ff2d8d; font-size: 0.6vw; padding: 2px 6px; border-radius: 3px; }
+        .close-btn { margin-top: 3vh; padding: 1.5vh 3vw; border: none; background: #fff; color: #0b4a7a; border-radius: 2vw; cursor: pointer; font-weight: 800; font-size: 1vw; }
+        .clear-btn { margin-top: 3vh; background: transparent; border: 1px solid #fff; padding: 1vh 2vw; border-radius: 2vw; color: #fff; cursor: pointer; font-size: 0.9vw; }
+
+        @keyframes zoomIn { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+        .toolbar {
+            background: #fff;
+            padding: 1.5vh 2%;
+            border-radius: 0.5vw;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 0.1vw 0.3vw rgba(0,0,0,0.1);
+            margin-bottom: 2vh;
+        }
+
+        .toolbar-left span {
+            font-size: 0.8vw;
+            font-weight: 600;
+            color: #555;
+            cursor: pointer;
+            margin-right: 2vw;
+        }
+
+        .filter-row { display: flex; justify-content: flex-end; margin-bottom: 1vh; }
+        .filter-row i { color: #0b4a7a; font-size: 2.5vh; cursor: pointer; }
+
+     #activityFilterOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: none;
+    background: transparent; /* no dark overlay */
+    z-index: 3500;
 }
-
-
-.activity-card{
-    background:#fff;
-    border-radius:0.8vw;
-    padding:2.5vh 2.5%;
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    transition:0.25s ease;
-    border-left: 0.3vw solid transparent;
-}
-
-
-.activity-card:hover{
-    transform:translateX(0.5vw);
-    border-left-color: #0b4a7a;
-    box-shadow: 0 0.4vw 1.2vw rgba(0,0,0,0.06);
-}
-
-
-.activity-left{
-    display:flex;
-    align-items: center;
-    gap:1.5vw;
-}
-
-
-.activity-avatar{
-    width:3.2vw;
-    height:3.2vw;
-    border-radius:50%;
-    background:#eef2f6;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    color:#0b4a7a;
-    font-size:1.5vw;
-    border: 1px solid #0b4a7a22;
-}
-
-
-.activity-details{
-    font-size:0.95vw;
-    line-height:1.6;
-    color:#444;
-}
-.page-title i:hover {
-    color: #3498db; /* Changes color to a lighter blue */
-    transform: scale(1.1); /* Slightly enlarges the icon */
-    transition: 0.2s;
-}
-
-
-.activity-details strong{
-    display:block;
-    font-size:1.05vw;
-    color:#0b4a7a;
-}
-
-.filter-overlay {
+     .filter-panel {
     position: absolute;
-    top: 140px; /* Aligns with the filter icon */
-    right: 4%;
-    width: 320px;
-    background: white;
-    padding: 25px;
-    border-radius: 8px;
-    box-shadow: 0 5px 25px rgba(0,0,0,0.15);
-    z-index: 1000;
-    display: none; /* Hidden by default */
+    top: 140px; /* adjust if needed */
+    right: 20px;
+
+    width: 280px;
+    max-height: 80vh; /* 👈 important: prevents overflow */
+    overflow-y: auto; /* scroll inside if needed */
+
+    padding: 20px;
+    border-radius: 10px;
+    background: #fff;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+
+    animation: fadeIn 0.2s ease;
 }
 
-.filter-overlay .filter-icon-top { color: #00407a; font-size: 18px; margin-bottom: 15px; }
-.filter-overlay .filter-title { color: #222; font-size: 18px; font-weight: bold; margin-bottom: 25px; }
-.filter-overlay .custom-select { 
-    display: flex; justify-content: space-between; align-items: center; 
-    border: 1px solid #e0e0e0; border-radius: 6px; padding: 12px 15px; 
-    margin-bottom: 15px; cursor: pointer; background: white; 
+@media (max-width: 768px) {
+    .filter-panel {
+        right: 10px;
+        left: 10px; /* allow full width on small screens */
+        width: auto;
+        max-height: 75vh;
+    }
 }
-.filter-overlay .select-label { color: #aaa; font-size: 14px; font-weight: bold; margin-right: 10px; }
-.filter-overlay .select-value { color: black; font-weight: bold; font-size: 14px; flex-grow: 1; }
-.filter-overlay .calendar-wrapper { border: 1px solid #e0e0e0; border-radius: 6px; padding: 15px; }
-.filter-overlay .cal-header { display: flex; justify-content: space-between; font-weight: bold; margin-bottom: 10px; font-size: 14px; }
-.filter-overlay .cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); text-align: center; row-gap: 8px; }
-.filter-overlay .cal-date { font-size: 13px; font-weight: bold; cursor: pointer; padding: 5px; }
-.filter-overlay .cal-date.muted { color: #ccc; }
-filter.-overlay .cal-date.selected { background: #00407a; color: white; border-radius: 50%; }
-.filter-overlay .cal-date.highlight { color: #00407a; }
-.filter-overlay .clear-btn { text-align: right; margin-top: 15px; font-weight: bold; font-size: 13px; cursor: pointer; }
+        .filter-icon-top {
+            color: #0b4a7a;
+            font-size: 18px;
+            margin-bottom: 15px;
+        }
 
-.ticket-tag{ color:#0b4a7a; font-weight:700; }
-.status-high{ color:#d11a2a; font-weight:800; }
-.status-resolved{ color:#5f7f3a; font-weight:800; }
+        .filter-title {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            color: #16151a;
+            letter-spacing: 0.5px;
+        }
 
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
 
-.activity-time{
-    font-size:0.8vw;
-    color:#999;
-    font-weight: 600;
-    text-align: right;
-    min-width: 8vw;
+        .custom-select {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border: 1px solid #e0e0e0;
+            border-radius: 6px;
+            padding: 12px 15px;
+            cursor: pointer;
+            background: white;
+            position: relative;
+            transition: all 0.2s;
+        }
+
+        .custom-select:hover {
+            border-color: #bbb;
+            background-color: #fafafa;
+        }
+
+        .custom-select.active {
+            border-color: #0b4a7a;
+            box-shadow: 0 0 0 1px #0b4a7a inset;
+        }
+
+        .dropdown-menu {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: white;
+            border: 1px solid #0b4a7a;
+            border-radius: 0 0 6px 6px;
+            display: none;
+            z-index: 100;
+            max-height: 200px;
+            overflow-y: auto;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+
+        .custom-select.active .dropdown-menu {
+            display: block;
+        }
+
+        .dropdown-item {
+            padding: 10px 15px;
+            font-size: 14px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .dropdown-item:hover {
+            background: #f5f7fa;
+            color: #0b4a7a;
+        }
+
+        .select-label {
+            color: #aaa;
+            font-size: 14px;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+
+        .select-value {
+            flex: 1;
+            padding-left: 5px;
+            font-weight: bold;
+            color: black;
+            font-size: 14px;
+            text-align: left;
+        }
+
+        .select-icon {
+            color: #ccc;
+            font-size: 12px;
+            transition: transform 0.2s;
+        }
+
+        .custom-select.active .select-icon {
+            transform: rotate(180deg);
+            color: #0b4a7a;
+        }
+
+        .calendar-wrapper {
+            border: 1px solid #e0e0e0;
+            border-radius: 6px;
+            padding: 15px;
+            margin-top: 5px;
+            background: white;
+        }
+
+        .cal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: bold;
+            margin-bottom: 15px;
+            color: black;
+            font-size: 14px;
+        }
+
+        .cal-nav {
+            color: #ddd;
+            cursor: pointer;
+            font-size: 12px;
+            padding: 5px;
+        }
+
+        .cal-nav:hover {
+            color: #0b4a7a;
+        }
+
+        .cal-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            text-align: center;
+            row-gap: 10px;
+        }
+
+        .cal-date {
+            font-size: 13px;
+            font-weight: bold;
+            color: #333;
+            cursor: pointer;
+            width: 25px;
+            height: 25px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto;
+            border-radius: 50%;
+            transition: background 0.2s;
+        }
+
+        .cal-date:hover:not(.muted) {
+            background: #f0f0f0;
+        }
+
+        .cal-date.selected {
+            background: #0b4a7a;
+            color: white;
+        }
+
+        .cal-date.highlight {
+            color: #0b4a7a;
+        }
+
+        .cal-date.muted {
+            color: #ccc;
+            cursor: default;
+        }
+
+        .filter-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 20px;
+        }
+
+        .filter-clear-btn {
+            color: black;
+            font-weight: bold;
+            font-size: 13px;
+            cursor: pointer;
+            background: none;
+            border: none;
+        }
+
+        .filter-clear-btn:hover {
+            color: #0b4a7a;
+        }
+
+        .filter-apply-btn {
+            background: #0b4a7a;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 13px;
+        }
+
+        .filter-apply-btn:hover {
+            background: #093d66;
+        }
+
+        .activity-list { display: flex; flex-direction: column; gap: 1.8vh; }
+
+        .activity-card {
+            background: #fff;
+            border-radius: 0.8vw;
+            padding: 2.5vh 2.5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: 0.25s ease;
+            border-left: 0.4vw solid transparent;
+            box-shadow: 0 0.1vw 0.3vw rgba(0,0,0,0.05);
+        }
+
+        .activity-card:hover {
+            transform: translateX(0.5vw);
+            border-left-color: #0b4a7a;
+            box-shadow: 0 0.4vw 1.2vw rgba(0,0,0,0.06);
+        }
+
+        .activity-left { display: flex; align-items: center; gap: 1.5vw; }
+
+        .activity-avatar {
+            width: 3.2vw;
+            height: 3.2vw;
+            border-radius: 50%;
+            background: #eef2f6;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #0b4a7a;
+            font-size: 1.5vw;
+            border: 1px solid #0b4a7a22;
+        }
+
+        .activity-details { font-size: 0.95vw; line-height: 1.6; color: #444; }
+        .activity-details strong { display: block; font-size: 1.05vw; color: #0b4a7a; }
+
+        .status-high { color: #d11a2a; font-weight: 800; }
+        .status-resolved { color: #5f7f3a; font-weight: 800; }
+        .ticket-tag { color: #0b4a7a; font-weight: 700; }
+
+        .activity-time { font-size: 0.8vw; color: #999; font-weight: 600; text-align: right; min-width: 8vw; }
+@keyframes slideRight{
+    from{
+        transform: translateX(100%);
+    }
+    to{
+        transform: translateX(0);
+    }
 }
-</style>
+    </style>
 </head>
 
-
 <body>
-
 
 <div class="topbar">
     <div class="top-left">
@@ -397,181 +663,231 @@ filter.-overlay .cal-date.selected { background: #00407a; color: white; border-r
         </div>
     </div>
     <div class="search-box">
-        <input type="text" placeholder="Search system activities...">
+        <div class="search-wrapper">
+            <input type="text">
+            <i class="fas fa-search"></i>
+        </div>
     </div>
 </div>
-
-       
 
 <div class="container">
     <div class="sidebar" id="sidebar">
-        <div class="profile-card">
-            <div class="avatar">
-                <i class="fas fa-user"></i>
-            </div>
-            <div class="profile-name real-name">Jose L</div>
-            <div class="profile-label">PROFILE</div>
-            <div class="profile-role">ADMIN</div>
+            <div class="profile-card" onclick="window.location.href='PROFILE.html'" style="cursor: pointer;">
+    <div class="profile-area-sync">
+                    <div class="profile-icon-big">
+                        <i class="fas fa-user-circle"></i>
+                    </div>
+
+                    <div class="profile-name-sync real-name">JOSE L.</div>
+
+                    <div class="staff-badge">
+                        ADMIN
+                        | 2.0.1 <i class="fas fa-cog"></i>
+                    </div>
+
+                    <div class="profile-label">PROFILE</div>
+                </div>
         </div>
 
-
-       <div class="menu">
-    <a href="DASHBOARD.html" style="text-decoration: none;">
-        <div class="menu-item"><i class="fas fa-home"></i> <span>HOME</span></div>
-    </a>
-
-    <a href="TiICKET.html" style="text-decoration: none;">
-        <div class="menu-item"><i class="fas fa-ticket-alt"></i> <span>TICKETS</span></div>
-    </a>
-
-    <a href="INVENTORY.html" style="text-decoration: none;">
-        <div class="menu-item"><i class="fas fa-box"></i> <span>INVENTORY</span></div>
-    </a>
-    
-    <a href="INVENTORYTRACKER.html" style="text-decoration: none;" class="hide-on-collapse">
-        <div class="menu-item"><i class="fas fa-search"></i> <span>INVENTORY TRACKER</span></div>
-    </a>
-    
-    <a href="MAINTENANCELOG.html" style="text-decoration: none;">
-        <div class="menu-item"><i class="fas fa-clipboard-list"></i> <span>MAINTENANCE LOG</span></div>
-    </a>
-
-    <a href="ACTIVITYLOG.html" style="text-decoration: none;" class="hide-on-collapse">
-        <div class="menu-item"><i class="fas fa-history"></i> <span>ACTIVITY LOG</span></div>
-    </a>
-    
-    <a href="NOTIFICATION.html" style="text-decoration: none;">
-        <div class="menu-item"><i class="fas fa-bell"></i> <span>NOTIFICATION</span></div>
-    </a>
-
-    <a href="SETTINGS.html" style="text-decoration: none;">
-        <div class="menu-item"><i class="fas fa-cog"></i> <span>SETTINGS</span></div>
-    </a>
-    
-    <a href="FAQS.html" style="text-decoration: none;" class="hide-on-collapse">
-        <div class="menu-item"><i class="fas fa-question-circle"></i> <span>FAQs</span></div>
-    </a>
-</div>
-      <a href="LOG-IN.html" style="text-decoration: none;" class="signout hide-on-collapse">
-    <i class="fas fa-sign-out-alt"></i> <span>SIGN OUT</span>
-</a>
-
-</div>
-
-       <div class="content">
-    <div class="page-header"> <i class="fa-solid fa-chevron-left" onclick="window.location.href='DASHBOARD.html'"></i>
-        ACTIVITY LOG
-    </div>
-
-         <div class="toolbar">
-        <div class="toolbar-left">
-            <span id="editBtn" class="disabled" onclick="editTickets()">Edit</span>
-            <span onclick="sortTickets()">Sort by: Date ▾</span>
-        </div>
-        <div>1-3 of 3</div>
-    </div>
-<div class="filter-row">
-    <i class="fas fa-filter" onclick="toggleFilterOverlay()"></i>
-
-    <div class="filter-overlay" id="filterOverlay">
-        <div class="filter-icon-top"><i class="fas fa-filter"></i></div>
-        <div class="filter-title">Activity Log Filters</div>
-
-       <div class="filter-group">
+        <div class="menu">
             
-            <div class="custom-select" onclick="toggleSelect(this)">
-                <span class="select-label">Name:</span>
-                <span class="select-value" id="val-name">All</span>
-                <i class="fas fa-chevron-down select-icon"></i>
-            </div>
-
-            <div class="custom-select" onclick="toggleSelect(this)">
-                <span class="select-label">Role:</span>
-                <span class="select-value" id="val-role">All</span>
-                <i class="fas fa-chevron-down select-icon"></i>
-            </div>
-
-            <div class="custom-select" onclick="toggleSelect(this)">
-                <span class="select-label">Activity Type :</span>
-                <span class="select-value" id="val-type">All</span>
-                <i class="fas fa-chevron-down select-icon"></i>
-            </div>
-
-            <div class="custom-select" onclick="toggleSelect(this)">
-                <span class="select-label">Date Range:</span>
-                <span class="select-value" id="val-date">3 Nov</span>
-                <i class="fas fa-chevron-down select-icon"></i>
-            </div>
-
-            <div class="calendar-wrapper">
-                <div class="cal-header">
-                    <i class="fas fa-chevron-left cal-nav"></i>
-                    <span>November 2025</span>
-                    <i class="fas fa-chevron-right cal-nav"></i>
-                </div>
-                
-                <div class="cal-grid" id="calendarGrid">
-                    <div class="cal-date muted">28</div>
-                    <div class="cal-date muted">29</div>
-                    <div class="cal-date muted">30</div>
-                    <div class="cal-date muted">31</div>
-                    <div class="cal-date highlight" id="date-1" onclick="selectDate(this)">1</div>
-                    <div class="cal-date highlight" id="date-2" onclick="selectDate(this)">2</div>
-                    <div class="cal-date highlight" id="date-3" onclick="selectDate(this)">3</div>
-
-                    <div class="cal-date" onclick="selectDate(this)">4</div>
-                    <div class="cal-date selected" id="defaultSelected" onclick="selectDate(this)">5</div>
-                    <div class="cal-date" onclick="selectDate(this)">6</div>
-                    <div class="cal-date" onclick="selectDate(this)">7</div>
-                    <div class="cal-date" onclick="selectDate(this)">8</div>
-                    <div class="cal-date" onclick="selectDate(this)">9</div>
-                    <div class="cal-date" onclick="selectDate(this)">10</div>
-
-                    <div class="cal-date" onclick="selectDate(this)">11</div>
-                    <div class="cal-date" onclick="selectDate(this)">12</div>
-                    <div class="cal-date" onclick="selectDate(this)">13</div>
-                    <div class="cal-date" onclick="selectDate(this)">14</div>
-                    <div class="cal-date" onclick="selectDate(this)">15</div>
-                    <div class="cal-date" onclick="selectDate(this)">16</div>
-                    <div class="cal-date" onclick="selectDate(this)">17</div>
-
-                    <div class="cal-date" onclick="selectDate(this)">18</div>
-                    <div class="cal-date" onclick="selectDate(this)">19</div>
-                    <div class="cal-date" onclick="selectDate(this)">20</div>
-                    <div class="cal-date" onclick="selectDate(this)">21</div>
-                    <div class="cal-date" onclick="selectDate(this)">22</div>
-                    <div class="cal-date" onclick="selectDate(this)">23</div>
-                    <div class="cal-date" onclick="selectDate(this)">24</div>
-
-                    <div class="cal-date" onclick="selectDate(this)">25</div>
-                    <div class="cal-date" onclick="selectDate(this)">26</div>
-                    <div class="cal-date" onclick="selectDate(this)">27</div>
-                    <div class="cal-date" onclick="selectDate(this)">28</div>
-                    <div class="cal-date" onclick="selectDate(this)">29</div>
-                    <div class="cal-date" onclick="selectDate(this)">30</div>
-                    <div class="cal-date muted">1</div>
-
-                    <div class="cal-date muted">2</div>
-                    <div class="cal-date muted">3</div>
-                    <div class="cal-date muted">4</div>
-                    <div class="cal-date muted">5</div>
-                    <div class="cal-date muted">6</div>
-                    <div class="cal-date muted">7</div>
-                    <div class="cal-date muted">8</div>
-                </div>
-            </div>
+            <a href="DASHBOARD.html" class="menu-item"><i class="fas fa-home"></i> <span>HOME</span></a>
+            <a href="TICKET.html" class="menu-item"><i class="fas fa-ticket-alt"></i> <span>TICKETS</span></a>
+            <a href="INVENTORY.html" class="menu-item"><i class="fas fa-box"></i> <span>INVENTORY</span></a>
+            <a href="INVENTORYTRACKER.html" class="menu-item hide-on-collapse"><i class="fas fa-search"></i> <span>INVENTORY TRACKER</span></a>
+            <a href="MAINTENANCELOG.html" class="menu-item"><i class="fas fa-clipboard-list"></i> <span>MAINTENANCE LOG</span></a>
+            <a href="ACTIVITYLOG.html" class="menu-item"><i class="fas fa-history"></i> <span>ACTIVITY LOG</span></a>
+            <div class="menu-item" onclick="openNotif()"><i class="fas fa-bell"></i> <span>NOTIFICATION</span></div>                <a href="SETTINGS.html" class="menu-item"><i class="fas fa-cog"></i> <span>SETTINGS</span></a>
+            <a href="FAQS.html" class="menu-item hide-on-collapse"><i class="fas fa-question-circle"></i> <span>FAQs</span></a>
         </div>
 
-        <div class="filter-footer">
-            <div class="clear-btn" onclick="toggleFilterOverlay()">Clear Filters</div>
-        </div>
+        <a href="LOG-IN.html" class="signout hide-on-collapse">
+            <i class="fas fa-sign-out-alt"></i> <span>SIGN OUT</span>
+        </a>
     </div>
-</div>
 
+    <div class="content">
+        <div class="page-header" onclick="window.location.href='DASHBOARD.html'">
+            <i class="fa-solid fa-chevron-left"></i> ACTIVITY LOG
+        </div>
+
+        <div class="toolbar">
+            <div class="toolbar-left">
+                <span style="opacity:0.3; cursor:default;">Edit</span>
+<span onclick="toggleSort()" id="sortBtn">Sort by: Newest ▼</span>            </div>
+            <div>1-5 of 5</div>
+        </div>
+
+        <div class="filter-row">
+            <i class="fas fa-filter" onclick="openActivityFilter()"></i>
+        </div>
+
+        <div id="activityFilterOverlay">
+            <div class="filter-panel">
+                
+                <div class="filter-icon-top">
+                    <i class="fas fa-filter"></i>
+                </div>
+
+                <div class="filter-header">
+                    <div class="filter-title">Activity Log Filters</div>
+                </div>
+
+                <div class="filter-group">
+                    <!-- Name Filter -->
+                    <div class="custom-select" onclick="toggleFilterSelect(this)">
+                        <span class="select-label">Name:</span>
+                        <span class="select-value" id="val-name">All</span>
+                        <i class="fas fa-chevron-down select-icon"></i>
+                        <div class="dropdown-menu">
+                            <div class="dropdown-item" onclick="updateFilterVal('val-name', 'All', event)">All</div>
+                            <div class="dropdown-item" onclick="updateFilterVal('val-name', 'Jose L', event)">Jose L</div>
+                            <div class="dropdown-item" onclick="updateFilterVal('val-name', 'Erna V', event)">Erna V</div>
+                            <div class="dropdown-item" onclick="updateFilterVal('val-name', 'Jane F', event)">Jane F</div>
+                            <div class="dropdown-item" onclick="updateFilterVal('val-name', 'Kenneth F', event)">Kenneth F</div>
+                        </div>
+                    </div>
+
+                    <!-- Role Filter -->
+                    <div class="custom-select" onclick="toggleFilterSelect(this)">
+                        <span class="select-label">Role:</span>
+                        <span class="select-value" id="val-role">All</span>
+                        <i class="fas fa-chevron-down select-icon"></i>
+                        <div class="dropdown-menu">
+                            <div class="dropdown-item" onclick="updateFilterVal('val-role', 'All', event)">All</div>
+                            <div class="dropdown-item" onclick="updateFilterVal('val-role', 'Admin', event)">Admin</div>
+                            <div class="dropdown-item" onclick="updateFilterVal('val-role', 'Staff', event)">Staff</div>
+                            <div class="dropdown-item" onclick="updateFilterVal('val-role', 'Finance', event)">Finance</div>
+                        </div>
+                    </div>
+
+                    <!-- Activity Type Filter -->
+                    <div class="custom-select" onclick="toggleFilterSelect(this)">
+                        <span class="select-label">Activity Type:</span>
+                        <span class="select-value" id="val-type">All</span>
+                        <i class="fas fa-chevron-down select-icon"></i>
+                        <div class="dropdown-menu">
+                            <div class="dropdown-item" onclick="updateFilterVal('val-type', 'All', event)">All</div>
+                            <div class="dropdown-item" onclick="updateFilterVal('val-type', 'Ticket Created', event)">Ticket Created</div>
+                            <div class="dropdown-item" onclick="updateFilterVal('val-type', 'Ticket Resolved', event)">Ticket Resolved</div>
+                            <div class="dropdown-item" onclick="updateFilterVal('val-type', 'Status Update', event)">Status Update</div>
+                            <div class="dropdown-item" onclick="updateFilterVal('val-type', 'Maintenance', event)">Maintenance</div>
+                        </div>
+                    </div>
+
+                    <!-- Date Range -->
+                    <div class="custom-select" onclick="toggleFilterSelect(this)">
+                        <span class="select-label">Date Range:</span>
+                        <span class="select-value" id="val-date">5 Nov</span>
+                    </div>
+
+                    <!-- Calendar -->
+                    <div class="calendar-wrapper">
+                        <div class="cal-header">
+                            <i class="fas fa-chevron-left cal-nav" onclick="changeMonth(-1)"></i>
+                            <span id="calMonthYear">November 2025</span>
+                            <i class="fas fa-chevron-right cal-nav" onclick="changeMonth(1)"></i>
+                        </div>
+
+                        <div class="cal-grid" id="calendarGrid">
+
+                            <div class="cal-date muted">28</div>
+                            <div class="cal-date muted">29</div>
+                            <div class="cal-date muted">30</div>
+                            <div class="cal-date muted">31</div>
+
+                            <div class="cal-date highlight" onclick="selectCalDate(this)">1</div>
+                            <div class="cal-date highlight" onclick="selectCalDate(this)">2</div>
+                            <div class="cal-date highlight" onclick="selectCalDate(this)">3</div>
+
+                            <div class="cal-date" onclick="selectCalDate(this)">4</div>
+                            <div class="cal-date selected" id="defaultSelected" onclick="selectCalDate(this)">5</div>
+                            <div class="cal-date" onclick="selectCalDate(this)">6</div>
+                            <div class="cal-date" onclick="selectCalDate(this)">7</div>
+                            <div class="cal-date" onclick="selectCalDate(this)">8</div>
+                            <div class="cal-date" onclick="selectCalDate(this)">9</div>
+                            <div class="cal-date" onclick="selectCalDate(this)">10</div>
+
+                            <div class="cal-date" onclick="selectCalDate(this)">11</div>
+                            <div class="cal-date" onclick="selectCalDate(this)">12</div>
+                            <div class="cal-date" onclick="selectCalDate(this)">13</div>
+                            <div class="cal-date" onclick="selectCalDate(this)">14</div>
+                            <div class="cal-date" onclick="selectCalDate(this)">15</div>
+                            <div class="cal-date" onclick="selectCalDate(this)">16</div>
+                            <div class="cal-date" onclick="selectCalDate(this)">17</div>
+
+                            <div class="cal-date" onclick="selectCalDate(this)">18</div>
+                            <div class="cal-date" onclick="selectCalDate(this)">19</div>
+                            <div class="cal-date" onclick="selectCalDate(this)">20</div>
+                            <div class="cal-date" onclick="selectCalDate(this)">21</div>
+                            <div class="cal-date" onclick="selectCalDate(this)">22</div>
+                            <div class="cal-date" onclick="selectCalDate(this)">23</div>
+                            <div class="cal-date" onclick="selectCalDate(this)">24</div>
+
+                            <div class="cal-date" onclick="selectCalDate(this)">25</div>
+                            <div class="cal-date" onclick="selectCalDate(this)">26</div>
+                            <div class="cal-date" onclick="selectCalDate(this)">27</div>
+                            <div class="cal-date" onclick="selectCalDate(this)">28</div>
+                            <div class="cal-date" onclick="selectCalDate(this)">29</div>
+                            <div class="cal-date" onclick="selectCalDate(this)">30</div>
+
+                        </div>
+                    </div>
+                </div>
+
+                <div class="filter-footer">
+                    <button class="filter-clear-btn" onclick="clearActivityFilters()">Clear Filters</button>
+                    <button class="filter-apply-btn" onclick="applyActivityFilters()">Apply</button>
+                </div>
+            </div>
+        </div>
+        <div id="notifOverlay">
+            <div class="notification-panel">
+                <i class="fas fa-times close-notif-x" onclick="closeNotif()"></i>
+                <i class="fas fa-bell main-bell"></i>
+                <div class="notif-title">NOTIFICATIONS</div>
+                <div id="notifList">
+                    <div class="notif-item" onclick="openModal('stockModal')">
+                        <span>⚠️ Low Stock Alert!</span>
+                        <i class="fas fa-arrow-right"></i>
+                    </div>
+                    <div class="notif-item" onclick="openModal('ticketModal')">
+                        <span>🎫 Ticket Status Updated</span>
+                        <i class="fas fa-arrow-right"></i>
+                    </div>
+                </div>
+                <button class="clear-btn" onclick="clearAllNotifs()">Clear All</button>
+            </div>
+        </div>
+
+        <div class="modal-overlay" id="ticketModal">
+            <div class="modal-container bg-ticket">
+                <i class="fas fa-clipboard-list" style="font-size: 3.5vw; margin-bottom: 2vh;"></i>
+                <h2 style="font-size: 1.8vw;">TICKET STATUS LOG</h2>
+                <div class="modal-message">
+                    <span class="overdue-tag">OVERDUE</span>
+                    <h3 style="font-size: 1.2vw; margin-top: 5px;">Eren Y</h3>
+                    <div class="status-row"><i class="fas fa-check-circle" style="color: #0b4a7a;"></i><div style="flex:1;">Ticket Logged</div><span class="badge unresolved">Unresolved</span></div>
+                    <div class="status-row"><i class="fas fa-user-check" style="color: #0b4a7a;"></i><div style="flex:1;">Assigned to Kenneth F</div><span class="badge assigned">Assigned</span></div>
+                </div>
+                <button class="close-btn" onclick="closeModal('ticketModal')">CLOSE LIST</button>
+            </div>
+        </div>
+
+        <div class="modal-overlay" id="stockModal">
+            <div class="modal-container bg-stock">
+                <i class="fas fa-box-open" style="font-size: 3.5vw; margin-bottom: 2vh;"></i>
+                <h2 style="font-size: 1.8vw;">INVENTORY ALERT</h2>
+                <div class="modal-message">
+                    <b>Items below threshold:</b><br><br>
+                    • Printer Ink (2 left)<br>• Bond Paper (5 reams left)
+                </div>
+                <button class="close-btn" style="color: #ff7a00" onclick="closeModal('stockModal')">CLOSE</button>
+            </div>
+        </div>
 
         <div class="activity-list">
-            <div class="activity-card">
-                <div class="activity-left">
+<div class="activity-card" data-name="Jose L" data-role="Admin" data-type="Maintenance" data-date="5 Nov">                <div class="activity-left">
                     <div class="activity-avatar"><i class="fas fa-user-shield"></i></div>
                     <div class="activity-details">
                         <strong>Jose L (Admin)</strong>
@@ -582,9 +898,7 @@ filter.-overlay .cal-date.selected { background: #00407a; color: white; border-r
                 <div class="activity-time">Just now</div>
             </div>
 
-
-            <div class="activity-card">
-                <div class="activity-left">
+<div class="activity-card" data-name="Erna V" data-role="Finance" data-type="Ticket Created" data-date="5 Nov">                <div class="activity-left">
                     <div class="activity-avatar"><i class="fas fa-file-invoice"></i></div>
                     <div class="activity-details">
                         <strong>Erna V (Finance)</strong>
@@ -595,9 +909,7 @@ filter.-overlay .cal-date.selected { background: #00407a; color: white; border-r
                 <div class="activity-time">12 mins ago</div>
             </div>
 
-
-            <div class="activity-card">
-                <div class="activity-left">
+<div class="activity-card" data-name="Jane F" data-role="Staff" data-type="Ticket Resolved" data-date="4 Nov">                <div class="activity-left">
                     <div class="activity-avatar"><i class="fas fa-check-circle"></i></div>
                     <div class="activity-details">
                         <strong>Jane F (Staff)</strong>
@@ -608,9 +920,7 @@ filter.-overlay .cal-date.selected { background: #00407a; color: white; border-r
                 <div class="activity-time">Yesterday 17:10</div>
             </div>
 
-
-            <div class="activity-card">
-                <div class="activity-left">
+<div class="activity-card" data-name="Kenneth F" data-role="Staff" data-type="Status Update" data-date="4 Nov">                <div class="activity-left">
                     <div class="activity-avatar"><i class="fas fa-user-edit"></i></div>
                     <div class="activity-details">
                         <strong>Kenneth F (Staff)</strong>
@@ -621,9 +931,7 @@ filter.-overlay .cal-date.selected { background: #00407a; color: white; border-r
                 <div class="activity-time">Yesterday 16:23</div>
             </div>
 
-
-            <div class="activity-card">
-                <div class="activity-left">
+<div class="activity-card" data-name="Kenneth F" data-role="Staff" data-type="Ticket Resolved" data-date="4 Nov">                <div class="activity-left">
                     <div class="activity-avatar"><i class="fas fa-archive"></i></div>
                     <div class="activity-details">
                         <strong>Kenneth F (Staff)</strong>
@@ -637,72 +945,178 @@ filter.-overlay .cal-date.selected { background: #00407a; color: white; border-r
     </div>
 </div>
 
-
 <script>
-    function toggleFilterOverlay() {
-    const filter = document.getElementById('filterOverlay');
-    if (filter.style.display === 'block') {
-        filter.style.display = 'none';
-    } else {
-        filter.style.display = 'block';
+    function toggleMenu() {
+        document.getElementById("sidebar").classList.toggle("collapsed");
     }
+    function openNotif() { document.getElementById("notifOverlay").style.display = "flex"; }
+    function closeNotif() { document.getElementById("notifOverlay").style.display = "none"; }
+    function openModal(id) { document.getElementById(id).style.display = "flex"; }
+    function closeModal(id) { document.getElementById(id).style.display = "none"; }
+    function clearAllNotifs() { document.getElementById("notifList").innerHTML = '<p style="padding: 20px; opacity: 0.5; color: white;">No notifications</p>'; }
+
+    // ===== ACTIVITY LOG FILTER FUNCTIONS =====
+   function openActivityFilter() {
+    const overlay = document.getElementById("activityFilterOverlay");
+    const panel = document.querySelector(".filter-panel");
+
+    overlay.style.display = "block";
+
+    // Adjust if it goes off-screen
+    setTimeout(() => {
+        const rect = panel.getBoundingClientRect();
+
+        if (rect.bottom > window.innerHeight) {
+            panel.style.top = "80px"; // move up if too low
+        }
+    }, 10);
 }
-  function toggleSelect(element) {
-            const allSelects = document.querySelectorAll('.custom-select');
-            allSelects.forEach(el => {
-                if (el !== element) el.classList.remove('active');
-            });
-            element.classList.toggle('active');
-        }
 
-        function selectDate(element) {
-            if (element.classList.contains('muted')) return;
-
-            const allDates = document.querySelectorAll('.cal-date');
-            allDates.forEach(d => d.classList.remove('selected'));
-
-            element.classList.add('selected');
-        }
-
-        function clearFilters() {
-            document.getElementById('val-name').innerText = 'All';
-            document.getElementById('val-role').innerText = 'All';
-            document.getElementById('val-type').innerText = 'All';
-            document.getElementById('val-date').innerText = '3 Nov';
-
-            const allDates = document.querySelectorAll('.cal-date');
-            allDates.forEach(d => {
-                d.classList.remove('selected');
-                d.classList.remove('highlight');
-            });
-
-            document.getElementById('date-1').classList.add('highlight');
-            document.getElementById('date-2').classList.add('highlight');
-            document.getElementById('date-3').classList.add('highlight');
-            document.getElementById('defaultSelected').classList.add('selected');
-
-            const allSelects = document.querySelectorAll('.custom-select');
-            allSelects.forEach(el => el.classList.remove('active'));
-        }
-
-window.onclick = function(event) {
-    const filter = document.getElementById('filterOverlay');
-    const filterBtn = document.querySelector('.filter-row i');
-    if (event.target !== filter && !filter.contains(event.target) && event.target !== filterBtn) {
-        filter.style.display = 'none';
+    function closeActivityFilter() {
+        document.getElementById("activityFilterOverlay").style.display = "none";
+        // Close all dropdowns
+        document.querySelectorAll('.custom-select').forEach(el => el.classList.remove('active'));
     }
+
+    function toggleFilterSelect(element) {
+        const isActive = element.classList.contains('active');
+        // Close all other dropdowns
+        document.querySelectorAll('.custom-select').forEach(el => el.classList.remove('active'));
+        // Toggle current
+        if (!isActive) {
+            element.classList.add('active');
+        }
+    }
+
+    function updateFilterVal(id, value, event) {
+        event.stopPropagation();
+        document.getElementById(id).innerText = value;
+        event.target.closest('.custom-select').classList.remove('active');
+    }
+
+    function selectCalDate(element) {
+        if (element.classList.contains('muted')) return;
+        document.querySelectorAll('.cal-date').forEach(d => d.classList.remove('selected'));
+        element.classList.add('selected');
+        document.getElementById('val-date').innerText = element.innerText + ' Nov';
+    }
+
+   function clearActivityFilters() {
+
+    document.getElementById('val-name').innerText = 'All';
+    document.getElementById('val-role').innerText = 'All';
+    document.getElementById('val-type').innerText = 'All';
+    document.getElementById('val-date').innerText = '5 Nov';
+
+    document.querySelectorAll('.activity-card').forEach(card=>{
+        card.style.display = "flex";
+    });
+
+    document.querySelectorAll('.cal-date').forEach(d => d.classList.remove('selected'));
+    document.getElementById('defaultSelected').classList.add('selected');
 }
-    document.querySelector('.btn.edit').addEventListener('click', function() {
-    alert("Edit mode enabled. You can now modify the Item details.");
+
+   function applyActivityFilters() {
+
+    const nameFilter = document.getElementById('val-name').innerText;
+    const roleFilter = document.getElementById('val-role').innerText;
+    const typeFilter = document.getElementById('val-type').innerText;
+    const dateFilter = document.getElementById('val-date').innerText;
+
+    const cards = document.querySelectorAll('.activity-card');
+
+    cards.forEach(card => {
+
+        const name = card.dataset.name;
+        const role = card.dataset.role;
+        const type = card.dataset.type;
+        const date = card.dataset.date;
+
+        let show = true;
+
+        if (nameFilter !== "All" && name !== nameFilter) show = false;
+        if (roleFilter !== "All" && role !== roleFilter) show = false;
+        if (typeFilter !== "All" && type !== typeFilter) show = false;
+        if (dateFilter !== date) show = false;
+
+        card.style.display = show ? "flex" : "none";
+
+    });
+
+    closeActivityFilter();
+}
+
+    function changeMonth(direction) {
+        // Placeholder for month navigation
+        console.log('Change month:', direction > 0 ? 'next' : 'previous');
+    }
+
+    // Close filter overlay when clicking outside the panel
+  document.getElementById('activityFilterOverlay').addEventListener('click', function(event) {
+    if (!event.target.closest('.filter-panel')) {
+        closeActivityFilter();
+    }
 });
-function toggleMenu(){
-    document.getElementById("sidebar").classList.toggle("collapsed");
+    // Close dropdowns when clicking outside
+    window.addEventListener('click', function(event) {
+        if (!event.target.closest('.custom-select') && !event.target.closest('.filter-panel')) {
+            document.querySelectorAll('.custom-select').forEach(el => el.classList.remove('active'));
+        }
+    });
+    let sortOrder = "newest"; // default
+
+function toggleSort() {
+    const btn = document.getElementById("sortBtn");
+    const list = document.querySelector(".activity-list");
+    const cards = Array.from(document.querySelectorAll(".activity-card"));
+
+    // Toggle order
+    sortOrder = sortOrder === "newest" ? "oldest" : "newest";
+
+    // Update label
+    btn.innerText = sortOrder === "newest"
+        ? "Sort by: Newest ▾"
+        : "Sort by: Oldest ▾";
+
+    // Sort based on data-date + time priority
+    cards.sort((a, b) => {
+        const dateA = a.dataset.date;
+        const dateB = b.dataset.date;
+
+        // Convert to comparable value
+        const valA = convertDate(dateA, a.querySelector(".activity-time").innerText);
+        const valB = convertDate(dateB, b.querySelector(".activity-time").innerText);
+
+        return sortOrder === "newest" ? valB - valA : valA - valB;
+    });
+
+    // Re-append sorted cards
+    cards.forEach(card => list.appendChild(card));
+}
+function convertDate(dateStr, timeStr) {
+    // Example: "5 Nov"
+    const parts = dateStr.split(" ");
+    const day = parseInt(parts[0]);
+    const month = parts[1];
+
+    const monthMap = {
+        Jan:0, Feb:1, Mar:2, Apr:3, May:4, Jun:5,
+        Jul:6, Aug:7, Sep:8, Oct:9, Nov:10, Dec:11
+    };
+
+    let date = new Date(2025, monthMap[month], day);
+
+    // Handle "Just now", "mins ago", "Yesterday"
+    if (timeStr.includes("Just now")) {
+        date.setHours(23,59,59);
+    } else if (timeStr.includes("mins")) {
+        date.setMinutes(50); // approximate
+    } else if (timeStr.includes("Yesterday")) {
+        date.setDate(date.getDate() - 1);
+    }
+
+    return date.getTime();
 }
 </script>
-
-
 </body>
 </html>
-
-
-

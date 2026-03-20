@@ -60,16 +60,29 @@ body{
 }
 
 
-.search-box input{
-    width:18vw;
-    height:4vh;
-    border-radius:0.4vw;
-    border:none;
-    padding:0 1vw;
-    outline:none;
-    font-size:0.85vw;
+.search-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
 }
 
+.search-box input {
+    width: 18vw;
+    height: 4vh;
+    border-radius: 0.4vw;
+    border: none;
+    padding: 0 2.5vw 0 1vw;
+    outline: none;
+    font-size: 0.85vw;
+}
+
+.search-wrapper i {
+    position: absolute;
+    right: 0.8vw;
+    color: #0b4a7a;
+    font-size: 0.9vw;
+    pointer-events: none; 
+}
 
 .container{
     display:flex;
@@ -78,16 +91,18 @@ body{
 }
 
 
-.sidebar{
-    width:18%;
-    background:#ffffff;
-    padding:2.5vh 1.2%;
-    display:flex;
-    flex-direction:column;
-    transition:0.3s ease;
-    overflow:hidden;
+.sidebar {
+    width: 18%;
+    background: #ffffff;
+    padding: 2.5vh 1.2%;
+    display: flex;
+    flex-direction: column; /* Stack children vertically */
+    height: 92vh; /* Matches the container height */
+    transition: 0.3s ease;
     border-right: 1px solid #e0e0e0;
+    overflow: hidden; /* Prevent the whole sidebar from scrolling */
 }
+
 
 
 .sidebar.collapsed{
@@ -187,7 +202,6 @@ body{
 .menu-item i{ font-size:1.3vw; width: 1.5vw; text-align: center;}
 
 
-/* COLLAPSED MENU STYLE */
 .sidebar.collapsed .menu-item{
     flex-direction:column;
     padding: 1.2vh 0;
@@ -198,16 +212,22 @@ body{
 }
 
 
-.signout{
-    margin-top:2vh;
+ .signout {
+    margin-top: auto; /* Ensures it stays at the bottom of the flexbox */
     padding: 1.5vh 10%;
-    display:flex;
-    gap:0.8vw;
-    color:#0b4a7a;
-    font-size:0.9vw;
-    font-weight:700;
-    align-items:center;
-    cursor:pointer;
+    color: #0b4a7a;
+    display: flex;
+    align-items: center;
+    gap: 0.8vw;
+    font-weight: 700;
+    font-size: 0.9vw;
+    cursor: pointer;
+    text-decoration: none;
+    border-top: 1px solid #f0f0f0; /* Optional: separates it from the list */
+}
+.signout:hover {
+    background: #fff0f0; /* Light red tint on hover for clarity */
+    color: #d11a2a;
 }
 
 
@@ -261,6 +281,60 @@ body{
     background: #fafafa;
 }
 
+/* ALL NOTIFICATION & MODAL STYLES */
+#notifOverlay {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100vw; height: 100vh;
+    background: rgba(0, 0, 0, 0.7); 
+    display: none; /* Initially hidden */
+    align-items: center; justify-content: center;
+    z-index: 3000;
+}
+
+.notification-panel {
+    background: #0b4a7a;
+    width: 35vw; min-width: 450px;
+    padding: 6vh 3vw; border-radius: 1.5vw;
+    text-align: center; color: white;
+    position: relative; animation: zoomIn 0.3s ease-out;
+    box-shadow: 0 2vw 5vw rgba(0, 0, 0, 0.8);
+}
+
+.close-notif-x { position: absolute; top: 20px; right: 25px; font-size: 1.8vw; cursor: pointer; color: rgba(255, 255, 255, 0.7); transition: 0.3s ease; }
+.close-notif-x:hover { color: #ff2d8d; transform: scale(1.2) rotate(90deg); }
+
+.notification-panel i.main-bell { font-size: 5vw; margin-bottom: 2vh; display: block; }
+.notif-title { font-size: 2vw; font-weight: bold; margin-bottom: 4vh; letter-spacing: 1px; }
+#notifList { width: 100%; max-height: 40vh; overflow-y: auto; }
+
+.notif-item {
+    background: rgba(255, 255, 255, 0.95); color: #333;
+    padding: 2.5vh 1.5vw; margin-bottom: 2vh;
+    border-radius: 0.8vw; display: flex;
+    justify-content: space-between; align-items: center;
+    cursor: pointer; font-weight: 700; font-size: 1.2vw;
+}
+
+/* SUB-MODAL STYLES */
+.modal-overlay {
+    position: fixed; top: 0; left: 0;
+    width: 100%; height: 100%;
+    display: none; align-items: center; justify-content: center;
+    background: rgba(0, 0, 0, 0.85); z-index: 4000;
+}
+.modal-container { width: 42vw; padding: 5vh 3vw; border-radius: 1.5vw; text-align: center; color: white; position: relative; }
+.bg-ticket { background: #0b4a7a; border: 1px solid rgba(255,255,255,0.2); }
+.bg-stock { background: #ff7a00; }
+.modal-message { background: #fff; color: #333; padding: 3vh 2vw; border-radius: 1vw; margin-top: 2vh; font-size: 1.1vw; text-align: left; }
+.status-row { display: flex; align-items: center; gap: 12px; margin-bottom: 15px; padding-bottom: 10px; border-bottom: 1px solid #eee; }
+.badge { padding: 4px 10px; font-size: 0.7vw; font-weight: 800; border-radius: 4px; color: #fff; text-transform: uppercase; }
+.assigned { background: #0b4a7a; } .unresolved { background: #ff2d8d; }
+.overdue-tag { background: #ff2d8d; font-size: 0.6vw; padding: 2px 6px; border-radius: 3px; }
+.close-btn { margin-top: 3vh; padding: 1.5vh 3vw; border: none; background: #fff; color: #0b4a7a; border-radius: 2vw; cursor: pointer; font-weight: 800; font-size: 1vw; }
+.clear-btn { margin-top: 3vh; background: transparent; border: 1px solid #fff; padding: 1vh 2vw; border-radius: 2vw; color: #fff; cursor: pointer; font-size: 0.9vw; }
+
+@keyframes zoomIn { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
 
 .summary-card:last-child{ border-right:none; }
 
@@ -339,7 +413,54 @@ body{
     font-size:0.85vw;
     color: #444;
 }
+/* --- PROFILE SYNC STYLES --- */
+.profile-area-sync {
+    text-align: center;
+    padding: 2vh 5%;
+    transition: opacity 0.2s;
+}
 
+.profile-icon-big {
+    font-size: 4.5vw; /* Large icon size */
+    color: #0b4a7a;
+    margin-bottom: 1vh;
+}
+
+.sidebar.collapsed .profile-icon-big {
+    font-size: 2.5vw;
+}
+
+.profile-name-sync {
+    font-weight: bold;
+    color: #003366;
+    margin-bottom: 1vh;
+    font-size: 0.95vw;
+    text-transform: none; /* Keeps name casing natural */
+}
+
+.staff-badge {
+    background: white;
+    border: 1px solid #ccc;
+    border-radius: 1vw;
+    padding: 0.2vh 0.8vw;
+    font-size: 0.65vw;
+    display: inline-block;
+    color: #003366;
+    font-weight: bold;
+    white-space: nowrap;
+}
+
+.staff-badge i {
+    font-size: 0.6vw;
+    margin-left: 3px;
+    color: #888;
+}
+
+/* Ensure sidebar collapse handles the badge */
+.sidebar.collapsed .profile-name-sync,
+.sidebar.collapsed .staff-badge {
+    display: none;
+}
 
 .initial-circle{
     width:2.2vw;
@@ -369,23 +490,31 @@ body{
         </div>
     </div>
 
-
-    <div class="search-box">
-        <input type="text" placeholder="Global system search...">
+<div class="search-box">
+    <div class="search-wrapper">
+        <input type="text">
+        <i class="fas fa-search"></i>
     </div>
 </div>
-
+</div>
 
 <div class="container">
     <div class="sidebar" id="sidebar">
-        <div class="profile-card">
-            <div class="avatar">
-                <i class="fas fa-user"></i>
-            </div>
-            <div class="profile-name real-name">Jose L</div>
-            <div class="profile-label">PROFILE</div>
-            <div class="profile-role">ADMIN</div>
+     <div class="profile-card" onclick="window.location.href='PROFILE.html'" style="cursor: pointer;">
+    <div class="profile-area-sync">
+        <div class="profile-icon-big">
+            <i class="fas fa-user-circle"></i>
         </div>
+        
+        <div class="profile-name-sync real-name">JOSE L.</div>
+        
+        <div class="staff-badge">
+            ADMIN | 2.0.1 <i class="fas fa-cog"></i>
+        </div>
+        
+        <div class="profile-label">PROFILE</div>
+    </div>
+</div>
 
 
         <div class="menu">
@@ -393,7 +522,7 @@ body{
         <div class="menu-item"><i class="fas fa-home"></i> <span>HOME</span></div>
     </a>
 
-    <a href="TiICKET.html" style="text-decoration: none;">
+    <a href="TICKET.html" style="text-decoration: none;">
         <div class="menu-item"><i class="fas fa-ticket-alt"></i> <span>TICKETS</span></div>
     </a>
 
@@ -413,9 +542,7 @@ body{
         <div class="menu-item"><i class="fas fa-history"></i> <span>ACTIVITY LOG</span></div>
     </a>
     
-    <a href="NOTIFICATION.html" style="text-decoration: none;">
-        <div class="menu-item"><i class="fas fa-bell"></i> <span>NOTIFICATION</span></div>
-    </a>
+   <div class="menu-item" onclick="openNotif()"><i class="fas fa-bell"></i> <span>NOTIFICATION</span></div>
 
     <a href="SETTINGS.html" style="text-decoration: none;">
         <div class="menu-item"><i class="fas fa-cog"></i> <span>SETTINGS</span></div>
@@ -465,7 +592,50 @@ body{
                     <div class="legend-item"><span>Other</span> <span>10%</span></div>
                 </div>
             </div>
+<div id="notifOverlay">
+    <div class="notification-panel">
+        <i class="fas fa-times close-notif-x" onclick="closeNotif()"></i>
+        <i class="fas fa-bell main-bell"></i>
+        <div class="notif-title">NOTIFICATIONS</div>
+        <div id="notifList">
+            <div class="notif-item" onclick="openModal('stockModal')">
+                <span>⚠️ Low Stock Alert!</span>
+                <i class="fas fa-arrow-right"></i>
+            </div>
+            <div class="notif-item" onclick="openModal('ticketModal')">
+                <span>🎫 Ticket Status Updated</span>
+                <i class="fas fa-arrow-right"></i>
+            </div>
+        </div>
+        <button class="clear-btn" onclick="clearAllNotifs()">Clear All</button>
+    </div>
+</div>
 
+<div class="modal-overlay" id="ticketModal">
+    <div class="modal-container bg-ticket">
+        <i class="fas fa-clipboard-list" style="font-size: 3.5vw; margin-bottom: 2vh;"></i>
+        <h2 style="font-size: 1.8vw;">TICKET STATUS LOG</h2>
+        <div class="modal-message">
+            <span class="overdue-tag">OVERDUE</span>
+            <h3 style="font-size: 1.2vw; margin-top: 5px;">Eren Y</h3>
+            <div class="status-row"><i class="fas fa-check-circle" style="color: #0b4a7a;"></i><div style="flex:1;">Ticket Logged</div><span class="badge unresolved">Unresolved</span></div>
+            <div class="status-row"><i class="fas fa-user-check" style="color: #0b4a7a;"></i><div style="flex:1;">Assigned to Kenneth F</div><span class="badge assigned">Assigned</span></div>
+        </div>
+        <button class="close-btn" onclick="closeModal('ticketModal')">CLOSE LIST</button>
+    </div>
+</div>
+
+<div class="modal-overlay" id="stockModal">
+    <div class="modal-container bg-stock">
+        <i class="fas fa-box-open" style="font-size: 3.5vw; margin-bottom: 2vh;"></i>
+        <h2 style="font-size: 1.8vw;">INVENTORY ALERT</h2>
+        <div class="modal-message">
+            <b>Items below threshold:</b><br><br>
+            • Printer Ink (2 left)<br>• Bond Paper (5 reams left)
+        </div>
+        <button class="close-btn" style="color: #ff7a00" onclick="closeModal('stockModal')">CLOSE</button>
+    </div>
+</div>
 
             <div class="grid-box perf-box">
                 <div class="section-label">Ticket Resolution Performance</div>
@@ -506,6 +676,11 @@ body{
 function toggleMenu(){
     document.getElementById("sidebar").classList.toggle("collapsed");
 }
+function openNotif() { document.getElementById("notifOverlay").style.display = "flex"; }
+function closeNotif() { document.getElementById("notifOverlay").style.display = "none"; }
+function openModal(id) { document.getElementById(id).style.display = "flex"; }
+function closeModal(id) { document.getElementById(id).style.display = "none"; }
+function clearAllNotifs() { document.getElementById("notifList").innerHTML = '<p style="padding: 20px; opacity: 0.5; color: white;">No notifications</p>'; }
 </script>
 
 
