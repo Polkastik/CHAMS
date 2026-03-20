@@ -2,85 +2,91 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>CHAMS – MISD</title>
-
-
+<title>CHAMS – Ticket Details</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"/>
 
-
 <style>
+/* --- CORE STYLES --- */
 *{
     margin:0;
     padding:0;
     box-sizing:border-box;
-    font-family:"Segoe UI", Roboto, Arial, sans-serif;
+    font-family:"Segoe UI", Arial, sans-serif;
 }
 
-
 body{
-    background:#1f1f1f;
+    background:#f4f7f9; 
     overflow:hidden;
     width: 100%;
     height: 100vh;
 }
 
-
+/* --- TOPBAR --- */
 .topbar{
     height: 8vh;
     background:#0b4a7a;
     display:flex;
     align-items:center;
     justify-content:space-between;
-    padding:0 2%;
-    position: relative;
+    padding:0 2.5%;
     z-index: 100;
 }
-
 
 .top-left{
     display:flex;
     align-items:center;
-    gap: 1.5vw;
+    gap: 1.2vw;
     color:#fff;
 }
 
-
-.menu-icon{ cursor:pointer; display: flex; align-items: center; font-size:2vw; }
-
+.menu-icon{ cursor:pointer; display: flex; align-items: center; font-size:2.2vw; user-select: none;}
 
 .logo img{
     height: 20vh;
     width: auto;
-    
 }
 
+.search-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
 
-.search-box{ width: 30%; display: flex; justify-content: flex-end; }
-.search-box input{
-    width: 80%;
+.search-box input {
+    width: 18vw;
     height: 4vh;
-    border-radius: 0.5vw;
-    border:none;
-    padding:0 4%;
-    outline:none;
+    border-radius: 0.4vw;
+    border: none;
+    padding: 0 2.5vw 0 1vw;
+    outline: none;
+    font-size: 0.85vw;
 }
 
+.search-wrapper i {
+    position: absolute;
+    right: 0.8vw;
+    color: #0b4a7a;
+    font-size: 0.9vw;
+    pointer-events: none; 
+}
 
+/* --- SIDEBAR --- */
 .container{
     display:flex;
     height: 92vh;
     width: 100%;
 }
 
-
-.sidebar{
+.sidebar {
     width: 18%;
-    background:#ffffff;
+    background: #ffffff;
     padding: 2.5vh 1.2%;
-    display:flex;
-    flex-direction:column;
+    display: flex;
+    flex-direction: column; /* Stack children vertically */
+    height: 92vh; /* Matches the container height */
     transition: 0.3s ease;
-    border-right: 0.1vw solid #ddd;
+    border-right: 1px solid #e0e0e0;
+    overflow: hidden; /* Prevent the whole sidebar from scrolling */
 }
 
 
@@ -89,13 +95,96 @@ body{
     padding: 2vh 0;
 }
 
-
-.sidebar.collapsed .hide-on-collapse,
-.sidebar.collapsed .profile-role,
-.sidebar.collapsed .real-name {
-    display: none !important;
+.profile-card{
+    background:#fff;
+    padding: 2.5vh 5%;
+    text-align:center;
+    margin-bottom:3vh;
+    transition: 0.3s ease;
 }
 
+.sidebar.collapsed .profile-card {
+    background: transparent;
+    padding: 1vh 0;
+    margin-bottom: 1vh;
+}
+
+.avatar {
+    width: 5.5vw; 
+    height: 5.5vw;
+    border-radius: 50%;
+    background: #0b4a7a;
+    margin: 0 auto 1.2vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-size: 2.5vw;
+    transition: 0.3s;
+}
+
+.sidebar.collapsed .avatar {
+    width: 3.5vw;
+    height: 3.5vw;
+    font-size: 1.5vw;
+}
+
+.profile-name { font-weight: 700; font-size: 1vw; color: #333; }
+.profile-label { display: none; }
+.profile-role { font-size: 0.7vw; color:#0b4a7a; font-weight: 700; margin-top: 0.5vh; text-transform: uppercase;}
+
+/* --- PROFILE SYNC STYLES --- */
+.profile-area-sync {
+    text-align: center;
+    padding: 2vh 5%;
+    transition: opacity 0.2s;
+}
+
+.profile-icon-big {
+    font-size: 4.5vw; /* Large icon size */
+    color: #0b4a7a;
+    margin-bottom: 1vh;
+}
+
+.sidebar.collapsed .profile-icon-big {
+    font-size: 2.5vw;
+}
+
+.profile-name-sync {
+    font-weight: bold;
+    color: #003366;
+    margin-bottom: 1vh;
+    font-size: 0.95vw;
+    text-transform: none; /* Keeps name casing natural */
+}
+
+.staff-badge {
+    background: white;
+    border: 1px solid #ccc;
+    border-radius: 1vw;
+    padding: 0.2vh 0.8vw;
+    font-size: 0.65vw;
+    display: inline-block;
+    color: #003366;
+    font-weight: bold;
+    white-space: nowrap;
+}
+
+.staff-badge i {
+    font-size: 0.6vw;
+    margin-left: 3px;
+    color: #888;
+}
+
+/* Ensure sidebar collapse handles the badge */
+.sidebar.collapsed .profile-name-sync,
+.sidebar.collapsed .staff-badge {
+    display: none;
+}
+.sidebar.collapsed .real-name,
+.sidebar.collapsed .profile-role {
+    display: none !important;
+}
 
 .sidebar.collapsed .profile-label {
     display: block !important;
@@ -105,323 +194,352 @@ body{
     margin-top: 2px;
 }
 
-
-.profile-card{
-    background:#fff;
-    border-radius: 0.8vw;
-    padding: 2.5vh 5%;
-    text-align:center;
-    margin-bottom:3vh;
-    transition: 0.3s ease;
-}
-
-
-.sidebar.collapsed .profile-card {
-    background: transparent;
-    padding: 1vh 0;
-    margin-bottom: 1vh;
-}
-
-
-.avatar {
-    width: 6vw;
-    height: 6vw;
-    border-radius: 50%;
-    background: #0b4a7a;
-    margin: 0 auto 1vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #fff;
-    font-size: 2.5vw;
-    transition: 0.3s;
-}
-
-
-.sidebar.collapsed .avatar {
-    width: 3.5vw;
-    height: 3.5vw;
-    font-size: 1.5vw;
-    margin-bottom: 0;
-}
-
-
-.profile-name { font-weight: 600; font-size: 1.1vw; color: #333; }
-.profile-label { display: none; }
-.profile-role { font-size: 0.8vw; color:#0b4a7a; font-weight: 700; margin-top: 0.5vh; }
-
-
 .menu { flex:1; }
-
 
 .menu-item {
     display:flex;
     align-items:center;
     gap: 0.8vw;
-    padding: 1.2vh 5%;
-    font-size: 0.9vw;
-    font-weight: 700;
+    padding: 1.4vh 10%; 
+    font-size: 0.85vw;
+    font-weight: 600;
     color:#0b4a7a;
     cursor:pointer;
-    border-radius: 0.5vw;
-    margin-bottom: 0.2vh;
+    border-radius: 0.6vw;
+    margin-bottom: 0.5vh;
     transition: 0.2s;
-    position: relative;
+    white-space: nowrap;
 }
 
-
-.menu-item:hover { background: #f0f7ff; }
-
-
-.sidebar.collapsed .menu-item {
-    flex-direction: column;
-    justify-content: center;
-    padding: 1.2vh 0;
-    gap: 2px;
+.menu-item i {
+    font-size: 1.3vw; 
+    width: 1.5vw;
     text-align: center;
 }
 
+.menu-item:hover { background: #eef2f6; }
+
+.sidebar.collapsed .menu-item {
+    flex-direction: column;
+    padding: 1.2vh 0;
+    justify-content: center;
+    gap: 2px;
+}
 
 .sidebar.collapsed .menu-item span {
+    display: block !important;
     font-size: 0.65vw;
+    font-weight: 800;
 }
 
-
-.sidebar.collapsed .menu-item i {
-    font-size: 1.6vw;
+.sidebar.collapsed .hide-on-collapse {
+    display: none !important;
 }
 
-
-.notification-dot {
-    width: 0.6vw;
-    height: 0.6vw;
-    background:#ff2d8d;
-    border-radius: 50%;
-    margin-left:auto;
-}
-
-
-.sidebar.collapsed .notification-dot {
-    position: absolute;
-    top: 5px;
-    right: 25%;
-    margin: 0;
-}
-
-
-.signout {
-    margin-top: 2vh;
-    color:#0b4a7a;
+ .signout {
+    margin-top: auto; /* Ensures it stays at the bottom of the flexbox */
+    padding: 1.5vh 10%;
+    color: #0b4a7a;
     display: flex;
     align-items: center;
     gap: 0.8vw;
     font-weight: 700;
-    font-size: 0.85vw;
-    padding: 1vh 5%;
+    font-size: 0.9vw;
     cursor: pointer;
+    text-decoration: none;
+    border-top: 1px solid #f0f0f0; /* Optional: separates it from the list */
 }
-.edit-btn:hover {
-    background: #fdd835; 
-    border-color: #0b4a7a;
-    transform: translateY(-2px);
-    transition: 0.2s;
+.signout:hover {
+    background: #fff0f0; /* Light red tint on hover for clarity */
+    color: #d11a2a;
 }
-
-.download:hover {
-    background: #b3d7ff; 
-    transform: translateY(-2px);
-    transition: 0.2s;
-}
-
 
 .sidebar.collapsed .signout {
     flex-direction: column;
     padding: 1vh 0;
-    font-size: 0.65vw;
     gap: 2px;
 }
 
+.sidebar.collapsed .signout span {
+    font-size: 0.65vw;
+}
 
+/* --- CONTENT AREA --- */
 .content{
     flex:1;
-    background:#f4f7f9;
-    padding: 4vh 4%;
-    overflow-y: auto;
+    padding:4vh 3%;
+    overflow-y:auto;
+    position: relative;
 }
 
-
-.page-title{
+.tickets-header{
     display:flex;
     align-items:center;
-    gap: 1%;
+    gap:0.8vw;
+    margin-bottom:2vh;
+    color:#0b4a7a;
     font-weight:800;
-    font-size: 1.5vw;
-    color: #0b4a7a;
-    margin-bottom: 3vh;
+    font-size:1.2vw;
+    cursor: pointer;
+    transition: 0.2s;
 }
 
 
-.info-card{ background:#fff; border-radius: 0.6vw; box-shadow: 0 0.2vw 0.8vw rgba(0,0,0,.1); padding: 3vh 3%; margin-bottom: 4vh; }
+.info-card{ 
+    background:#fff; 
+    border-radius: 0.6vw; 
+    box-shadow: 0 0.2vw 0.8vw rgba(0,0,0,.05); 
+    padding: 3vh 3%; 
+    margin-bottom: 4vh;
+    border: 1px solid #e0e0e0;
+}
+/* ALL NOTIFICATION & MODAL STYLES */
+#notifOverlay {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100vw; height: 100vh;
+    background: rgba(0, 0, 0, 0.7); 
+    display: none; /* Initially hidden */
+    align-items: center; justify-content: center;
+    z-index: 3000;
+}
+
+.notification-panel {
+    background: #0b4a7a;
+    width: 35vw; min-width: 450px;
+    padding: 6vh 3vw; border-radius: 1.5vw;
+    text-align: center; color: white;
+    position: relative; animation: zoomIn 0.3s ease-out;
+    box-shadow: 0 2vw 5vw rgba(0, 0, 0, 0.8);
+}
+
+.close-notif-x { position: absolute; top: 20px; right: 25px; font-size: 1.8vw; cursor: pointer; color: rgba(255, 255, 255, 0.7); transition: 0.3s ease; }
+.close-notif-x:hover { color: #ff2d8d; transform: scale(1.2) rotate(90deg); }
+
+.notification-panel i.main-bell { font-size: 5vw; margin-bottom: 2vh; display: block; }
+.notif-title { font-size: 2vw; font-weight: bold; margin-bottom: 4vh; letter-spacing: 1px; }
+#notifList { width: 100%; max-height: 40vh; overflow-y: auto; }
+
+.notif-item {
+    background: rgba(255, 255, 255, 0.95); color: #333;
+    padding: 2.5vh 1.5vw; margin-bottom: 2vh;
+    border-radius: 0.8vw; display: flex;
+    justify-content: space-between; align-items: center;
+    cursor: pointer; font-weight: 700; font-size: 1.2vw;
+}
+
+/* SUB-MODAL STYLES */
+.modal-overlay {
+    position: fixed; top: 0; left: 0;
+    width: 100%; height: 100%;
+    display: none; align-items: center; justify-content: center;
+    background: rgba(0, 0, 0, 0.85); z-index: 4000;
+}
+.modal-container { width: 42vw; padding: 5vh 3vw; border-radius: 1.5vw; text-align: center; color: white; position: relative; }
+.bg-ticket { background: #0b4a7a; border: 1px solid rgba(255,255,255,0.2); }
+.bg-stock { background: #ff7a00; }
+.modal-message { background: #fff; color: #333; padding: 3vh 2vw; border-radius: 1vw; margin-top: 2vh; font-size: 1.1vw; text-align: left; }
+.status-row { display: flex; align-items: center; gap: 12px; margin-bottom: 15px; padding-bottom: 10px; border-bottom: 1px solid #eee; }
+.badge { padding: 4px 10px; font-size: 0.7vw; font-weight: 800; border-radius: 4px; color: #fff; text-transform: uppercase; }
+.assigned { background: #0b4a7a; } .unresolved { background: #ff2d8d; }
+.overdue-tag { background: #ff2d8d; font-size: 0.6vw; padding: 2px 6px; border-radius: 3px; }
+.close-btn { margin-top: 3vh; padding: 1.5vh 3vw; border: none; background: #fff; color: #0b4a7a; border-radius: 2vw; cursor: pointer; font-weight: 800; font-size: 1vw; }
+.clear-btn { margin-top: 3vh; background: transparent; border: 1px solid #fff; padding: 1vh 2vw; border-radius: 2vw; color: #fff; cursor: pointer; font-size: 0.9vw; }
+
+@keyframes zoomIn { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+
 .info-row{ display:grid; grid-template-columns: 1fr 1fr; row-gap: 3vh; }
-.label{ font-size: 0.8vw; color:#888; font-weight: 600; margin-bottom: 0.5vh; }
-.value{ font-size: 1vw; font-weight:700; color: #333; }
+.label{ font-size: 0.75vw; color:#888; font-weight: 700; margin-bottom: 0.5vh; text-transform: uppercase; }
+.value{ font-size: 0.95vw; font-weight:700; color: #333; }
 
+.message-box textarea{ 
+    width: 100%; 
+    height: 12vh; 
+    resize:none; 
+    border: 1px solid #ddd; 
+    border-radius: 0.6vw; 
+    padding: 2vh; 
+    font-size: 0.9vw; 
+    color: #444; 
+    outline: none;
+    background: #fff;
+}
 
-.message-box{ margin-bottom: 4vh; }
-.message-box textarea{ width: 100%; height: 12vh; resize:none; border: 0.1vw solid #ddd; border-radius: 0.6vw; padding: 2vh 2%; background: white; font-size: 0.95vw; color: #444; }
+.status-stack{ display:flex; flex-direction:column; gap: 3vh; margin-top: 4vh; }
+.badge{ display:inline-block; padding: 0.6vh 1.2vw; border-radius: 0.3vw; font-size: 0.7vw; font-weight:800; color:#fff; }
 
-
-.status-stack{ display:flex; flex-direction:column; gap: 3vh; margin-bottom: 5vh; }
-.badge{ display:inline-block; padding: 0.8vh 1.5vw; border-radius: 0.4vw; font-size: 0.75vw; font-weight:700; color:#fff; }
-.high{ background:#b71c1c; }
-.unresolved{ background:#d32f2f; }
+.high, .unresolved { background:#e61111; } 
 .assigned{ background:#0b4a7a; }
 
-
 .attachment{ display:flex; justify-content:flex-end; margin-top: -8vh; }
-.attach-btn{ border: 0.1vw solid #0b4a7a; padding: 1.2vh 2vw; border-radius: 0.6vw; background:#fff; color: #0b4a7a; font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 0.5vw; font-size: 0.9vw; }
+.attach-btn{ border: 1.5px solid #0b4a7a; padding: 1vh 1.5vw; border-radius: 0.5vw; background:#fff; color: #0b4a7a; font-weight: 700; cursor: pointer; font-size: 0.8vw; gap: 0.5vw; display: flex; align-items: center; transition: 0.2s;}
+.attach-btn:hover { background: #eef2f6; }
 
-
-.actions{ display:flex; justify-content:flex-end; gap: 2vw; margin-top: 5vh; }
-.btn{ padding: 1.5vh 3vw; border-radius: 0.8vw; font-weight:800; font-size: 0.9vw; display:flex; align-items:center; gap: 0.8vw; cursor: pointer; text-transform: uppercase; }
-.edit-btn{ background:#ffeeba; border: 0.15vw solid #0b4a7a; color: #0b4a7a; }
-.download{ background:#cce5ff; border: 0.15vw solid #0b4a7a; color: #0b4a7a; }
-
-
+.actions{ display:flex; justify-content:flex-end; gap: 1.5vw; margin-top: 5vh; }
+.btn{ padding: 1.2vh 2.5vw; border-radius: 0.5vw; font-weight:800; font-size: 0.85vw; cursor: pointer; display: flex; align-items: center; gap: 0.6vw; transition: 0.2s; border: none; }
+.edit-btn{ background:#ffeeba; border: 1.5px solid #0b4a7a; color: #0b4a7a; }
+.edit-btn:hover { background: #f7e19d; }
+.download{ background:#cce5ff; border: 1.5px solid #0b4a7a; color: #0b4a7a; }
+.download:hover { background: #b8daff; }
 </style>
 </head>
 
-
 <body>
-
 
 <div class="topbar">
     <div class="top-left">
-        <div class="menu-icon" onclick="toggleMenu()">
-            <i class="fas fa-bars"></i>
-        </div>
+        <i class="fas fa-bars menu-icon" onclick="toggleMenu()"></i>
         <div class="logo">
             <img src="CHAMS.png" alt="Logo">
         </div>
     </div>
-    <div class="search-box"><input type="text" placeholder="Search..."></div>
+    <div class="search-box">
+        <div class="search-wrapper">
+            <input type="text">
+            <i class="fas fa-search"></i>
+        </div>
+    </div>
 </div>
-
 
 <div class="container">
-
-
-<div class="sidebar" id="sidebar">
-    <div class="profile-card">
-        <div class="avatar">
-            <i class="fas fa-user"></i>
+    <div class="sidebar" id="sidebar">
+      <div class="profile-card" onclick="window.location.href='PROFILE.html'" style="cursor: pointer;">
+    <div class="profile-area-sync">
+        <div class="profile-icon-big">
+            <i class="fas fa-user-circle"></i>
         </div>
-        <div class="profile-name real-name">Jose L</div>
+        
+        <div class="profile-name-sync real-name">JOSE L.</div>
+        
+        <div class="staff-badge">
+            ADMIN | 2.0.1 <i class="fas fa-cog"></i>
+        </div>
+        
         <div class="profile-label">PROFILE</div>
-        <div class="profile-role">ADMIN
+    </div>
+</div>
+
+        <div class="menu">
+            <a href="DASHBOARD.html" style="text-decoration: none;"><div class="menu-item"><i class="fas fa-home"></i> <span>HOME</span></div></a>
+            <a href="TICKET.html" style="text-decoration: none;"><div class="menu-item"><i class="fas fa-ticket-alt"></i> <span>TICKETS</span></div></a>
+            <a href="INVENTORY.html" style="text-decoration: none;"><div class="menu-item"><i class="fas fa-box"></i> <span>INVENTORY</span></div></a>
+            <a href="INVENTORYTRACKER.html" style="text-decoration: none;" class="hide-on-collapse"><div class="menu-item"><i class="fas fa-search"></i> <span>INVENTORY TRACKER</span></div></a>
+            <a href="MAINTENANCELOG.html" style="text-decoration: none;"><div class="menu-item"><i class="fas fa-clipboard-list"></i> <span>MAINTENANCE LOG</span></div></a>
+            <a href="ACTIVITYLOG.html" style="text-decoration: none;" class="hide-on-collapse"><div class="menu-item"><i class="fas fa-history"></i> <span>ACTIVITY LOG</span></div></a>
+<div class="menu-item" onclick="openNotif()"><i class="fas fa-bell"></i> <span>NOTIFICATION</span></div>            <a href="SETTINGS.html" style="text-decoration: none;"><div class="menu-item"><i class="fas fa-cog"></i> <span>SETTINGS</span></div></a>
+            <a href="FAQS.html" style="text-decoration: none;" class="hide-on-collapse"><div class="menu-item"><i class="fas fa-question-circle"></i> <span>FAQs</span></div></a>
+        </div>
+        <a href="LOG-IN.html" style="text-decoration: none;" class="signout hide-on-collapse"><i class="fas fa-sign-out-alt"></i> <span>SIGN OUT</span></a>
+    </div>
+<div id="notifOverlay">
+    <div class="notification-panel">
+        <i class="fas fa-times close-notif-x" onclick="closeNotif()"></i>
+        <i class="fas fa-bell main-bell"></i>
+        <div class="notif-title">NOTIFICATIONS</div>
+        <div id="notifList">
+            <div class="notif-item" onclick="openModal('stockModal')">
+                <span>⚠️ Low Stock Alert!</span>
+                <i class="fas fa-arrow-right"></i>
+            </div>
+            <div class="notif-item" onclick="openModal('ticketModal')">
+                <span>🎫 Ticket Status Updated</span>
+                <i class="fas fa-arrow-right"></i>
+            </div>
+        </div>
+        <button class="clear-btn" onclick="clearAllNotifs()">Clear All</button>
+    </div>
+</div>
+
+<div class="modal-overlay" id="ticketModal">
+    <div class="modal-container bg-ticket">
+        <i class="fas fa-clipboard-list" style="font-size: 3.5vw; margin-bottom: 2vh;"></i>
+        <h2 style="font-size: 1.8vw;">TICKET STATUS LOG</h2>
+        <div class="modal-message">
+            <span class="overdue-tag">OVERDUE</span>
+            <h3 style="font-size: 1.2vw; margin-top: 5px;">Eren Y</h3>
+            <div class="status-row"><i class="fas fa-check-circle" style="color: #0b4a7a;"></i><div style="flex:1;">Ticket Logged</div><span class="badge unresolved">Unresolved</span></div>
+            <div class="status-row"><i class="fas fa-user-check" style="color: #0b4a7a;"></i><div style="flex:1;">Assigned to Kenneth F</div><span class="badge assigned">Assigned</span></div>
+        </div>
+        <button class="close-btn" onclick="closeModal('ticketModal')">CLOSE LIST</button>
+    </div>
+</div>
+
+<div class="modal-overlay" id="stockModal">
+    <div class="modal-container bg-stock">
+        <i class="fas fa-box-open" style="font-size: 3.5vw; margin-bottom: 2vh;"></i>
+        <h2 style="font-size: 1.8vw;">INVENTORY ALERT</h2>
+        <div class="modal-message">
+            <b>Items below threshold:</b><br><br>
+            • Printer Ink (2 left)<br>• Bond Paper (5 reams left)
+        </div>
+        <button class="close-btn" style="color: #ff7a00" onclick="closeModal('stockModal')">CLOSE</button>
+    </div>
+</div>
+    <div class="content">
+        <div class="tickets-header" onclick="window.location.href='TICKET.html'"><i class="fas fa-chevron-left"></i> TICKETS</div>
+        
+        <div class="info-card">
+            <div class="info-row">
+                <div><div class="label">Applicant Name:</div><div class="value" id="val-name">Eren Yeager</div></div>
+                <div><div class="label">Department:</div><div class="value" id="val-dept">MISD</div></div>
+                <div><div class="label">Ticket Type:</div><div class="value" id="val-type">Troubleshooting</div></div>
+                <div><div class="label">Category:</div><div class="value" id="val-cat">Technical Support</div></div>
+            </div>
+        </div>
+
+        <div class="message-box">
+            <div class="label">Message:</div>
+            <textarea readonly id="val-msg">The printer is malfunctioning in our reception.</textarea>
+        </div>
+
+        <div class="status-stack">
+            <div><div class="label">Priority:</div><span class="badge high">HIGH</span></div>
+            <div><div class="label">Status:</div><span class="badge unresolved">UNRESOLVED</span></div>
+            <div><div class="label">Assigned to:</div><span class="badge assigned">Kenneth Fundador</span></div>
+        </div>
+
+        <div class="attachment">
+            <button class="attach-btn" onclick="viewAttachment()"><i class="fas fa-eye"></i> See Attachment</button>
+        </div>
+
+        <div class="actions">
+            <button class="btn edit-btn" onclick="window.location.href='TICKETEDIT.html'">EDIT <i class="fas fa-pen"></i></button>
+            <button class="btn download" onclick="downloadTicket()">DOWNLOAD <i class="fas fa-download"></i></button>
         </div>
     </div>
-
-
-   <div class="menu">
-    <a href="DASHBOARD.html" style="text-decoration: none;">
-        <div class="menu-item"><i class="fas fa-home"></i> <span>HOME</span></div>
-    </a>
-
-    <a href="TiICKET.html" style="text-decoration: none;">
-        <div class="menu-item"><i class="fas fa-ticket-alt"></i> <span>TICKETS</span></div>
-    </a>
-
-    <a href="INVENTORY.html" style="text-decoration: none;">
-        <div class="menu-item"><i class="fas fa-box"></i> <span>INVENTORY</span></div>
-    </a>
-    
-    <a href="INVENTORYTRACKER.html" style="text-decoration: none;" class="hide-on-collapse">
-        <div class="menu-item"><i class="fas fa-search"></i> <span>INVENTORY TRACKER</span></div>
-    </a>
-    
-    <a href="MAINTENANCELOG.html" style="text-decoration: none;">
-        <div class="menu-item"><i class="fas fa-clipboard-list"></i> <span>MAINTENANCE LOG</span></div>
-    </a>
-
-    <a href="ACTIVITYLOG.html" style="text-decoration: none;" class="hide-on-collapse">
-        <div class="menu-item"><i class="fas fa-history"></i> <span>ACTIVITY LOG</span></div>
-    </a>
-    
-    <a href="NOTIFICATION.html" style="text-decoration: none;">
-        <div class="menu-item"><i class="fas fa-bell"></i> <span>NOTIFICATION</span></div>
-    </a>
-
-    <a href="SETTINGS.html" style="text-decoration: none;">
-        <div class="menu-item"><i class="fas fa-cog"></i> <span>SETTINGS</span></div>
-    </a>
-    
-    <a href="FAQS.html" style="text-decoration: none;" class="hide-on-collapse">
-        <div class="menu-item"><i class="fas fa-question-circle"></i> <span>FAQs</span></div>
-    </a>
 </div>
-      <a href="LOG-IN.html" style="text-decoration: none;" class="signout hide-on-collapse">
-    <i class="fas fa-sign-out-alt"></i> <span>SIGN OUT</span>
-</a>
-
-</div>
-
-
-<div class="content">
-    <div class="page-title">
-    <i class="fas fa-chevron-left" onclick="window.location.href='TiICKET.html'" style="cursor:pointer;"></i> TICKETS
-</div>
-
-
-    <div class="info-card">
-        <div class="info-row">
-            <div><div class="label">Applicant Name:</div><div class="value">Eren Yeager</div></div>
-            <div><div class="label">Department:</div><div class="value">MISD</div></div>
-            <div><div class="label">Ticket Type:</div><div class="value">Troubleshooting</div></div>
-            <div><div class="label">Category:</div><div class="value">Technical Support</div></div>
-        </div>
-    </div>
-
-
-    <div class="message-box">
-        <div class="label">Message:</div>
-        <textarea readonly>The printer is malfunctioning in our reception.</textarea>
-    </div>
-
-
-    <div class="status-stack">
-        <div><div class="label">Priority:</div><span class="badge high">HIGH</span></div>
-        <div><div class="label">Status:</div><span class="badge unresolved">UNRESOLVED</span></div>
-        <div><div class="label">Assigned to:</div><span class="badge assigned">Kenneth Fundador</span></div>
-    </div>
-
-
-    <div class="attachment">
-        <button class="attach-btn"><i class="fas fa-eye"></i> See Attachment</button>
-    </div>
-
-
-   <div class="actions">
-    <div class="btn edit-btn" onclick="window.location.href='TICKETEDIT.html'">
-        EDIT <i class="fas fa-pen"></i>
-    </div>
-    
-    <div class="btn download">
-        DOWNLOAD <i class="fas fa-download"></i>
-    </div>
-</div>
-
-
-</div>
-
 
 <script>
 function toggleMenu(){
     document.getElementById("sidebar").classList.toggle("collapsed");
 }
-</script>
+function openNotif() { document.getElementById("notifOverlay").style.display = "flex"; }
+function closeNotif() { document.getElementById("notifOverlay").style.display = "none"; }
+function openModal(id) { document.getElementById(id).style.display = "flex"; }
+function closeModal(id) { document.getElementById(id).style.display = "none"; }
+function clearAllNotifs() { document.getElementById("notifList").innerHTML = '<p style="padding: 20px; opacity: 0.5; color: white;">No notifications</p>'; }
+function viewAttachment() {
+    alert("Opening Attachment: printer_error_log.pdf");
+}
 
+function downloadTicket() {
+    const name = document.getElementById('val-name').innerText;
+    const dept = document.getElementById('val-dept').innerText;
+    const msg = document.getElementById('val-msg').value;
+    
+    const content = `CHAMS TICKET DETAILS\n====================\nApplicant: ${name}\nDepartment: ${dept}\nMessage: ${msg}\nStatus: UNRESOLVED`;
+    
+    const blob = new Blob([content], { type: 'text/plain' });
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `Ticket_${name.replace(' ', '_')}.txt`;
+    document.body.appendChild(a);
+    a.click();
+    window.URL.revokeObjectURL(url);
+    document.body.removeChild(a);
+}
+</script>
 
 </body>
 </html>
-

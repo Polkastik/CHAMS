@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CHAMS - Activity Log</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --hams-blue: #00407a;
+            --sidebar-bg: #e9eff5;
+            --text-main: #003366;
+            --border-color: #bcccdc;
+            --bg-hover: #f5f7fa;
+        }
+
+        /* Fluid Reset */
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;  }
+        body { display: flex; height: 100vh; background-color: #f4f7f9; overflow: hidden; width: 100%; font-size: 100%; }
+
+        /* --- HEADER --- */ 
+        header { 
+            background-color: var(--hams-blue); height: 8vh; display: flex; align-items: center; 
+            justify-content: space-between; padding: 0 2%; position: fixed; top: 0; width: 100%; z-index: 1001;
+        }
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 1.2vw;
+            color: white;
+        }
+
+        .menu-toggle {
+            font-size: 2.2vw;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .logo-img {
+            height: 20vh;
+            width: auto;
+        }
+
+        .search-container {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .search-container input {
+            width: 18vw;
+            height: 4vh;
+            border-radius: 0.4vw;
+            border: none;
+            padding: 0 2.5vw 0 1vw;
+            outline: none;
+            font-size: 0.85vw;
+        }
+
+        .search-container i {
+            position: absolute;
+            right: 0.8vw;
+            color: #0b4a7a;
+            font-size: 0.9vw;
+            pointer-events: none;
+        }
+
+        /* --- SIDEBAR LAYOUT --- */
+        .sidebar {
+            width: 18%;
+            background: #ffffff;
+            padding: 2.5vh 1.2%;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            padding-top: 8vh; 
+            transition: 0.3s ease;
+            border-right: 1px solid var(--border-color);
+            overflow: hidden;
+            z-index: 1000;
+            position: fixed; 
+            left: 0;
+            top: 0;
+        }
+
+        .sidebar.collapsed { width: 6.5vw; padding: 8vh 0 2vh 0; }
+
+        .profile-card {
+            background: #fff;
+            padding: 2.5vh 5%;
+            text-align: center;
+            margin-bottom: 3vh;
+            transition: 0.3s ease;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .profile-area-sync { text-align: center; padding: 2vh 5%; transition: opacity 0.2s; }
+        .profile-icon-big { font-size: 4.5vw; color: #0b4a7a; margin-bottom: 1vh; }
+        .profile-name-sync { font-weight: bold; color: var(--text-main); margin-bottom: 1vh; font-size: 0.95vw; }
+
+        .staff-badge {
+            background: white;
+            border: 1px solid #ccc;
+            border-radius: 1vw;
+            padding: 0.2vh 0.8vw;
+            font-size: 0.65vw;
+            display: inline-block;
+            color: var(--text-main);
+            font-weight: bold;
+            white-space: nowrap;
+        }
+
+        .menu { flex: 1; overflow-y: auto; scrollbar-width: none; }
+        .menu::-webkit-scrollbar { display: none; }
+
+        .menu-item {
+            display: flex;
+            align-items: center;
+            gap: 0.8vw;
+            padding: 1.4vh 10%;
+            font-size: 0.85vw;
+            font-weight: 600;
+            color: #0b4a7a;
+            cursor: pointer;
+            border-radius: 0.6vw;
+            margin-bottom: 0.5vh;
+            transition: 0.2s;
+            white-space: nowrap;
+            text-decoration: none;
+        }
+
+        .menu-item i { font-size: 1.3vw; width: 1.5vw; text-align: center; }
+        .menu-item:hover, .menu-item.active { background: var(--sidebar-hover); }
+
+        .signout {
+            margin-top: auto;
+            padding: 1.5vh 10%;
+            color: #0b4a7a;
+            display: flex;
+            align-items: center;
+            gap: 0.8vw;
+            font-weight: 700;
+            font-size: 0.9vw;
+            cursor: pointer;
+            text-decoration: none;
+            border-top: 1px solid #f0f0f0;
+        }
+        .signout:hover { background: #fff0f0; color: #d11a2a; }
+
+        .sidebar.collapsed .profile-name-sync,
+        .sidebar.collapsed .staff-badge,
+        .sidebar.collapsed .hide-on-collapse { display: none !important; }
+
+        .sidebar.collapsed .profile-card { padding: 1vh 0; margin-bottom: 1vh; }
+        .sidebar.collapsed .profile-icon-big { font-size: 2.5vw; }
+        .sidebar.collapsed .profile-label { display: block !important; font-size: 0.7vw; font-weight: 800; color: #0b4a7a; margin-top: 2px; }
+
+        .sidebar.collapsed .menu-item { flex-direction: column; padding: 1.2vh 0; justify-content: center; gap: 2px; }
+        .sidebar.collapsed .menu-item span { display: block !important; font-size: 0.65vw; font-weight: 800; }
+        .profile-label { display: none; }
+
+        .main-wrapper { flex: 1; margin-top: 8vh; padding: 1% 2%; overflow-y: auto; min-width: 0; position: relative; margin-left: 18%; transition: margin 0.3s; }
+        .sidebar.collapsed + .main-wrapper { margin-left: 6.5vw; }
+
+        /* --- CONTENT AREA --- */
+        .page-header { display: inline-flex; align-items: center; gap: 0.8rem; margin-bottom: 1.5rem; color: var(--hams-blue); cursor: pointer; transition: 0.2s; padding: 8px 15px; border-radius: 8px; }
+        .page-header:hover { background: #e9eff5; transform: translateX(-5px); }
+        .page-header h2 { font-size: 140%; text-transform: uppercase; letter-spacing: 1px; }
+
+        .placeholder-view { display: none; text-align: center; padding: 5rem 2rem; background: white; border-radius: 8px; border: 1px solid var(--border-color); color: #666; margin-top: 2%; }
+        .placeholder-view i { font-size: 2rem; color: #ccc; margin-bottom: 1rem; }
+
+        /* --- LOG COMPONENTS --- */
+        .sort-toolbar-card { background: white; border: 1px solid var(--border-color); border-radius: 4px; padding: 12px 20px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; font-size: 75%; color: #BFBFBFFF; }
+        .sort-select { border: none; outline: none; font-weight: bold; color: black; cursor: pointer; background: transparent; font-size: 100%; }
+        .pagination-area { display: flex; align-items: center; gap: 20px; color: #666; font-size: 100%; }
+
+        .info-panel-container { background: white; border: 1px solid var(--border-color); border-radius: 4px; overflow: visible; position: relative;}
+        .filter-header-bar { display: flex; justify-content: flex-end; align-items: center; padding: 8px 0; border-bottom: 1px solid #eee; }
+        .filter-wrapper { position: relative; padding: 0 20px; border-left: 1px solid #eee; }
+        .filter-icon { font-size: 1.2rem; cursor: pointer; color: var(--hams-blue); }
+
+        /* --- FILTER DROPDOWN PANEL --- */
+        .filter-dropdown { 
+            display: none; position: absolute; top: 130%; right: 10px; background: white; 
+            width: 320px; padding: 20px; border-radius: 8px; box-shadow: 0 5px 25px rgba(0,0,0,0.15); 
+            z-index: 1100; border: 1px solid #e0e0e0; 
+        }
+        .filter-dropdown.active { display: block; }
+        
+        .filter-title-row { color: #222; font-size: 1.1rem; font-weight: bold; margin-bottom: 15px; display: flex; align-items: center; gap: 10px; }
+        
+        .filter-group { display: flex; flex-direction: column; gap: 10px; margin-bottom: 15px; }
+
+        .custom-select-box { position: relative; width: 100%; }
+        .select-trigger { 
+            display: flex; justify-content: space-between; align-items: center; border: 1px solid #e0e0e0; 
+            border-radius: 6px; padding: 10px 15px; cursor: pointer; background: white; font-size: 14px;
+        }
+        .select-trigger span:first-child { color: #aaa; font-weight: bold; margin-right: 5px; }
+        .select-trigger span:last-of-type { color: black; font-weight: bold; flex-grow: 1; }
+        .select-trigger i { color: #ccc; font-size: 12px; }
+
+        .dropdown-menu { 
+            display: none; position: absolute; top: 105%; left: 0; right: 0; background: white; 
+            border: 1px solid #ccc; border-radius: 6px; z-index: 1200; max-height: 150px; overflow-y: auto; 
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+        .custom-select-box.active .dropdown-menu { display: block; }
+        .dropdown-opt { padding: 10px 15px; font-size: 14px; color: #333; cursor: pointer; }
+        .dropdown-opt:hover { background: var(--bg-hover); color: var(--hams-blue); }
+
+        /* --- CALENDAR WIDGET --- */
+        .calendar-wrapper { border: 1px solid #e0e0e0; border-radius: 6px; padding: 12px; background: white; margin-top: 5px; }
+        .cal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; font-weight: bold; font-size: 13px; }
+        .cal-nav { color: #999; cursor: pointer; font-size: 11px; padding: 5px; transition: color 0.2s; }
+        .cal-nav:hover { color: var(--hams-blue); }
+        .cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); text-align: center; row-gap: 5px; }
+        .cal-date { font-size: 12px; font-weight: bold; color: #333; cursor: pointer; width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; margin: 0 auto; border-radius: 50%; }
+        .cal-date.muted { color: #ccc; cursor: default; }
+        .cal-date.highlight { color: var(--hams-blue); }
+        .cal-date.selected { background-color: var(--hams-blue); color: white; }
+        .cal-date:hover:not(.muted):not(.selected) { background: #f0f0f0; }
+
+        /* --- LOG ITEMS --- */
+        .log-item { display: flex; align-items: center; padding: 1.5rem 20px; border-bottom: 1px solid #eee; transition: background 0.2s; position: relative; }
+        .log-item:hover { background: #fafbfc; }
+        .log-avatar { font-size: 2.4rem; color: var(--hams-blue); margin-right: 1.5rem; }
+        .log-details { flex-grow: 1; }
+        .log-details .name { font-size: 80%; font-weight: bold; }
+        .log-details .role { color: #999; font-weight: normal; }
+        .log-details .action-title { font-size: 75%; color: #000; margin-top: 2px; font-weight: bold; }
+        .log-details .subtitle-text { font-size: 75%; color: #666; margin-top: 2px; }
+        .log-details .info-highlight { font-size: 75%; color: var(--hams-blue); font-weight: bold; margin-top: 4px; }
+        .log-right-meta { display: flex; align-items: center; gap: 20px; margin-left: auto; }
+        .time-stamp { font-size: 60%; color: #aaa; font-weight: bold; text-transform: uppercase; white-space: nowrap; }
+        .log-options { color: #ccc; cursor: pointer; font-size: 1.2rem; }
+
+        @media (max-width: 1024px) {
+            .sidebar { width: 250px; position: absolute; left: -250px; }
+            .sidebar.mobile-open { left: 0; }
+            .sidebar.collapsed { left: -250px; }
+            .main-wrapper { margin-left: 0 !important; }
+            .log-item { flex-direction: column; align-items: flex-start; }
+            .log-right-meta { margin-left: 0; margin-top: 10px; width: 100%; justify-content: space-between; }
+            .filter-dropdown { width: 90vw; right: 5vw; }
+        }
+
+        /* --- NOTIFICATIONS & MODALS --- */
+        #notifOverlay{ position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(0,0,0,0.3); display:none; align-items:center; justify-content:center; z-index:3000; }
+        .notification-panel{ background:#0b4a7a; width:35vw; min-width:450px; padding:6vh 3vw; border-radius:1.5vw; text-align:center; color:white; position:relative; box-shadow:0 2vw 5vw rgba(0,0,0,0.8); }
+        .close-notif-x{ position:absolute; top:15px; right:20px; font-size:1.5vw; cursor:pointer; color:white; }
+        .main-bell{ font-size:4vw; margin-bottom:2vh; }
+        .notif-title{ font-size:2vw; font-weight:bold; margin-bottom:3vh; }
+        #notifList{ max-height:40vh; overflow-y:auto; }
+        .notif-item{ background:white; color:#333; padding:2vh; margin-bottom:1vh; border-radius:0.6vw; display:flex; justify-content:space-between; cursor:pointer; font-weight:bold; }
+        .clear-btn-notif{ margin-top:2vh; background:white; border:none; padding:1vh 2vw; border-radius:2vw; font-weight:bold; color:#0b4a7a; cursor:pointer; }
+        .stock-modal{ position:fixed; top:0; left:0; width:100%; height:100%; display:none; align-items:center; justify-content:center; background:rgba(0,0,0,0.85); z-index:4000; }
+        .stock-container{ background:#ff7a00; width:40vw; padding:5vh; border-radius:1.5vw; text-align:center; color:white; }
+        .stock-message{ background:#e2caa1; color:#222; padding:3vh; border-radius:1vw; margin-top:2vh; font-weight:600; }
+        .close-alert-btn{ margin-top:3vh; padding:1.5vh 3vw; border:none; background:#0b4a7a; color:white; border-radius:1vw; cursor:pointer; }
+
+        .log-right-meta i {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+    <header> 
+        <div class="header-left"> 
+            <i class="fas fa-bars menu-toggle" id="toggleBtn"></i> 
+            <img src="CHAMS%20LOGO.png" alt="CHAMS Logo" class="logo-img">
+        </div> 
+        <div class="search-container"> 
+            <input type="text" id="searchInput" placeholder="Search..."> 
+            <i class="fas fa-search"></i> 
+        </div> 
+    </header> 
+
+    <div class="sidebar" id="sidebar">
+        <a href="STAFF%20PROFILE!.html" class="profile-card">
+            <div class="profile-area-sync">
+                <div class="profile-icon-big">
+                    <i class="fas fa-user-circle"></i>
+                </div>
+                <div class="profile-name-sync">KENNETH F.</div>
+                <div class="staff-badge">
+                    STAFF | 2.0.1 <i class="fas fa-cog"></i>
+                </div>
+                <div class="profile-label">PROFILE</div>
+            </div>
+        </a>
+
+        <div class="menu">
+            <a href="STAFF%20HOMEPAGE!.html" class="menu-item"><i class="fas fa-home"></i> <span>HOME</span></a>
+            <a href="STAFF%20TICKETING!.html" class="menu-item"><i class="fas fa-ticket-alt"></i> <span>TICKETS</span></a>
+            <a href="STAFF%20INVENTORY!.html" class="menu-item"><i class="fas fa-box"></i> <span>INVENTORY</span></a>
+            <a href="STAFF%20ACTIVITY%20LOG.html" class="menu-item active"><i class="fas fa-history"></i> <span>ACTIVITY LOG</span></a>
+            <div class="menu-item" onclick="openNotif()"><i class="fas fa-bell"></i> <span>NOTIFICATION</span></div>
+            <a href="STAFF%20SETTINGS!.html" class="menu-item"><i class="fas fa-cog"></i> <span>SETTINGS</span></a>
+            <a href="STAFF%20FAQS!.html" class="menu-item"><i class="fas fa-question-circle"></i> <span>FAQs</span></a>
+        </div>
+
+        <a href="#" class="signout hide-on-collapse" id="signOutBtn">
+            <i class="fas fa-sign-out-alt"></i> <span>SIGN OUT</span>
+        </a>
+    </div>
+
+    <div class="main-wrapper">
+        <div class="page-header" id="pageHeaderBtn">
+            <i class="fas fa-chevron-left" id="headerIcon"></i>
+            <h2 id="pageTitle">Activity Log</h2>
+        </div>
+
+        <div id="activityLogContentView">
+            <div class="sort-toolbar-card">
+                <div class="sort-area">
+                    <span>Sort by:</span>
+                    <select class="sort-select" id="sortSelect">
+                        <option value="newest">Date (Newest)</option>
+                        <option value="oldest">Date (Oldest)</option>
+                    </select>
+                </div>
+                <div class="pagination-area">
+                    <span>1-5 of 5</span>
+                    <i class="fas fa-angle-left" style="color:#ddd"></i>
+                    <i class="fas fa-angle-right" style="color:#333"></i>
+                </div>
+            </div>
+
+            <div class="info-panel-container">
+                <div class="filter-header-bar">
+                    <div class="filter-wrapper">
+                        <i class="fas fa-filter filter-icon" id="filterToggleBtn"></i>
+                        <div class="filter-dropdown" id="filterDropdown">
+                            <div class="filter-title-row">
+                                <i class="fas fa-filter" style="color:var(--hams-blue); font-size:0.9rem"></i>
+                                Activity Log Filters
+                            </div>
+                            
+                            <div class="filter-group">
+                                <div class="custom-select-box" onclick="toggleCustomSelect(this)">
+                                    <div class="select-trigger"><span>Name:</span><span id="val-name">All</span><i class="fas fa-chevron-down"></i></div>
+                                    <div class="dropdown-menu">
+                                        <div class="dropdown-opt" onclick="setFilter('val-name', 'All')">All</div>
+                                        <div class="dropdown-opt" onclick="setFilter('val-name', 'Jose L.')">Jose L.</div>
+                                        <div class="dropdown-opt" onclick="setFilter('val-name', 'Eren Y.')">Eren Y.</div>
+                                        <div class="dropdown-opt" onclick="setFilter('val-name', 'Jane F.')">Jane F.</div>
+                                        <div class="dropdown-opt" onclick="setFilter('val-name', 'Kenneth F.')">Kenneth F.</div>
+                                    </div>
+                                </div>
+                                <div class="custom-select-box" onclick="toggleCustomSelect(this)">
+                                    <div class="select-trigger"><span>Role:</span><span id="val-role">All</span><i class="fas fa-chevron-down"></i></div>
+                                    <div class="dropdown-menu">
+                                        <div class="dropdown-opt" onclick="setFilter('val-role', 'All')">All</div>
+                                        <div class="dropdown-opt" onclick="setFilter('val-role', 'Admin')">Admin</div>
+                                        <div class="dropdown-opt" onclick="setFilter('val-role', 'Staff')">Staff</div>
+                                        <div class="dropdown-opt" onclick="setFilter('val-role', 'Other Department')">Other Department</div>
+                                    </div>
+                                </div>
+                                <div class="custom-select-box" onclick="toggleCustomSelect(this)">
+                                    <div class="select-trigger"><span>Activity Type:</span><span id="val-type">All</span><i class="fas fa-chevron-down"></i></div>
+                                    <div class="dropdown-menu">
+                                        <div class="dropdown-opt" onclick="setFilter('val-type', 'All')">All</div>
+                                        <div class="dropdown-opt" onclick="setFilter('val-type', 'Updated')">Updated</div>
+                                        <div class="dropdown-opt" onclick="setFilter('val-type', 'Created')">Created</div>
+                                        <div class="dropdown-opt" onclick="setFilter('val-type', 'Resolved')">Resolved</div>
+                                    </div>
+                                </div>
+                                <div class="custom-select-box">
+                                    <div class="select-trigger"><span>Date Range:</span><span id="val-date">Select Date</span><i class="fas fa-chevron-down"></i></div>
+                                </div>
+
+                                <div class="calendar-wrapper">
+                                    <div class="cal-header">
+                                        <i class="fas fa-chevron-left cal-nav" id="prevMonth"></i>
+                                        <span id="currentMonthDisplay">November 2025</span>
+                                        <i class="fas fa-chevron-right cal-nav" id="nextMonth"></i>
+                                    </div>
+                                    <div class="cal-grid" id="calendarGrid">
+                                        </div>
+                                </div>
+                            </div>
+                            <div style="text-align:right;">
+                                <a href="#" onclick="clearFilters(); event.preventDefault();" style="color:black; font-weight:bold; font-size:0.85rem; text-decoration:none">Clear Filters</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="logList">
+                    <div class="log-item" data-name="Jose L." data-role="Admin" data-type="Updated" data-time="1742054300">
+                        <div class="log-avatar"><i class="fas fa-user-circle"></i></div>
+                        <div class="log-details">
+                            <div class="name">Jose L. <span class="role">(Admin)</span></div>
+                            <div class="action-title">Updated a maintenance log</div>
+                            <div class="subtitle-text">Quarterly Cleaning & Calibration</div>
+                            <div class="info-highlight">Ticket | Priority changed Medium to High</div>
+                        </div>
+                        <div class="log-right-meta"><div class="time-stamp">JUST NOW</div><i class="fas fa-ellipsis-v"></i></div>
+                    </div>
+
+                    <div class="log-item" data-name="Eren Y." data-role="Other Department" data-type="Created" data-time="1742054200">
+                        <div class="log-avatar"><i class="fas fa-user-circle"></i></div>
+                        <div class="log-details">
+                            <div class="name">Eren Y. <span class="role">(Other Department)</span></div>
+                            <div class="action-title">Created a ticket</div>
+                            <div class="subtitle-text">Malfunctioning printer</div>
+                            <div class="info-highlight">Ticket | Reception Printer</div>
+                        </div>
+                        <div class="log-right-meta"><div class="time-stamp">JUST NOW</div><i class="fas fa-ellipsis-v"></i></div>
+                    </div>
+
+                    <div class="log-item" data-name="Jane F." data-role="Staff" data-type="Resolved" data-time="1741972200">
+                        <div class="log-avatar"><i class="fas fa-user-circle"></i></div>
+                        <div class="log-details">
+                            <div class="name">Jane F. <span class="role">(Staff)</span></div>
+                            <div class="action-title">Resolved a ticket</div>
+                            <div class="subtitle-text">Server Error</div>
+                            <div class="info-highlight">Ticket | PC #02</div>
+                        </div>
+                        <div class="log-right-meta"><div class="time-stamp">Yesterday 17:10</div><i class="fas fa-ellipsis-v"></i></div>
+                    </div>
+
+                    <div class="log-item" data-name="Kenneth F." data-role="Staff" data-type="Resolved" data-time="1741969380">
+                        <div class="log-avatar"><i class="fas fa-user-circle"></i></div>
+                        <div class="log-details">
+                            <div class="name">Kenneth F. <span class="role">(Staff)</span></div>
+                            <div class="action-title">Resolved a ticket</div>
+                            <div class="subtitle-text">Computer Error</div>
+                            <div class="info-highlight">Ticket | Resolved a ticket</div>
+                        </div>
+                        <div class="log-right-meta"><div class="time-stamp">Yesterday 16:23</div><i class="fas fa-ellipsis-v"></i></div>
+                    </div>
+
+                    <div class="log-item" data-name="Kenneth F." data-role="Staff" data-type="Resolved" data-time="1741966500">
+                        <div class="log-avatar"><i class="fas fa-user-circle"></i></div>
+                        <div class="log-details">
+                            <div class="name">Kenneth F. <span class="role">(Staff)</span></div>
+                            <div class="action-title">Resolved a ticket</div>
+                            <div class="subtitle-text">Printer Malfunction</div>
+                            <div class="info-highlight">Ticket | Resolved a ticket</div>
+                        </div>
+                        <div class="log-right-meta"><div class="time-stamp">Yesterday 15:35</div><i class="fas fa-ellipsis-v"></i></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="placeholder-view" id="placeholderView">
+            <i class="fas fa-layer-group"></i>
+            <h2 id="placeholderTitle">Dashboard</h2>
+            <p>This module is currently under development.</p>
+        </div>
+    </div>
+
+    <div id="notifOverlay">
+        <div class="notification-panel">
+            <i class="fas fa-times close-notif-x" onclick="closeNotif()"></i>
+            <i class="fas fa-bell main-bell"></i>
+            <div class="notif-title">NOTIFICATIONS</div>
+            <div id="notifList">
+                <div class="notif-item" onclick="openStockAlert()">
+                    <span>⚠️ Low Stock Alert!</span>
+                    <i class="fas fa-arrow-right"></i>
+                </div>
+            </div>
+            <button class="clear-btn-notif" onclick="clearAll()">Clear All</button>
+        </div>
+    </div>
+
+    <div class="stock-modal" id="stockModal">
+        <div class="stock-container">
+            <i class="fas fa-exclamation-triangle" style="font-size:4vw"></i>
+            <h1>STOCK ALERT</h1>
+            <div class="stock-message">
+                <b>CRITICAL ITEMS DETECTED:</b><br><br>
+                • Printer Ink (2 remaining)<br>
+                • Bond Paper (5 remaining)<br>
+                • Ethernet Cables (1 remaining)
+            </div>
+            <button class="close-alert-btn" onclick="closeStock()">CLOSE ALERT</button>
+        </div>
+    </div>
+
+    <script>
+        const sidebar = document.getElementById('sidebar');
+        const toggleBtn = document.getElementById('toggleBtn');
+        const navItems = document.querySelectorAll('.nav-item');
+        const logContentView = document.getElementById('activityLogContentView');
+        const placeholderView = document.getElementById('placeholderView');
+        const pageTitle = document.getElementById('pageTitle');
+        const sortSelect = document.getElementById('sortSelect');
+        const logList = document.getElementById('logList');
+        const filterDropdown = document.getElementById('filterDropdown');
+
+        // Sidebar logic
+        toggleBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            if (window.innerWidth > 1024) sidebar.classList.toggle('collapsed');
+            else sidebar.classList.toggle('mobile-open');
+        });
+
+        document.getElementById('pageHeaderBtn').addEventListener('click', () => {
+            window.location.href = "STAFF HOMEPAGE!.html";
+        });
+
+        // SORTING LOGIC
+        sortSelect.addEventListener('change', function() {
+            const items = Array.from(logList.getElementsByClassName('log-item'));
+            const sortVal = this.value;
+            items.sort((a, b) => {
+                const timeA = parseInt(a.getAttribute('data-time'));
+                const timeB = parseInt(b.getAttribute('data-time'));
+                return sortVal === 'newest' ? timeB - timeA : timeA - timeB;
+            });
+            items.forEach(item => logList.appendChild(item));
+        });
+
+        // SIGN OUT
+        document.getElementById('signOutBtn').addEventListener('click', (e) => {
+            e.preventDefault();
+            if(confirm("Are you sure you want to sign out?")) {
+                document.body.innerHTML = `<div style="display:flex; height:100vh; width:100%; align-items:center; justify-content:center; flex-direction:column; background:var(--hams-blue); color:white;"><i class="fas fa-circle-notch fa-spin" style="font-size: 3rem; margin-bottom: 1rem;"></i><h2>Signing Out...</h2></div>`;
+                setTimeout(() => { window.location.href = "STAFF LOGIN.html"; }, 1500);
+            }
+        });
+
+        /* --- UPDATED FILTER LOGIC --- */
+        function toggleCustomSelect(el) { 
+            const wasActive = el.classList.contains('active');
+            document.querySelectorAll('.custom-select-box').forEach(b => b.classList.remove('active'));
+            if(!wasActive) el.classList.add('active'); 
+        }
+
+        function setFilter(id, val) { 
+            document.getElementById(id).innerText = val; 
+            applyLogFiltering();
+        }
+
+        // --- DYNAMIC CALENDAR LOGIC ---
+        let currentViewDate = new Date(2025, 10, 1); 
+        const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+
+        function renderCalendar() {
+            const grid = document.getElementById('calendarGrid');
+            const display = document.getElementById('currentMonthDisplay');
+            const year = currentViewDate.getFullYear();
+            const month = currentViewDate.getMonth();
+
+            display.innerText = `${monthNames[month]} ${year}`;
+            grid.innerHTML = ''; 
+
+            const firstDayOfMonth = new Date(year, month, 1).getDay();
+            const daysInMonth = new Date(year, month + 1, 0).getDate();
+            const daysInPrevMonth = new Date(year, month, 0).getDate();
+
+            // Previous month padding
+            for (let x = firstDayOfMonth; x > 0; x--) {
+                const div = document.createElement('div');
+                div.className = 'cal-date muted';
+                div.innerText = daysInPrevMonth - x + 1;
+                grid.appendChild(div);
+            }
+
+            // Current month days
+            for (let i = 1; i <= daysInMonth; i++) {
+                const div = document.createElement('div');
+                div.className = 'cal-date';
+                div.innerText = i;
+                
+                // Highlight weekends
+                const dayOfWeek = new Date(year, month, i).getDay();
+                if (dayOfWeek === 0 || dayOfWeek === 6) div.classList.add('highlight');
+
+                div.onclick = function() {
+                    document.querySelectorAll('.cal-date').forEach(d => d.classList.remove('selected'));
+                    this.classList.add('selected');
+                    const selectedDateStr = `${i} ${monthNames[month].substring(0, 3)} ${year}`;
+                    document.getElementById('val-date').innerText = selectedDateStr;
+                    applyLogFiltering();
+                };
+                grid.appendChild(div);
+            }
+
+            // Next month padding to fill 6 rows
+            const totalCells = 42;
+            const cellsAdded = grid.children.length;
+            for (let j = 1; j <= (totalCells - cellsAdded); j++) {
+                const div = document.createElement('div');
+                div.className = 'cal-date muted';
+                div.innerText = j;
+                grid.appendChild(div);
+            }
+        }
+
+        document.getElementById('prevMonth').addEventListener('click', (e) => {
+            e.stopPropagation();
+            currentViewDate.setMonth(currentViewDate.getMonth() - 1);
+            renderCalendar();
+        });
+
+        document.getElementById('nextMonth').addEventListener('click', (e) => {
+            e.stopPropagation();
+            currentViewDate.setMonth(currentViewDate.getMonth() + 1);
+            renderCalendar();
+        });
+
+        function clearFilters() { 
+            document.getElementById('val-name').innerText = 'All';
+            document.getElementById('val-role').innerText = 'All';
+            document.getElementById('val-type').innerText = 'All';
+            document.getElementById('val-date').innerText = 'Select Date';
+            currentViewDate = new Date(2025, 10, 1);
+            renderCalendar();
+            applyLogFiltering();
+        }
+
+        function applyLogFiltering() {
+            const fName = document.getElementById('val-name').innerText;
+            const fRole = document.getElementById('val-role').innerText;
+            const fType = document.getElementById('val-type').innerText;
+
+            document.querySelectorAll('.log-item').forEach(log => {
+                const nameMatch = (fName === 'All' || log.getAttribute('data-name') === fName);
+                const roleMatch = (fRole === 'All' || log.getAttribute('data-role') === fRole);
+                const typeMatch = (fType === 'All' || log.getAttribute('data-type') === fType);
+                log.style.display = (nameMatch && roleMatch && typeMatch) ? 'flex' : 'none';
+            });
+        }
+
+        document.getElementById('filterToggleBtn').addEventListener('click', (e) => {
+            e.stopPropagation();
+            filterDropdown.classList.toggle('active');
+        });
+
+        document.addEventListener('click', (e) => {
+            if (!filterDropdown.contains(e.target) && e.target.id !== 'filterToggleBtn') {
+                filterDropdown.classList.remove('active');
+            }
+            if (!e.target.closest('.custom-select-box')) {
+                document.querySelectorAll('.custom-select-box').forEach(b => b.classList.remove('active'));
+            }
+            if (window.innerWidth <= 1024 && !sidebar.contains(e.target) && e.target.id !== 'toggleBtn') {
+                sidebar.classList.remove('mobile-open');
+            }
+        });
+
+        /* --- NOTIFICATIONS --- */
+        function openNotif(){ document.getElementById("notifOverlay").style.display="flex"; }
+        function closeNotif(){ document.getElementById("notifOverlay").style.display="none"; }
+        function openStockAlert(){ document.getElementById("stockModal").style.display="flex"; }
+        function closeStock(){ document.getElementById("stockModal").style.display="none"; }
+        function clearAll(){
+            document.getElementById("notifList").innerHTML = "<div style='opacity:.6;font-style:italic'>No new notifications</div>";
+            document.querySelector(".clear-btn-notif").style.display="none";
+        }
+        document.getElementById("notifOverlay").addEventListener("click", function(e){
+            if(e.target.id === "notifOverlay") closeNotif();
+        });
+
+        // Initialize Calendar
+        renderCalendar();
+    </script>
+</body>
+</html>

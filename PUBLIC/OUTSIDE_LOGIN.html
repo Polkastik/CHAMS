@@ -95,6 +95,7 @@
             gap: 15px;
         }
 
+        /* View Switching logic */
         #forgotView { display: none; }
 
         .input-group { position: relative; width: 100%; }
@@ -169,75 +170,17 @@
             margin-bottom: 10px;
         }
 
-        /* --- NEW: CUSTOM BLUE MODAL (NOTIF) --- */
-        #customModal {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.5);
-            display: none;
-            align-items: center;
-            justify-content: center;
-            z-index: 2000;
-        }
-        .modal-content {
-            background: var(--hams-blue);
-            color: white;
-            padding: 30px;
-            border-radius: 20px;
-            width: 90%;
-            max-width: 400px;
-            text-align: center;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-            animation: modalSlide 0.3s ease-out;
-        }
-        @keyframes modalSlide { from { transform: translateY(-20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
-        .modal-icon { font-size: 3rem; margin-bottom: 15px; }
-        .modal-btn {
-            margin-top: 20px;
-            background: white;
-            color: var(--hams-blue);
-            border: none;
-            padding: 10px 30px;
-            border-radius: 20px;
-            font-weight: bold;
-            cursor: pointer;
-        }
-
-        /* --- NEW: FULLSCREEN LOADING --- */
-        #loginOverlay {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: var(--hams-blue);
-            display: none;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            z-index: 3000;
-        }
-
+        /* --- RESPONSIVENESS --- */
         @media (max-width: 768px) {
             body { flex-direction: column; }
             .left-panel { width: 100%; height: 35%; padding: 30px; align-items: center; text-align: center; }
             .right-panel { width: 100%; height: 65%; padding: 20px; }
+            .brand-large { font-size: 2.2rem; }
+            .tagline { font-size: 1.1rem; }
         }
     </style>
 </head>
 <body>
-
-    <div id="loginOverlay">
-        <i class="fas fa-circle-notch fa-spin" style="font-size: 3rem; margin-bottom: 1rem;"></i>
-        <h2>Logging In...</h2>
-    </div>
-
-    <div id="customModal">
-        <div class="modal-content">
-            <div class="modal-icon"><i class="fas fa-paper-plane"></i></div>
-            <h3 style="margin-bottom: 10px;">Request Sent!</h3>
-            <p>Kindly check your work email for the reset link and follow the instructions to set your new password.</p>
-            <button class="modal-btn" onclick="closeModal()">Close</button>
-        </div>
-    </div>
 
     <div class="left-panel">
         <div class="left-content">
@@ -251,7 +194,7 @@
 
     <div class="right-panel">
         <div class="logo-area">
-            <img src="CHAMS.png" alt="CHAMS Logo" class="logo-img">
+            <img src="CHAMS%20LOGO.png" alt="CHAMS Logo" class="logo-img">
         </div>
 
         <div id="loginView" class="login-form">
@@ -288,6 +231,7 @@
     </div>
 
     <script>
+        // Toggle between Login and Forgot Password views
         function toggleViews(view) {
             const loginView = document.getElementById('loginView');
             const forgotView = document.getElementById('forgotView');
@@ -300,16 +244,12 @@
             }
         }
 
-        function closeModal() {
-            document.getElementById('customModal').style.display = 'none';
-            toggleViews('login');
-        }
-
+        // Login Logic
         document.getElementById('loginForm').addEventListener('submit', function(e) {
-            e.preventDefault();
+            e.preventDefault()
+
             const btn = document.getElementById('loginBtn');
             const error = document.getElementById('loginError');
-            const overlay = document.getElementById('loginOverlay');
             
             btn.disabled = true;
             btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Authenticating...';
@@ -319,19 +259,17 @@
                 const empId = document.getElementById('empId').value;
                 const pass = document.getElementById('password').value;
 
-                if(empId === "ADMIN" && pass === "12345") {
-                    overlay.style.display = 'flex'; // Show fullscreen blue loader
-                    setTimeout(() => {
-                        window.location.href = "DASHBOARD.html"; // Redirect after showing loader
-                    }, 1500);
+                if(empId === "outside" && pass === "1234") {
+                    window.location.href = "OUTSIDE_HOMEPAGE.html";
                 } else {
                     error.style.display = 'block';
                     btn.disabled = false;
                     btn.innerText = 'Login';
                 }
-            }, 1000);
+            }, 1200);
         });
 
+        // Forgot Password Logic
         document.getElementById('forgotForm').addEventListener('submit', function(e) {
             e.preventDefault();
             const btn = document.getElementById('forgotBtn');
@@ -339,10 +277,11 @@
             btn.innerHTML = '<i class="fas fa-paper-plane fa-spin"></i> Processing...';
 
             setTimeout(() => {
-                document.getElementById('customModal').style.display = 'flex'; // Show blue popup
+                alert("Request Sent! Kindly Wait for the email in your work account then fill up your new password!");
                 btn.disabled = false;
                 btn.innerText = 'Submit Request';
-            }, 1200);
+                toggleViews('login');
+            }, 1500);
         });
     </script>
 </body>

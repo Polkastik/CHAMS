@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HAMS - Inventory Details</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --hams-blue: #00407a;
+            --text-main: #003366;
+            --sidebar-active: #eef2f6;
+            --sidebar-hover: #eef2f6;
+            --border-color: #e0e0e0;
+            --btn-green: #39e600;
+            --btn-blue-light: #0080ff;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Arial, sans-serif; }
+        
+        body { 
+            display: flex; 
+            height: 100vh; 
+            background-color: #f4f7f9; 
+            overflow: hidden; 
+            width: 100%; 
+        }
+
+        /* --- HEADER --- */
+        header { 
+            background-color: var(--hams-blue); 
+            height: 8vh; 
+            display: flex; 
+            align-items: center; 
+            justify-content: space-between; 
+            padding: 0 2%; 
+            position: fixed; 
+            top: 0; 
+            width: 100%; 
+            z-index: 1000; 
+        }
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 1.2vw;
+            color: white;
+        }
+
+        .menu-toggle {
+            font-size: 2.2vw;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .logo-img {
+            height: 20vh;
+            width: auto;
+        }
+
+        .search-container {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .search-container input {
+            width: 18vw;
+            height: 4vh;
+            border-radius: 0.4vw;
+            border: none;
+            padding: 0 2.5vw 0 1vw;
+            outline: none;
+            font-size: 0.85vw;
+        }
+
+        .search-container i {
+            position: absolute;
+            right: 0.8vw;
+            color: #0b4a7a;
+            font-size: 0.9vw;
+            pointer-events: none;
+        }
+        /* --- SIDEBAR --- */
+        .sidebar {
+            width: 18%; background: #ffffff; padding: 2.5vh 1.2%; display: flex; flex-direction: column; height: 100vh;
+            padding-top: 8vh; transition: 0.3s ease; border-right: 1px solid var(--border-color); overflow: hidden;
+            z-index: 900; position: fixed; left: 0; top: 0;
+        }
+        .profile-card { background: #fff; padding: 2.5vh 5%; text-align: center; margin-bottom: 3vh; transition: 0.3s ease; cursor: pointer; text-decoration: none; }
+        .profile-area-sync { text-align: center; padding: 2vh 5%; transition: opacity 0.2s; }
+        .profile-icon-big { font-size: 4.5vw; color: #0b4a7a; margin-bottom: 1vh; }
+        .profile-name-sync { font-weight: bold; color: var(--text-main); margin-bottom: 1vh; font-size: 0.95vw; }
+        .staff-badge { background: white; border: 1px solid #ccc; border-radius: 1vw; padding: 0.2vh 0.8vw; font-size: 0.65vw; display: inline-block; color: var(--text-main); font-weight: bold; white-space: nowrap; }
+        .profile-label { display: none; }
+        .menu { flex: 1; overflow-y: auto; scrollbar-width: none; }
+        .menu-item { display: flex; align-items: center; gap: 0.8vw; padding: 1.4vh 10%; font-size: 0.85vw; font-weight: 600; color: #0b4a7a; cursor: pointer; border-radius: 0.6vw; margin-bottom: 0.5vh; transition: 0.2s; white-space: nowrap; text-decoration: none; }
+        .menu-item i { font-size: 1.3vw; width: 1.5vw; text-align: center; }
+        .menu-item:hover, .menu-item.active { background: var(--sidebar-hover); }
+        .signout { margin-top: auto; padding: 1.5vh 10%; color: #0b4a7a; display: flex; align-items: center; gap: 0.8vw; font-weight: 700; font-size: 0.9vw; cursor: pointer; text-decoration: none; border-top: 1px solid #f0f0f0; }
+
+        .sidebar.collapsed { width: 6.5vw; }
+        .sidebar.collapsed .profile-name-sync, .sidebar.collapsed .staff-badge, .sidebar.collapsed .menu-item span, .sidebar.collapsed .signout span { display: none; }
+
+        /* --- CONTENT AREA --- */
+        .main-wrapper { 
+            margin-left: 18%; width: 82%; padding: calc(8vh + 40px) 40px 40px 40px; overflow-y: auto; transition: margin-left 0.3s ease, width 0.3s ease;
+        }
+        .sidebar.collapsed + .main-wrapper { margin-left: 6.5vw; width: calc(100% - 6.5vw); }
+
+        .page-header { display: flex; align-items: center; gap: 15px; margin-bottom: 20px; color: var(--hams-blue); }
+        .page-header i { font-size: 1.5rem; cursor: pointer; transition: transform 0.2s; }
+        .page-header h2 { font-size: 1.5rem; text-transform: uppercase; letter-spacing: 1px; }
+
+        .details-card {
+            background: white; border: 1px solid var(--border-color); border-radius: 8px; padding: 35px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); position: relative; min-height: 500px;
+        }
+        .info-grid {
+            border: 1px solid var(--border-color); border-radius: 8px; padding: 25px; display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 50px; margin-bottom: 30px; background-color: #fafbfc;
+        }
+        .info-row { display: flex; justify-content: space-between; margin-bottom: 18px; font-size: 14px; border-bottom: 1px solid #f0f0f0; padding-bottom: 8px; }
+        .label { color: #888; font-weight: bold; }
+        .value { color: #000; font-weight: bold; }
+
+        .status-section { display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 20px; }
+        .status-group { margin-bottom: 25px; }
+        .status-title { color: #888; font-size: 12px; font-weight: bold; margin-bottom: 10px; text-transform: uppercase; }
+        .status-btn { display: inline-block; padding: 10px 24px; border-radius: 6px; color: white; font-weight: bold; font-size: 12px; text-align: center; min-width: 110px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .btn-none { background-color: var(--btn-green); }
+        .btn-na { background-color: var(--btn-blue-light); }
+
+        .attachment-btn { display: flex; align-items: center; gap: 10px; background: #fff; padding: 10px 20px; border-radius: 6px; font-size: 13px; font-weight: bold; color: var(--hams-blue); cursor: pointer; border: 2px solid var(--hams-blue); transition: 0.2s; }
+        .download-btn { position: absolute; bottom: 35px; right: 35px; background: var(--hams-blue); color: white; border: none; padding: 12px 30px; border-radius: 6px; font-weight: bold; font-size: 14px; cursor: pointer; display: flex; align-items: center; gap: 12px; transition: 0.2s; box-shadow: 0 4px 6px rgba(0,64,122,0.2); }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="header-left">
+            <i class="fas fa-bars menu-toggle" id="toggleBtn"></i>
+            <img src="CHAMS%20LOGO.png" alt="Logo" class="logo-img">
+        </div>
+        <div class="search-container">
+            <input type="text" id="searchInput" placeholder="Search Inventory...">
+            <i class="fas fa-search"></i>
+        </div>
+    </header>
+
+    <div class="sidebar" id="sidebar">
+        <a href="STAFF%20PROFILE!.html" class="profile-card">
+            <div class="profile-area-sync">
+                <div class="profile-icon-big"><i class="fas fa-user-circle"></i></div>
+                <div class="profile-name-sync">KENNETH F.</div>
+                <div class="staff-badge">STAFF | 2.0.1 <i class="fas fa-cog"></i></div>
+                <div class="profile-label">PROFILE</div>
+            </div>
+        </a>
+        <div class="menu">
+            <a href="STAFF%20HOMEPAGE!.html" class="menu-item"><i class="fas fa-home"></i> <span>HOME</span></a>
+            <a href="STAFF%20TICKETING!.html" class="menu-item"><i class="fas fa-ticket-alt"></i> <span>TICKETS</span></a>
+            <a href="STAFF%20INVENTORY!.html" class="menu-item active"><i class="fas fa-box"></i> <span>INVENTORY</span></a>
+            <a href="STAFF%20ACTIVITY%20LOG.html" class="menu-item"><i class="fas fa-history"></i> <span>ACTIVITY LOG</span></a>
+            <div class="menu-item" onclick="openNotif()"><i class="fas fa-bell"></i> <span>NOTIFICATION</span></div>
+            <a href="STAFF%20SETTINGS!.html" class="menu-item"><i class="fas fa-cog"></i> <span>SETTINGS</span></a>
+            <a href="STAFF%20FAQS!.html" class="menu-item"><i class="fas fa-question-circle"></i> <span>FAQs</span></a>
+        </div>
+        <a href="#" class="signout" onclick="handleLogout()">
+            <i class="fas fa-sign-out-alt"></i> <span>SIGN OUT</span>
+        </a>
+    </div>
+
+    <div class="main-wrapper">
+        <div class="page-header">
+            <i class="fas fa-chevron-left" onclick="window.history.back()"></i>
+            <h2>Item Details</h2>
+        </div>
+
+        <div class="details-card">
+            <div class="info-grid">
+                <div>
+                    <div class="info-row"><span class="label">Item Name:</span><span class="value" id="det-name">---</span></div>
+                    <div class="info-row"><span class="label">Item Type:</span><span class="value" id="det-type">---</span></div>
+                    <div class="info-row"><span class="label">Item Brand:</span><span class="value" id="det-brand">---</span></div>
+                    <div class="info-row"><span class="label">Date Delivered:</span><span class="value" id="det-date">---</span></div>
+                </div>
+                <div>
+                    <div class="info-row"><span class="label">Quantity:</span><span class="value" id="det-qty">---</span></div>
+                    <div class="info-row"><span class="label">Supplier:</span><span class="value" id="det-supplier">---</span></div>
+                    <div class="info-row"><span class="label">Input by:</span><span class="value" id="det-agent">---</span></div>
+                    <div class="info-row"><span class="label">Collected by:</span><span class="value">Pedro Loto</span></div>
+                </div>
+            </div>
+
+            <div class="status-section">
+                <div>
+                    <div class="status-group">
+                        <div class="status-title">Defects:</div>
+                        <div class="status-btn btn-none">NONE</div>
+                    </div>
+                    <div class="status-group">
+                        <div class="status-title">Serial no.</div>
+                        <div class="status-btn btn-na">N/A</div>
+                    </div>
+                </div>
+                <div>
+                    <button class="attachment-btn" onclick="viewAttachment()">
+                        See Attachment <i class="fas fa-file-pdf"></i>
+                    </button>
+                </div>
+            </div>
+            <button class="download-btn" onclick="downloadData()">
+                DOWNLOAD REPORT <i class="fas fa-download"></i>
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // --- DATA SOURCE (Must match Inventory Page) ---
+        const inventoryData = [
+            { id: 1, name: "Printer Ink", category: "Consumable", brand: "Epson", deliveredBy: "Red Horse Co.", agent: "Sam M | Admin", quantity: 60, date: "11/03/25" },
+            { id: 2, name: "Dell Monitor 24\"", category: "Hardware", brand: "Dell", deliveredBy: "Dell Direct", agent: "Kenneth F | Staff", quantity: 15, date: "11/01/25" },
+            { id: 3, name: "A4 Paper Ream", category: "Consumable", brand: "PaperOne", deliveredBy: "OfficeMax", agent: "Jane F | Staff", quantity: 8, date: "10/28/25" },
+            { id: 4, name: "Keyboard Pro", category: "Hardware", brand: "Logitech", deliveredBy: "Logitech", agent: "Sam M | Admin", quantity: 25, date: "11/05/25" },
+            { id: 5, name: "Ergonomic Chair", category: "Furniture", brand: "Herman Miller", deliveredBy: "HomeWorld", agent: "Kenneth F | Staff", quantity: 5, date: "11/10/25" }
+        ];
+
+        // --- DYNAMIC DATA LOGIC ---
+        function loadItemDetails() {
+            const params = new URLSearchParams(window.location.search);
+            const id = parseInt(params.get('id'));
+            const item = inventoryData.find(i => i.id === id);
+
+            if (item) {
+                document.getElementById('det-name').innerText = item.name;
+                document.getElementById('det-type').innerText = item.category;
+                document.getElementById('det-brand').innerText = item.brand;
+                document.getElementById('det-date').innerText = item.date;
+                document.getElementById('det-qty').innerText = item.quantity;
+                document.getElementById('det-supplier').innerText = item.deliveredBy;
+                document.getElementById('det-agent').innerText = item.agent;
+            } else {
+                document.querySelector('.details-card').innerHTML = "<h2 style='text-align:center; padding-top:50px;'>Item Not Found</h2>";
+            }
+        }
+
+        const toggleBtn = document.getElementById('toggleBtn');
+        const sidebar = document.getElementById('sidebar');
+
+        toggleBtn.addEventListener('click', () => {
+            if (window.innerWidth <= 768) {
+                sidebar.classList.toggle('active-mobile');
+            } else {
+                sidebar.classList.toggle('collapsed');
+            }
+        });
+
+        function openNotif() { alert("Opening Notifications..."); }
+        function viewAttachment() { alert("Opening attachment viewer..."); }
+        function downloadData() { alert("Preparing PDF download..."); }
+        function handleLogout() { if(confirm("Sign out?")) alert("Logging out..."); }
+
+        // Initialize details on load
+        window.onload = loadItemDetails;
+    </script>
+</body>
+</html>

@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CHAMS - FAQs</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --hams-blue: #00407a;
+            --text-main: #003366;
+            --sidebar-active: #eef2f6;
+            --sidebar-hover: #eef2f6;
+            --border-color: #e0e0e0;
+            --btn-blue: #5a8dee;
+        }
+
+        /* Fluid Reset */
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: "Segoe UI", Arial, sans-serif; }
+        body { display: flex; height: 100vh; background-color: #f4f7f9; overflow: hidden; width: 100%; }
+
+        /* --- HEADER STYLES --- */ 
+        header { 
+            background-color: var(--hams-blue); 
+            height: 8vh; 
+            display: flex; 
+            align-items: center; 
+            justify-content: space-between; 
+            padding: 0 2.5%; 
+            position: fixed; 
+            top: 0; 
+            width: 100%; 
+            z-index: 1000; 
+        } 
+        .header-left { display: flex; align-items: center; gap: 1.2vw; color: white; } 
+        .menu-toggle { font-size: 2.2vw; cursor: pointer; user-select: none; }
+        .logo-img { height: 20vh; width: auto; }
+        .search-container { position: relative; display: flex; align-items: center; } 
+        .search-container input { width: 18vw; height: 4vh; border-radius: 0.4vw; border: none; padding: 0 2.5vw 0 1vw; outline: none; font-size: 0.85vw; } 
+        .search-container i { position: absolute; right: 0.8vw; color: #0b4a7a; font-size: 0.9vw; pointer-events: none; } 
+
+        /* --- SIDEBAR STYLES --- */ 
+        .sidebar {
+            width: 18%;
+            background: #ffffff;
+            padding: 2.5vh 1.2%;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            padding-top: 8vh; 
+            transition: 0.3s ease;
+            border-right: 1px solid var(--border-color);
+            overflow: hidden;
+            z-index: 900;
+        }
+
+        .sidebar.collapsed { width: 6.5vw; padding: 8vh 0 2vh 0; }
+
+        .profile-card {
+            background: #fff;
+            padding: 2.5vh 5%;
+            text-align: center;
+            margin-bottom: 3vh;
+            transition: 0.3s ease;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .profile-area-sync { text-align: center; padding: 2vh 5%; transition: opacity 0.2s; }
+        .profile-icon-big { font-size: 4.5vw; color: #0b4a7a; margin-bottom: 1vh; }
+        .profile-name-sync { font-weight: bold; color: var(--text-main); margin-bottom: 1vh; font-size: 0.95vw; }
+
+        .staff-badge {
+            background: white;
+            border: 1px solid #ccc;
+            border-radius: 1vw;
+            padding: 0.2vh 0.8vw;
+            font-size: 0.65vw;
+            display: inline-block;
+            color: var(--text-main);
+            font-weight: bold;
+            white-space: nowrap;
+        }
+        .staff-badge i { font-size: 0.6vw; margin-left: 3px; color: #888; }
+        .profile-label { display: none; }
+
+        .menu { flex: 1; overflow-y: auto; scrollbar-width: none; }
+        .menu::-webkit-scrollbar { display: none; }
+
+        .menu-item {
+            display: flex;
+            align-items: center;
+            gap: 0.8vw;
+            padding: 1.4vh 10%;
+            font-size: 0.85vw;
+            font-weight: 600;
+            color: #0b4a7a;
+            cursor: pointer;
+            border-radius: 0.6vw;
+            margin-bottom: 0.5vh;
+            transition: 0.2s;
+            white-space: nowrap;
+            text-decoration: none;
+        }
+
+        .menu-item i { font-size: 1.3vw; width: 1.5vw; text-align: center; }
+        .menu-item:hover, .menu-item.active { background: var(--sidebar-hover); }
+
+        .signout {
+            margin-top: auto;
+            padding: 1.5vh 10%;
+            color: #0b4a7a;
+            display: flex;
+            align-items: center;
+            gap: 0.8vw;
+            font-weight: 700;
+            font-size: 0.9vw;
+            cursor: pointer;
+            text-decoration: none;
+            border-top: 1px solid #f0f0f0;
+        }
+        .signout:hover { background: #fff0f0; color: #d11a2a; }
+
+        /* Collapsed States */
+        .sidebar.collapsed .profile-name-sync,
+        .sidebar.collapsed .staff-badge,
+        .sidebar.collapsed .hide-on-collapse { display: none !important; }
+
+        .sidebar.collapsed .profile-card { padding: 1vh 0; margin-bottom: 1vh; }
+        .sidebar.collapsed .profile-icon-big { font-size: 2.5vw; }
+        .sidebar.collapsed .profile-label { display: block !important; font-size: 0.7vw; font-weight: 800; color: #0b4a7a; margin-top: 2px; }
+
+        .sidebar.collapsed .menu-item { flex-direction: column; padding: 1.2vh 0; justify-content: center; gap: 2px; }
+        .sidebar.collapsed .menu-item span { display: block !important; font-size: 0.65vw; font-weight: 800; }
+
+        /* --- CONTENT AREA --- */
+        .main-wrapper { 
+            flex: 1; 
+            margin-top: 8vh;
+            padding: 1% 2%;
+            overflow-y: auto;
+            min-width: 0;
+            position: relative;
+        }
+
+        .page-header {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.8vw;
+            margin-bottom: 3vh;
+            color: #0b4a7a;
+            cursor: pointer;
+            transition: 0.2s;
+            font-weight: 800;
+        }
+        .page-header:hover { transform: translateX(-5px); }
+        .page-header i { font-size: 140%; }
+        .page-header h2 { font-size: 140%; }
+
+        .faq-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            max-width: 800px;
+            margin: 0 auto;
+            padding-bottom: 4rem;
+        }
+
+        .faq-title { font-size: 150%; font-weight: bold; color: #000; margin-bottom: 2rem; text-transform: uppercase; text-align: center; }
+
+        .faq-search-box { width: 100%; position: relative; margin-bottom: 2.5rem; }
+        .faq-search-box input { width: 100%; padding: 15px 20px; border: 1px solid #aaa; border-radius: 6px; font-size: 80%; outline: none; color: #333; }
+        .faq-search-box i { position: absolute; right: 20px; top: 50%; transform: translateY(-50%); font-size: 80%; color: #888; }
+
+        .faq-list { width: 100%; display: flex; flex-direction: column; gap: 15px; }
+        .faq-card { background: white; border: 1px solid var(--border-color); border-radius: 6px; box-shadow: 0 2px 5px rgba(0,0,0,0.03); overflow: hidden; }
+        .faq-item { display: flex; justify-content: space-between; align-items: center; padding: 18px 20px; cursor: pointer; transition: background 0.2s; }
+        .faq-item:hover { background-color: #fafbfc; }
+        .faq-question { font-size: 80%; font-weight: bold; color: #222; }
+        .faq-icon { font-size: 1.1rem; color: #666; transition: transform 0.3s ease; }
+
+        .faq-card.open .faq-item { background-color: var(--sidebar-active); border-bottom: 1px solid var(--border-color);}
+        .faq-card.open .faq-icon { transform: rotate(180deg); color: var(--hams-blue); }
+        .faq-card.open .faq-question { color: var(--hams-blue); }
+
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease, padding 0.3s ease;
+            background: white;
+            color: #444;
+            font-size: 80%;
+            line-height: 1.6;
+            padding: 0 20px;
+        }
+        .faq-card.open .faq-answer { max-height: 500px; padding: 15px 20px; }
+
+        /* NOTIFICATION & MODALS */
+        #notifOverlay { position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(0,0,0,0.3); display:none; align-items:center; justify-content:center; z-index:3000; }
+        .notification-panel { background:#0b4a7a; width:35vw; min-width:450px; padding:6vh 3vw; border-radius:1.5vw; text-align:center; color:white; position:relative; box-shadow:0 2vw 5vw rgba(0,0,0,0.8); }
+        .close-notif-x { position:absolute; top:15px; right:20px; font-size:1.5vw; cursor:pointer; color:white; }
+        .main-bell { font-size:4vw; margin-bottom:2vh; }
+        .notif-title { font-size:2vw; font-weight:bold; margin-bottom:3vh; }
+        .notif-item { background:white; color:#333; padding:2vh; margin-bottom:1vh; border-radius:0.6vw; display:flex; justify-content:space-between; cursor:pointer; font-weight:bold; }
+        .clear-btn { margin-top:2vh; background:white; border:none; padding:1vh 2vw; border-radius:2vw; font-weight:bold; color:#0b4a7a; cursor:pointer; }
+
+        .sidebar-action-btn {
+            width: 85%;
+            margin: 1vh auto 2vh auto;
+            padding: 0.9vh 0;
+            border: none;
+            border-radius: 999px;
+            font-weight: bold;
+            font-size: 0.8vw;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5vw;
+            transition: 0.2s ease;
+        }
+
+        /* GREEN NEW BUTTON */
+        .btn-new {
+            background: #38c172; /* nice green */
+            color: white;
+        }
+
+        .btn-new:hover {
+            background: #2fa463;
+            transform: scale(1.03);
+        }
+
+    </style>
+</head>
+<body>
+
+    <header> 
+        <div class="header-left"> 
+            <i class="fas fa-bars menu-toggle" id="toggleBtn"></i> 
+            <img src="CHAMS%20LOGO.png" alt="CHAMS Logo" class="logo-img">
+        </div> 
+        <div class="search-container"> 
+            <input type="text" id="searchInput" placeholder="Search system..."> 
+            <i class="fas fa-search"></i> 
+        </div> 
+    </header>
+
+
+    <div class="sidebar" id="sidebar">
+        <div class="profile-area-sync">
+            <div class="profile-icon-big"><i class="fas fa-user-circle"></i></div>
+            <div class="profile-name-sync">JIN S.</div>
+            <div class="staff-badge">OTHER DEPARTMENT <i class="fas fa-cog"></i></div>
+        </div>
+        </a>
+
+        <div class="menu">
+
+            <button class="sidebar-action-btn btn-new" onclick="window.location.href='OUTSIDE_CREATE_TICKET.html'">
+                <i class="fas fa-plus"></i> <span>NEW</span>
+            </button>
+
+            <!-- TICKETS = HOMEPAGE -->
+            <a href="OUTSIDE_HOMEPAGE.html" class="menu-item">
+                <i class="fas fa-ticket-alt"></i> <span>HOME</span>
+            </a>
+
+            <!-- NOTIFICATION -->
+            <div class="menu-item" onclick="openNotif()">
+                <i class="fas fa-bell"></i> <span>NOTIFICATION</span>
+            </div>
+
+            <!-- SETTINGS -->
+            <a href="OUTSIDE_SETTINGS.html" class="menu-item">
+                <i class="fas fa-cog"></i> <span>SETTINGS</span>
+            </a>
+
+            <!-- FAQS -->
+            <a href="OUTSIDE_FAQS.html" class="menu-item active">
+                <i class="fas fa-question-circle"></i> <span>FAQs</span>
+            </a>
+        </div>
+
+        <a href="OUTSIDE_LOGIN.html" class="signout hide-on-collapse" id="signOutBtn">
+            <i class="fas fa-sign-out-alt"></i> <span>SIGN OUT</span>
+        </a>
+    </div>
+
+    <div class="main-wrapper">
+        <div class="page-header" id="pageHeaderBtn">
+            <i class="fas fa-chevron-left"></i>
+            <h2 id="pageTitle">FAQs</h2>
+        </div>
+
+        <div id="faqsContentView">
+            <div class="faq-content">
+                <div class="faq-title">HOW CAN WE HELP?</div>
+
+                <div class="faq-search-box">
+                    <input type="text" id="faqSearchInput" placeholder="Search a question...">
+                    <i class="fas fa-search"></i>
+                </div>
+
+                <div class="faq-list" id="faqListContainer">
+                    <div class="faq-card">
+                        <div class="faq-item" onclick="toggleFAQ(this)">
+                            <span class="faq-question">How do I submit a new support ticket?</span>
+                            <i class="fas fa-chevron-down faq-icon"></i>
+                        </div>
+                        <div class="faq-answer">
+                            To submit a new support ticket, navigate to the "Home" or "Tickets" dashboard and locate the <strong>Create Ticket</strong> button. Fill out the required details including the subject, category, and a detailed description of the issue. Click Submit once complete.
+                        </div>
+                    </div>
+
+                    <div class="faq-card">
+                        <div class="faq-item" onclick="toggleFAQ(this)">
+                            <span class="faq-question">Where can I view the current status of my open tickets?</span>
+                            <i class="fas fa-chevron-down faq-icon"></i>
+                        </div>
+                        <div class="faq-answer">
+                            You can view the status of all your tickets under the <strong>Tickets</strong> tab on the sidebar. The list provides status badges such as "Unassigned", "Assigned", and "Resolved". You can click on any specific ticket row to open its detailed view.
+                        </div>
+                    </div>
+
+                    <div class="faq-card">
+                        <div class="faq-item" onclick="toggleFAQ(this)">
+                            <span class="faq-question">How do I add or update an item in the Inventory section?</span>
+                            <i class="fas fa-chevron-down faq-icon"></i>
+                        </div>
+                        <div class="faq-answer">
+                            Navigate to the <strong>Inventory</strong> tab. To add an item, click "Add New Item" at the top right. To update an existing item, click the three vertical dots (options menu) on the right side of the item's row and select "Edit Item". Ensure you save your changes before exiting.
+                        </div>
+                    </div>
+
+                    <div class="faq-card">
+                        <div class="faq-item" onclick="toggleFAQ(this)">
+                            <span class="faq-question">What should I do if an inventory item is showing as "Out of Stock"?</span>
+                            <i class="fas fa-chevron-down faq-icon"></i>
+                        </div>
+                        <div class="faq-answer">
+                            If an item is out of stock, it should be immediately reported to the Procurement Department. You can also automatically generate a restock request directly from the Inventory detail page by selecting the "Request Restock" action button.
+                        </div>
+                    </div>
+
+                    <div class="faq-card">
+                        <div class="faq-item" onclick="toggleFAQ(this)">
+                            <span class="faq-question">Where do I go to change my account password or staff profile details?</span>
+                            <i class="fas fa-chevron-down faq-icon"></i>
+                        </div>
+                        <div class="faq-answer">
+                            You can update your personal information by navigating to the <strong>Settings</strong> tab. From there, you can edit your profile details, manage security protocols (like changing your password), and adjust your notification preferences.
+                        </div>
+                    </div>
+
+                    <div class="faq-card">
+                        <div class="faq-item" onclick="toggleFAQ(this)">
+                            <span class="faq-question">Who should I contact if I encounter a "System Error" message?</span>
+                            <i class="fas fa-chevron-down faq-icon"></i>
+                        </div>
+                        <div class="faq-answer">
+                            If you encounter a system error that prevents you from completing your work, please take a screenshot of the error and immediately utilize the "Report a Bug" button located in the <strong>Settings</strong> tab. A system administrator will review the error logs.
+                        </div>
+                    </div>
+
+                    <div class="faq-card">
+                        <div class="faq-item" onclick="toggleFAQ(this)">
+                            <span class="faq-question">Is there a way to filter tickets by priority or date?</span>
+                            <i class="fas fa-chevron-down faq-icon"></i>
+                        </div>
+                        <div class="faq-answer">
+                            Yes! In the <strong>Tickets</strong> tab, you will find a filter icon (funnel) on the right side of the toolbar. Clicking this opens a panel where you can strictly filter tickets by Priority, Category, Status, Department, and assigned Agent.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="notifOverlay">
+        <div class="notification-panel">
+            <i class="fas fa-times close-notif-x" onclick="closeNotif()"></i>
+            <i class="fas fa-bell main-bell"></i>
+            <div class="notif-title">NOTIFICATIONS</div>
+            <div id="notifList" style="margin:20px 0;">
+                <div class="notif-item">
+                    <span> Ticket has been created </span>
+                </div>
+            </div>
+            <button class="clear-btn" onclick="clearAll()">Clear All</button>
+        </div>
+    </div>
+
+
+    <script>
+        // Sidebar logic
+        const toggleBtn = document.getElementById('toggleBtn');
+        const sidebar = document.getElementById('sidebar');
+        toggleBtn.addEventListener('click', () => {
+            sidebar.classList.toggle('collapsed');
+        });
+
+        // FAQ Toggle
+        window.toggleFAQ = function(element) {
+            const card = element.closest('.faq-card');
+            const isOpen = card.classList.contains('open');
+            document.querySelectorAll('.faq-card').forEach(c => c.classList.remove('open'));
+            if(!isOpen) card.classList.add('open');
+        };
+
+        // FAQ Search
+        document.getElementById('faqSearchInput').addEventListener('input', function() {
+            const term = this.value.toLowerCase();
+            const cards = document.querySelectorAll('.faq-card');
+            cards.forEach(card => {
+                const question = card.querySelector('.faq-question').innerText.toLowerCase();
+                const answer = card.querySelector('.faq-answer').innerText.toLowerCase();
+                card.style.display = (question.includes(term) || answer.includes(term)) ? 'block' : 'none';
+            });
+        });
+
+        // Header click to go Home
+        document.getElementById('pageHeaderBtn').addEventListener('click', () => {
+            window.location.href = "OUTSIDE_HOMEPAGE.html";
+        });
+
+        // Sign Out logic
+        document.getElementById('signOutBtn').addEventListener('click', (e) => {
+            e.preventDefault();
+            if(confirm("Are you sure you want to sign out?")) {
+                document.body.innerHTML = `<div style="display:flex; height:100vh; width:100%; align-items:center; justify-content:center; flex-direction:column; background:var(--hams-blue); color:white;"><i class="fas fa-circle-notch fa-spin" style="font-size: 3rem; margin-bottom: 1rem;"></i><h2>Signing Out...</h2></div>`;
+                setTimeout(() => { window.location.href = "OUTSIDE_LOGIN.html"; }, 1500);
+            }
+        });
+
+        // Notification systems
+        function openNotif(){ document.getElementById("notifOverlay").style.display="flex"; }
+        function closeNotif(){ document.getElementById("notifOverlay").style.display="none"; }
+        function clearAll(){ document.getElementById("notifList").innerHTML = "<div style='opacity:.6;font-style:Segoe UI'>No new notifications</div>"; }
+    </script>
+</body>
+</html>
