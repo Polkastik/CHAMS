@@ -1,0 +1,142 @@
+/* 4. INVENTORY CONTENT STYLING */
+.inventory-header {
+    display: flex;
+    align-items: center;
+    gap: 0.8vw;
+    margin-bottom: 2vh;
+    color: #0b4a7a;
+    font-weight: 800;
+    font-size: 1.2vw;
+    cursor: pointer;
+}
+
+.plus-icon {
+    margin: 0 -150% 0 auto; 
+}
+
+.plus-icon-item {
+    background: #2e63c4 !important;
+    color: white;
+    padding: 1vh 2vh;
+    font-size: larger;
+    border-radius: 25%;
+    text-align: center;
+}
+
+/* Clickable Item Style */
+.inventory-link {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+}
+
+/* Color for locked state */
+.fa-lock {
+    color: #888;
+}
+
+/* Color for unlocked state */
+.fa-lock-open {
+    color: #27ae60;
+}
+
+/* Modal Background */
+.modal-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6); 
+    backdrop-filter: blur(3px); 
+    z-index: 2000;
+    align-items: center;
+    justify-content: center;
+    animation: fadeIn 0.3s ease;
+}
+
+/* Modal Box */
+.modal-content {
+    background: white;
+    padding: 25px;
+    border-radius: 12px;
+    width: 100%;
+    max-width: 450px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+    animation: slideUp 0.3s ease;
+}
+
+.modal-content h3 {
+    margin-top: 0;
+    color: #333;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* Form Styling inside Modal */
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-control {
+    width: 100%;
+}
+
+.modal-header {
+    display: flex;
+    gap: 25%;
+    padding: 4%;
+    text-align: center;
+    margin-bottom:15px;
+}
+
+.form-group textarea {
+    min-height: 70px;
+    max-height: 200px;
+    min-width: 100%;
+    max-width:100%;
+    margin-bottom:15px;
+}
+
+.form-group label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+    font-size: 0.9rem;
+    color: #555;
+}
+
+.form-input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 1rem;
+}
+
+/* Buttons */
+.modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    margin-top: 20px;
+}
+
+.save-btn {
+    background-color: #28a745;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+}
+
+.cancel-btn {
+    background-color: #f4f4f4;
+    color: #333;
+    border: 1px solid #ddd;
+}
+
+/* Animations */
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+@keyframes slideUp { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
