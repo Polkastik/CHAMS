@@ -59,18 +59,42 @@ function initGraphs() {
 function refreshGraph() {
     const loaderText = document.querySelector('#graph-loader span');
 
+<<<<<<< HEAD
     get('dashboard.php?ajax=graph')
         .then(res => {
             const data = JSON.parse(res);
 
+=======
+    const endpoint = window.location.pathname.includes('profile')
+    ? 'profile.php?ajax=graph'
+    : 'dashboard.php?ajax=graph';
+
+    fetch(endpoint)
+        .then(res => res.json())
+        .then(data => {
+>>>>>>> 7f37e85 (CHAMS VERSION 1)
             const canvas = document.getElementById('performanceChart');
             if (canvas) {
                 const ctx = canvas.getContext('2d');
                 const months = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+<<<<<<< HEAD
                 const labels = data.line.map(d => months[d.month - 1]);
                 const values = data.line.map(d => d.total);
 
                 if (window.myChart) window.myChart.destroy();
+=======
+                
+                if (!data.line) return;
+
+                const labels = data.line.map(d => months[d.month - 1]);
+                const values = data.line.map(d => d.total);
+
+                if (window.myChart) {
+                    window.myChart.destroy();
+                    window.myChart = null;
+                }
+
+>>>>>>> 7f37e85 (CHAMS VERSION 1)
                 window.myChart = new Chart(ctx, {
                     type: 'line',
                     data: {
@@ -94,11 +118,19 @@ function refreshGraph() {
                             }
                         }
                     }
+<<<<<<< HEAD
                 });
             }
 
             const pie = document.getElementById("pieChart");
             if (pie) {
+=======
+                })
+            }
+
+            const pie = document.getElementById("pieChart");
+            if (pie && data.pie) {
+>>>>>>> 7f37e85 (CHAMS VERSION 1)
                 let start = 0;
                 let gradientParts = [];
 
@@ -117,6 +149,7 @@ function refreshGraph() {
             }
 
             if (data.stats) {
+<<<<<<< HEAD
                 document.getElementById('stat-overdue').innerText = data.stats.overdue;
                 document.getElementById('stat-open').innerText = data.stats.open;
                 document.getElementById('stat-unresolved').innerText = data.stats.status;
@@ -130,6 +163,26 @@ function refreshGraph() {
             
         })
         .catch(err => console.error("Update failed:", err));
+=======
+                const fields = {
+                    'stat-overdue': data.stats.overdue,
+                    'stat-open': data.stats.open,
+                    'stat-unresolved': data.stats.status,
+                    'stat-urgent': data.stats.urgent
+                };
+                for (const [id, val] of Object.entries(fields)) {
+                    const el = document.getElementById(id);
+                    if (el) el.innerText = val;
+                }
+            }
+        
+            ['graph-loader1', 'graph-loader2'].forEach(id => {
+                const el = document.getElementById(id);
+                if (el) el.style.display = 'none';
+            });
+            
+        }).catch(err => console.error("Graph update failed:", err));
+>>>>>>> 7f37e85 (CHAMS VERSION 1)
 }
 
 document.addEventListener("DOMContentLoaded", function () {

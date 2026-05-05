@@ -26,6 +26,77 @@ function getPerformanceStatus($avg)
         return "GOOD";
     return "POOR";
 }
+<<<<<<< HEAD
+=======
+
+$isAjax = isset($_GET['ajax']) && $_GET['ajax'] === 'graph';
+
+if ($isAjax) {
+    ob_clean();
+
+    $chartData = $q->getMonthlyResolved($uid, $role);
+
+    header('Content-Type: application/json');
+    echo json_encode(['line' => $chartData]);
+    exit;
+}
+
+if (isset($_GET['ajax']) && $_GET['ajax'] === 'activity') {
+    ob_clean();
+
+    $rows = '';
+
+    if ($role == 1) {
+        $tableData = $q->getStaffPerformanceTable();
+
+        foreach ($tableData as $row) {
+            $status = ($row['avg_time'] <= 2) ? 'excellent' :
+                      (($row['avg_time'] <= 5) ? 'good' : 'poor');
+
+            $rows .= "
+                <tr>
+                    <td>{$row['full_name']}</td>
+                    <td>{$row['ticket_count']}</td>
+                    <td>{$row['avg_time']} hrs</td>
+                    <td>
+                        <span class='performance-tag {$status}'>
+                            " . getPerformanceStatus($row['avg_time']) . "
+                        </span>
+                    </td>
+                </tr>
+            ";
+        }
+
+    } else {
+
+        $staffActivity = $q->getStaffRecentActivity($uid);
+
+        foreach ($staffActivity as $row) {
+            $status = ($row['response_time'] <= 2) ? 'excellent' :
+                      (($row['response_time'] <= 5) ? 'good' : 'poor');
+
+            $rows .= "
+                <tr>
+                    <td>
+                        {$row['Title']}<br>
+                        <small>" . date("M d, Y h:i A", strtotime($row['resolved_at'])) . "</small>
+                    </td>
+                    <td>{$row['response_time']} hrs</td>
+                    <td>
+                        <span class='performance-tag {$status}'>
+                            " . getPerformanceStatus($row['response_time']) . "
+                        </span>
+                    </td>
+                </tr>
+            ";
+        }
+    }
+
+    header('Content-Type: application/json');
+    echo json_encode(['table' => $rows]);
+    exit;
+}
+>>>>>>> 7f37e85 (CHAMS VERSION 1)
 ?>
 
 <!DOCTYPE html>
@@ -96,7 +167,12 @@ function getPerformanceStatus($avg)
 
 
                 <div class="chart-box">
+<<<<<<< HEAD
                     <canvas id="performanceChart"></canvas>
+=======
+                    <canvas id="performanceChart"></canvas> 
+                    <!-- graph goes here -->
+>>>>>>> 7f37e85 (CHAMS VERSION 1)
                 </div>
             </div>
 
@@ -174,6 +250,7 @@ function getPerformanceStatus($avg)
         </div>
     </div>
 
+<<<<<<< HEAD
 
     <script src="../Assets/JS/sidebar.js"></script>
     <script>
@@ -212,6 +289,11 @@ function getPerformanceStatus($avg)
             }
         });
     </script>
+=======
+    <script src="../Assets/JS/profile.js"></script>
+    <script src="../Assets/JS/sidebar.js"></script>
+    <script src="../Assets/JS/graphs.js"></script>
+>>>>>>> 7f37e85 (CHAMS VERSION 1)
 </body>
 
 </html>

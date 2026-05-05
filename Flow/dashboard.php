@@ -154,7 +154,11 @@ $stats = $q->getDashboardStats();
     <?php if ($role !=3): ?>
         <script src="../Assets/JS/graphs.js"></script>
     <?php endif; ?>
+<<<<<<< HEAD
     <script src="../Assets/JS/ticket.js"></script>
+=======
+    <?php if ($role === 2): ?> <script src="../Assets/JS/ticket.js"></script> <?php endif; ?>
+>>>>>>> 7f37e85 (CHAMS VERSION 1)
     <script src="../Assets/JS/dashboard.js"></script>
 
 </body>

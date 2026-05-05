@@ -120,12 +120,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if ($_POST['mode'] === 'maintenance') {
 
         $id = $_POST['id'];
+<<<<<<< HEAD
         $asset = $_POST['asset_name'];
         $dept = $_POST['Dept_ID'] ?? null;
         $type = $_POST['m_type'];
         $desc = $_POST['description'];
         $priority = $_POST['priority'];
         $status = !empty($_POST['status']) ? $_POST['status'] : null;
+=======
+        $current = $q->getMaintenanceById($id);
+
+        $asset = $_POST['asset_name'] ?? $current['Asset_name'];
+        $dept  = $_POST['Dept_ID'] ?? $current['Dept_ID'];
+        $type  = $_POST['m_type'] ?? $current['M_type'];
+        $desc  = $_POST['description'] ?? $current['desc'];
+        $priority = $_POST['priority'] ?? $current['Priority'];
+        $status = $_POST['status'] ?? $current['Status'];
+>>>>>>> 7f37e85 (CHAMS VERSION 1)
         $interval = $_POST['interval'] ?? null;
 
         $currentNext = $_POST['current_next'] ?? null;
@@ -172,15 +183,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $interval = $_POST['interval'] ?? null;
 
             if (!empty($interval)) {
+<<<<<<< HEAD
                 $nextDate = date('Y-m-d H:i:s', strtotime($interval));
 
                 $current = $q->getMaintenanceById($id);
 
                 $dept = $current['Dept_ID'] ?? null;
+=======
+
+                $current = $q->getMaintenanceById($id);
+
+                $baseDate = !empty($current['next_m']) 
+                    ? strtotime($current['next_m']) 
+                    : time();
+
+                $nextDate = date('Y-m-d H:i:s', strtotime($interval, $baseDate));
+>>>>>>> 7f37e85 (CHAMS VERSION 1)
 
                 $success = $q->updateMaintenance(
                     $id,
                     $current['Asset_name'],
+<<<<<<< HEAD
                     $dept,
                     $current['M_type'],
                     $current['desc'],
@@ -188,6 +211,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     $current['Status'],
                     $nextDate
                 );
+=======
+                    $current['Dept_ID'],
+                    $current['M_type'],
+                    $current['desc'],
+                    $current['Priority'],
+                    'Resolved', 
+                    $nextDate
+                );
+
+                header("Location: ../Flow/tileView.php?id=$id&mode=maintenance&msg=resolved");
+                exit;
+>>>>>>> 7f37e85 (CHAMS VERSION 1)
             }
         }
 

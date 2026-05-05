@@ -49,7 +49,12 @@ if ($filterId === 'ticketing' && !isset($tickets)) {
 }
 
 if ($filterId === 'actLog' && !isset($logs)) {
+<<<<<<< HEAD
     $logs = $q->getActivityLogs();
+=======
+    
+    $logs = $q->getActivityLogs($filters, $page);
+>>>>>>> 7f37e85 (CHAMS VERSION 1)
 }
 
 ?>

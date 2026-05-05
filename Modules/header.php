@@ -21,7 +21,11 @@ if (isset($_GET['ajax']) && $_GET['ajax'] === 'notif_count') {
     ob_clean();
     header('Content-Type: application/json');
     echo json_encode(['count' => $unreadCount]);
+<<<<<<< HEAD
     exit; // Stop here so the HTML below doesn't leak into the JSON
+=======
+    exit; 
+>>>>>>> 7f37e85 (CHAMS VERSION 1)
 }
 ?>
 
@@ -34,12 +38,23 @@ if (isset($_GET['ajax']) && $_GET['ajax'] === 'notif_count') {
         </div>
     </div>
 
+<<<<<<< HEAD
     <div class="search-box">
         <div class="search-wrapper">
             <input type="text">
             <i class="fas fa-search"></i>
         </div>
     </div>
+=======
+    <!-- search -->
+    <!-- <div class="search-box">
+        <div class="search-wrapper">
+            <input type="text" id="globalSearch" placeholder="Search tickets, assets..." onkeyup="doGlobalSearch(this.value)">
+            <i class="fas fa-search"></i>
+            <div id="searchDropdown" class="search-results-dropdown" style="display: none;"></div>
+        </div>
+    </div> -->
+>>>>>>> 7f37e85 (CHAMS VERSION 1)
 
     <!-- notification -->
     <div class="notif-wrapper">

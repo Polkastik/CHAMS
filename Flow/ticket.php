@@ -58,7 +58,10 @@ $currentPage = 'ticketing';
                 <i class="fas fa-chevron-left"></i> TICKETS
             </div>
 
+<<<<<<< HEAD
             <!-- INVENTORY FILTER OVERLAY -->
+=======
+>>>>>>> 7f37e85 (CHAMS VERSION 1)
             <?php $mode = "tickets";
             $filterId = "ticketing";
             include '../Modules/filter.php'; ?>

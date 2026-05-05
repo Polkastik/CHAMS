@@ -7,7 +7,61 @@ $q = new QueryHandler();
 $user = $q->getUserByEmpId($uid);
 $stats = $q->getDashboardStats();
 $filters = $_GET ?? [];
+<<<<<<< HEAD
 $items = $q->getMaintenanceLogs($filters);
+=======
+$page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+$items = $q->getMaintenanceLogs($filters, $page);
+
+if (isset($_GET['ajax']) && $_GET['ajax'] === 'list') {
+    ob_end_clean();
+
+    ob_start();
+
+    if (empty($items)) {
+        echo '<tr><td colspan="8" style="text-align:center; padding: 20px;">No maintenance logs found.</td></tr>';
+    } else {
+        foreach ($items as $row) {
+
+            $viewUrl = "../Flow/tileView.php?id=" . $row['M_ID'] . "&mode=maintenance";
+            $prioText = !empty($row['Priority']) ? $row['Priority'] : 'Not Set';
+            $prioClass = strtolower(str_replace(' ', '-', $prioText));
+            $statusText = !empty($row['Status']) ? $row['Status'] : 'Not Scheduled';
+            $statusClass = strtolower(str_replace(' ', '-', $statusText));
+
+            echo '<tr>
+                <td>' . htmlspecialchars($row['Asset_name']) . '</td>
+                <td>' . htmlspecialchars($row['Dept_Name'] ?? 'N/A') . '</td>
+                <td>' . date('M d, Y | h:i A', strtotime($row['created_at'])) . '</td>
+                <td>' . htmlspecialchars($row['M_type']) . '</td>
+                <td>' . htmlspecialchars($row['next_m'] ?? 'Not Scheduled') . '</td>
+                <td><span class="badge ' . $prioClass . '">' . htmlspecialchars($prioText) . '</span></td>
+                <td><span class="badge ' . $statusClass . '">' . htmlspecialchars($statusText) . '</span></td>
+                <td>
+                    <button class="edit-btn" onclick="window.location.href=\'' . $viewUrl . '\'">
+                        <i class="fas fa-eye"></i> VIEW
+                    </button>
+                </td>
+            </tr>';
+        }
+    }
+
+    $tableHTML = ob_get_clean();
+
+    ob_start();
+    $mode = "maintenance";
+    $filterId = "maintenance";
+    include '../Modules/filter.php';
+    $toolbarHTML = ob_get_clean();
+
+    header('Content-Type: application/json');
+    echo json_encode([
+        'table' => $tableHTML,
+        'toolbar' => $toolbarHTML
+    ]);
+    exit;
+}
+>>>>>>> 7f37e85 (CHAMS VERSION 1)
 ?>
 
 <!DOCTYPE html>
@@ -17,11 +71,17 @@ $items = $q->getMaintenanceLogs($filters);
     <meta charset="UTF-8">
     <title>CHAMS - MAINTENANCE LOG</title>
     <?php include '../Config/univHead.php'; ?>
+<<<<<<< HEAD
     <link rel="stylesheet" type="text/css" href="../Assets/CSS/inventory.css">
     <link rel="stylesheet" type="text/css" href="../Assets/CSS/filter.css">
     <link rel="stylesheet" href="../Assets/CSS/invTracker.css">
     <link rel="stylesheet" href="../Assets/CSS/inventory.css">
     <link rel="stylesheet" href="../Assets/CSS/tile.css">
+=======
+    <link rel="stylesheet" type="text/css" href="../Assets/CSS/filter.css">
+    <link rel="stylesheet" href="../Assets/CSS/invTracker.css">
+    <link rel="stylesheet" href="../Assets/CSS/mainLog.css">
+>>>>>>> 7f37e85 (CHAMS VERSION 1)
 </head>
 
 <body>
@@ -66,7 +126,11 @@ $items = $q->getMaintenanceLogs($filters);
                             <th>Action</th>
                         </tr>
                     </thead>
+<<<<<<< HEAD
                     <tbody>
+=======
+                    <tbody id="maintenanceTableBody">
+>>>>>>> 7f37e85 (CHAMS VERSION 1)
                         <?php if (empty($items)): ?>
                             <tr>
                                 <td colspan="8" style="text-align:center; padding: 20px;">No maintenance logs found.</td>
@@ -119,6 +183,7 @@ $items = $q->getMaintenanceLogs($filters);
 
                                     <td>
                                         <?php
+<<<<<<< HEAD
 
                                         if (empty($row['Priority'])) {
                                             echo "<span>N/A</span>";
@@ -126,17 +191,32 @@ $items = $q->getMaintenanceLogs($filters);
                                             $prio = $row['Priority'];
                                             echo "<span>$prio</span>";
                                         }
+=======
+                                        $prioText = !empty($row['Priority']) ? $row['Priority'] : 'Not Set';
+
+                                        $prioClass = strtolower(str_replace(' ', '-', $prioText));
+
+                                        echo "<span class='badge $prioClass'>$prioText</span>";
+>>>>>>> 7f37e85 (CHAMS VERSION 1)
                                         ?>
                                     </td>
 
                                     <td>
                                         <?php
+<<<<<<< HEAD
                                         if (empty($row['Status'])) {
                                             echo "<span>Not Scheduled</span>";
                                         } else {
                                             $status = $row['Status'];
                                             echo "<span>$status</span>";
                                         }
+=======
+                                        $statusText = !empty($row['Status']) ? $row['Status'] : 'Not Scheduled';
+
+                                        $statusClass = strtolower(str_replace(' ', '-', $statusText));
+
+                                        echo "<span class='badge $statusClass'>$statusText</span>";
+>>>>>>> 7f37e85 (CHAMS VERSION 1)
                                         ?>
                                     </td>
                                     <td>

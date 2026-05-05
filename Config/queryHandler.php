@@ -963,7 +963,12 @@ class QueryHandler
         $sql = "
         SELECT DISTINCT
             d.Dept_Name,
+<<<<<<< HEAD
             CONCAT(u.FN, ' ', u.LN) AS full_name
+=======
+            CONCAT(u.FN, ' ', u.LN) AS full_name,
+            IFNULL(t.Status, 'Unresolved') AS Status
+>>>>>>> 7f37e85 (CHAMS VERSION 1)
         FROM tickets t
         LEFT JOIN chams_users.users u ON t.Created_By = u.U_ID
         LEFT JOIN chams_users.departments d ON u.Dept_ID = d.D_ID
@@ -975,17 +980,29 @@ class QueryHandler
         $departments = ["All"];
         $deptGroups = ["All" => ["All"]];
         $allNames = ["All"];
+<<<<<<< HEAD
+=======
+        $status = ["ALL"];
+>>>>>>> 7f37e85 (CHAMS VERSION 1)
 
         while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
             $dept = $row['Dept_Name'] ?? 'Unknown';
             $name = $row['full_name'];
+<<<<<<< HEAD
 
             // Departments
+=======
+            $stat = !empty($row['Status']) ? $row['Status'] : 'Unresolved';
+
+>>>>>>> 7f37e85 (CHAMS VERSION 1)
             if (!in_array($dept, $departments)) {
                 $departments[] = $dept;
             }
 
+<<<<<<< HEAD
             // Grouped names per department
+=======
+>>>>>>> 7f37e85 (CHAMS VERSION 1)
             if (!isset($deptGroups[$dept])) {
                 $deptGroups[$dept] = ["All"];
             }
@@ -997,6 +1014,13 @@ class QueryHandler
             if (!in_array($name, $allNames)) {
                 $allNames[] = $name;
             }
+<<<<<<< HEAD
+=======
+
+            if (!in_array($stat, $status)) {
+                $status[] = $stat;
+            }
+>>>>>>> 7f37e85 (CHAMS VERSION 1)
         }
 
         $deptGroups["All"] = $allNames;
@@ -1004,7 +1028,12 @@ class QueryHandler
         return [
             'departments' => $departments,
             'name' => $allNames,
+<<<<<<< HEAD
             'groups' => $deptGroups
+=======
+            'groups' => $deptGroups,
+            'status' => $status
+>>>>>>> 7f37e85 (CHAMS VERSION 1)
         ];
     }
 
@@ -1116,6 +1145,10 @@ class QueryHandler
         $params = [];
         $totalItems = 0;
         $stmt = null;
+<<<<<<< HEAD
+=======
+        $status = $filters['status'] ?? 'All';
+>>>>>>> 7f37e85 (CHAMS VERSION 1)
 
         switch ($filterId) {
             case 'inventory':
@@ -1210,6 +1243,16 @@ class QueryHandler
                     $params['date'] = $filters['date'];
                 }
 
+<<<<<<< HEAD
+=======
+                if ($filters['status'] === 'Not Scheduled') {
+                    $sql .= " AND m.Status IS NULL";
+                } elseif (!empty($filters['status']) && $filters['status'] !== 'All') {
+                    $sql .= " AND (m.Status) = :maintenance_status";
+                    $params['maintenance_status'] = $filters['status'];
+                }
+
+>>>>>>> 7f37e85 (CHAMS VERSION 1)
                 $stmt = $this->logsDB->prepare($sql);
                 break;
 
@@ -1250,6 +1293,14 @@ class QueryHandler
                     $params['selected_date'] = $filters['date'];
                 }
 
+<<<<<<< HEAD
+=======
+                if (!empty($filters['status']) && $filters['status'] !== 'All') {
+                    $sql .= " AND (t.Status) = :ticket_status";
+                    $params['ticket_status'] = $filters['status'];
+                }
+
+>>>>>>> 7f37e85 (CHAMS VERSION 1)
                 $stmt = $this->ticketDB->prepare($sql);
                 break;
         }
@@ -1327,7 +1378,11 @@ class QueryHandler
     }
 
     // activity Logs
+<<<<<<< HEAD
     public function getActivityLogs($filters = [], $page = 1)
+=======
+    public function getActivityLogs($filters = [], $page  = 1, $limit = 5)
+>>>>>>> 7f37e85 (CHAMS VERSION 1)
     {
         $sql = "SELECT u.FN, u.LN, a.A_ID, a.U_ID, a.act, a.module, a.ref_ID, a.created_at
             FROM act_logs a
@@ -1352,6 +1407,7 @@ class QueryHandler
         $sort = $this->getSortSettings();
         $sql .= " ORDER BY a.A_ID " . $sort['direction'];
 
+<<<<<<< HEAD
         // $direction = (isset($filters['sort']) && $filters['sort'] === 'oldest') ? 'ASC' : 'DESC';
         // $sql .= " ORDER BY a.A_ID $direction";
 
@@ -1361,6 +1417,20 @@ class QueryHandler
 
         $stmt = $this->logsDB->prepare($sql);
         $stmt->execute($params);
+=======
+        $offset = ($page - 1) * $limit;
+        $sql .= " LIMIT :limit OFFSET :offset";
+
+        $stmt = $this->logsDB->prepare($sql);
+        foreach ($params as $key => $val) {
+            $stmt->bindValue(":$key", $val);
+        }
+
+        $stmt->bindValue(':limit', (int)$limit, PDO::PARAM_INT);
+        $stmt->bindValue(':offset', (int)$offset, PDO::PARAM_INT);
+
+        $stmt->execute();
+>>>>>>> 7f37e85 (CHAMS VERSION 1)
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
@@ -1386,6 +1456,49 @@ class QueryHandler
         return $staff ? $staff['FN'] . " " . $staff['LN'] : "Unknown Staff";
     }
 
+<<<<<<< HEAD
+=======
+    // search 
+    // not working so im bailing on this because of time constraints
+    // public function globalSearch($term) {
+    //     $term = "%$term%";
+    //     $results = [];
+
+    //     // Search Tickets
+    //     $stmt = $this->inventoryDB->prepare("
+    //         SELECT 
+    //             T_ID as id, 
+    //             'Ticket' as type, 
+    //             Title as title 
+    //         FROM chams_ticketing.tickets 
+    //         WHERE Title LIKE ? 
+    //             OR T_description LIKE ? 
+    //             OR ticket_num LIKE ?
+
+    //         LIMIT 3
+    //     ");
+    //     $stmt->execute([$term, $term, $term]);
+    //     $results['tickets'] = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+    //     // Search inventory
+    //     $stmt = $this->inventoryDB->prepare("
+    //         SELECT
+    //             I_ID as id,
+    //             'Asset' as type, 
+    //             item_name as title 
+    //         FROM chams_inventory.inventory_items
+    //         WHERE item_name LIKE ? 
+    //             OR Serial_number LIKE ? 
+    //         LIMIT 3
+    //     ");
+
+    //     $stmt->execute([$term, $term]);
+    //     $results['assets'] = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+    //     return $results;
+    // }
+
+>>>>>>> 7f37e85 (CHAMS VERSION 1)
     // notification logs
     public function createNotification($userId, $message, $type = null, $refId = null)
     {
@@ -1517,10 +1630,17 @@ class QueryHandler
         return $stmt->execute([$asset, $dept, $type, $desc, $priority, $status, $nextDate]);
     }
 
+<<<<<<< HEAD
     public function getMaintenanceLogs($filters = [])
     {
         $sql = "SELECT m.*, d.Dept_Name
             FROM maintenance m
+=======
+    public function getMaintenanceLogs($filters = [], $page = 1, $limit = 5)
+    {
+        $sql = "SELECT m.*, d.Dept_Name
+            FROM CHAMS_LOGS.maintenance m
+>>>>>>> 7f37e85 (CHAMS VERSION 1)
             LEFT JOIN CHAMS_USERS.departments d ON m.Dept_ID = d.D_ID
             WHERE 1=1";
 
@@ -1535,17 +1655,36 @@ class QueryHandler
             }
         }
 
+<<<<<<< HEAD
         if (!empty($filters['type']) && $filters['type'] !== 'All') {
             $sql .= " AND M_type = :type";
+=======
+        if (!empty($filters['status']) && $filters['status'] !== 'All') {
+            if ($filters['status'] === 'Not Scheduled') {
+                $sql .= " AND m.Status IS NULL";
+            } else {
+                $sql .= " AND m.Status = :status";
+                $params['status'] = $filters['status'];
+            }
+        }
+
+        if (!empty($filters['type']) && $filters['type'] !== 'All') {
+            $sql .= " AND m.M_type = :type";
+>>>>>>> 7f37e85 (CHAMS VERSION 1)
             $params['type'] = $filters['type'];
         }
 
         if (!empty($filters['date']) && $filters['date'] !== 'All') {
+<<<<<<< HEAD
             $sql .= " AND DATE(created_at) = :date";
+=======
+            $sql .= " AND DATE(m.created_at) = :date";
+>>>>>>> 7f37e85 (CHAMS VERSION 1)
             $params['date'] = $filters['date'];
         }
 
         $sort = $this->getSortSettings();
+<<<<<<< HEAD
         $sql .= " ORDER BY created_at " . $sort['direction'];
 
         $limit = 5;
@@ -1557,6 +1696,22 @@ class QueryHandler
         $stmt = $this->logsDB->prepare($sql);
         $stmt->execute($params);
 
+=======
+        $sql .= " ORDER BY m.created_at " . $sort['direction'];
+
+        $offset = ($page - 1) * $limit;
+        $sql .= " LIMIT :limit OFFSET :offset";
+
+        $stmt = $this->inventoryDB->prepare($sql);
+        foreach ($params as $key => $val) {
+            $stmt->bindValue(":$key", $val);
+        }
+
+        $stmt->bindValue(':limit', (int)$limit, PDO::PARAM_INT);
+        $stmt->bindValue(':offset', (int)$offset, PDO::PARAM_INT);
+
+        $stmt->execute();
+>>>>>>> 7f37e85 (CHAMS VERSION 1)
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
@@ -1564,7 +1719,12 @@ class QueryHandler
     {
         $sql = "
             SELECT DISTINCT 
+<<<<<<< HEAD
                 IFNULL(d.Dept_Name, 'N/A') AS Dept_Name
+=======
+                IFNULL(d.Dept_Name, 'N/A') AS Dept_Name,
+                IFNULL(m.Status, 'Not Scheduled') AS Status
+>>>>>>> 7f37e85 (CHAMS VERSION 1)
             FROM maintenance m
             LEFT JOIN chams_users.departments d ON m.Dept_ID = d.D_ID
             ORDER BY Dept_Name ASC
@@ -1574,16 +1734,37 @@ class QueryHandler
 
         $departments = ["All"];
 
+<<<<<<< HEAD
         while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
             $dept = !empty($row['Dept_Name']) ? $row['Dept_Name'] : 'N/A';
 
             if (!in_array($dept, $departments)) {
                 $departments[] = $dept ?? 'N/A';
+=======
+        $status = ["ALL"];
+
+        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            $dept = !empty($row['Dept_Name']) ? $row['Dept_Name'] : 'N/A';
+            $stat = $row['Status'];
+
+
+            if (!in_array($dept, $departments)) {
+                $departments[] = $dept;
+            }
+
+            if (!in_array($stat, $status)) {
+                $status[] = $stat;
+>>>>>>> 7f37e85 (CHAMS VERSION 1)
             }
         }
 
         return [
+<<<<<<< HEAD
             'departments' => $departments
+=======
+            'departments' => $departments,
+            'status' => $status
+>>>>>>> 7f37e85 (CHAMS VERSION 1)
         ];
     }
 }

@@ -21,14 +21,21 @@ if ($filterId === 'maintenance') {
 
 $sort = $q->getSortSettings();
 $page = isset($_GET['page']) ? (int) $_GET['page'] : 1;
+<<<<<<< HEAD
 if ($page < 1)
     $page = 1;
+=======
+>>>>>>> 7f37e85 (CHAMS VERSION 1)
 
 $selectedFilters = [
     'department' => $_GET['department'] ?? 'All',
     'name' => $_GET['name'] ?? 'All',
     'type' => $_GET['type'] ?? 'All',
     'item' => $_GET['item'] ?? 'All',
+<<<<<<< HEAD
+=======
+    'status' => $_GET['status'] ?? 'All',
+>>>>>>> 7f37e85 (CHAMS VERSION 1)
     'date' => $_GET['date'] ?? ''
 ];
 
@@ -39,10 +46,18 @@ if ($filterId === 'actLog') {
 } elseif ($filterId === 'ticketing') {
     $tickets = $q->getTickets($role, $uid, $selectedFilters, $page);
 } elseif ($filterId === 'maintenance') {
+<<<<<<< HEAD
     $items = $q->getMaintenanceLogs($selectedFilters);
 }
 
 $departments = $filterData['departments'];
+=======
+    $items = $q->getMaintenanceLogs($selectedFilters, $page);
+}
+
+$departments = $filterData['departments'];
+$status = $filterData['status'];
+>>>>>>> 7f37e85 (CHAMS VERSION 1)
 $allNames = $filterData['name'] ?? [];
 $deptGroups = $filterData['groups'] ?? [];
 $trackerData = $q->getTrackerFilters();
@@ -50,13 +65,23 @@ $allItems = $trackerData['item'];
 
 if ($filterId === 'maintenance') {
     $filterOptions = [
+<<<<<<< HEAD
         'department' => $departments
+=======
+        'department' => $departments,
+        'status' => $status
+>>>>>>> 7f37e85 (CHAMS VERSION 1)
     ];
 } elseif ($filterId === 'ticketing') {
     $filterOptions = [
         'department' => $departments,
         'name' => $allNames,
+<<<<<<< HEAD
         'type' => $q->getFilterTypes($filterId)
+=======
+        'type' => $q->getFilterTypes($filterId),
+        'status' => $status
+>>>>>>> 7f37e85 (CHAMS VERSION 1)
     ];
 } else {
     $filterOptions = [

@@ -47,6 +47,11 @@ const FilterUI = {
     apply(id) {
         if (typeof stopRefresh === 'function') stopRefresh();
         if (typeof stopTrackerRefresh === 'function') stopTrackerRefresh();
+<<<<<<< HEAD
+=======
+        if (typeof stopMaintRefresh === 'function') stopMaintRefresh();
+        
+>>>>>>> 7f37e85 (CHAMS VERSION 1)
 
         const url = new URL(window.location.href);
         const filterValues = document.querySelectorAll(`#${id}FilterOverlay .select-value`);
@@ -67,17 +72,51 @@ const FilterUI = {
         url.searchParams.set('ajax', 'list');
         url.searchParams.set('filterId', id);
 
+<<<<<<< HEAD
         const endpoint = (id === 'tracker') ? 'inventoryTracker.php' : 'ticket.php';
         
         fetch(endpoint + '?' + url.searchParams.toString())
+=======
+        const endpointMap = {
+            ticketing: {
+                url: 'ticket.php',
+                tbody: 'ticketTableBody'
+            },
+            tracker: {
+                url: 'inventoryTracker.php',
+                tbody: 'trackerTableBody'
+            },
+            maintenance: {
+                url: 'maintenanceLog.php',
+                tbody: 'maintenanceTableBody'
+            },
+            actLog: {
+                url: 'activityLog.php',
+                tbody: 'activityTableBody'
+            }
+        };
+
+        const config = endpointMap[id] || endpointMap['ticketing'];
+
+        fetch(config.url + '?' + url.searchParams.toString())
+>>>>>>> 7f37e85 (CHAMS VERSION 1)
         .then(response => {
             if (!response.ok) throw new Error('Network response was not ok');
             return response.json();
         })
         .then(data => {
+<<<<<<< HEAD
             if (id === 'tracker' || id === 'maintenance' || id === 'actLog') {
                 const tbody = document.getElementById('trackerTableBody');
                 if (tbody && data.table) tbody.innerHTML = data.table;
+=======
+            if (config.tbody) {
+                const tbody = document.getElementById(config.tbody);
+                if (tbody && data.table) {
+                    tbody.innerHTML = data.table;
+                    tbody.style.opacity = '1';
+                }
+>>>>>>> 7f37e85 (CHAMS VERSION 1)
             } else {
                 const tileContainer = document.getElementById('ticket-list-container');
                 if (tileContainer && data.tiles) tileContainer.innerHTML = data.tiles;
@@ -96,6 +135,11 @@ const FilterUI = {
             url.searchParams.delete('ajax');
             window.history.pushState({ path: url.href }, '', url.href);
             if (typeof startRefresh === 'function') startRefresh();
+<<<<<<< HEAD
+=======
+            if (typeof refreshTicketList === 'function') refreshTicketList();
+            if (typeof startMaintRefresh === 'function') startMaintRefresh();
+>>>>>>> 7f37e85 (CHAMS VERSION 1)
             if (id === 'tracker' && typeof startTrackerRefresh === 'function') startTrackerRefresh();
         })
         .catch(err => console.error("Filter Error:", err));
@@ -179,6 +223,11 @@ const FilterUI = {
     goToPage(pageNum, id) {
         if (typeof stopRefresh === 'function') stopRefresh();
         if (typeof stopTrackerRefresh === 'function') stopTrackerRefresh();
+<<<<<<< HEAD
+=======
+        if (typeof stopMaintRefresh === 'function') stopMaintRefresh();
+        if (typeof refreshActivityList === 'function') refreshActivityList();
+>>>>>>> 7f37e85 (CHAMS VERSION 1)
 
         const url = new URL(window.location.href);
 
@@ -204,6 +253,7 @@ const FilterUI = {
         url.searchParams.set('filterId', id);
 
         const endpointMap = {
+<<<<<<< HEAD
             ticketing: 'ticket.php',
             tracker: 'inventoryTracker.php',
             maintenance: 'maintenance.php',
@@ -213,14 +263,40 @@ const FilterUI = {
         const endpoint = endpointMap[id] || 'ticket.php';
 
         fetch(endpoint + '?' + url.searchParams.toString())
+=======
+            ticketing: {
+                url: 'ticket.php',
+            },
+            tracker: {
+                url: 'inventoryTracker.php',
+                tbody: 'trackerTableBody'
+            },
+            maintenance: {
+                url: 'maintenanceLog.php',
+                tbody: 'maintenanceTableBody' 
+            },
+            actLog: {
+                url: 'activityLog.php',
+            }
+        };
+
+        const config = endpointMap[id] || endpointMap['ticketing'];
+
+        fetch(config.url + '?' + url.searchParams.toString())
+>>>>>>> 7f37e85 (CHAMS VERSION 1)
             .then(res => {
                 if (!res.ok) throw new Error('Network error');
                 return (id === 'tracker') ? res.json() : res.json(); // all should be json ideally
             })
             .then(data => {
 
+<<<<<<< HEAD
                 if (id === 'tracker' || id === 'maintenance' || id === 'actLog') {
                     const tbody = document.getElementById('trackerTableBody');
+=======
+                if (config.tbody) {
+                    const tbody = document.getElementById(config.tbody);
+>>>>>>> 7f37e85 (CHAMS VERSION 1)
                     if (tbody && data.table) tbody.innerHTML = data.table;
                 } else {
                     const container = document.getElementById('ticket-list-container');
@@ -242,7 +318,15 @@ const FilterUI = {
         window.history.pushState({ path: url.href }, '', url.href);
 
         if (typeof startRefresh === 'function') startRefresh();
+<<<<<<< HEAD
         if (id === 'tracker') startTrackerRefresh();       
+=======
+        if (typeof refreshTicketList === 'function') refreshTicketList();
+        if (typeof startMaintRefresh === 'function') startMaintRefresh();
+        if (id === 'tracker' && typeof startTrackerRefresh === 'function') startTrackerRefresh();      
+        if (typeof refreshActivityList === 'function') refreshActivityList();
+        if (pageNum === 1 && typeof refreshActivityList === 'function') {refreshActivityList();}
+>>>>>>> 7f37e85 (CHAMS VERSION 1)
     }
 };
 
@@ -326,6 +410,7 @@ function toggleSelectAll(source) {
     checkSelection();
 }
 
+<<<<<<< HEAD
 document.addEventListener('DOMContentLoaded', function () {
     const modal = document.getElementById('ticketingFilterOverlay');
     const closeBtn = document.getElementById('closeModal');
@@ -334,5 +419,25 @@ document.addEventListener('DOMContentLoaded', function () {
         if (event.target == modal) {
             modal.style.display = 'none';
         }
+=======
+window.addEventListener('click', function (event) {
+    // 1. Handle closing the Filter Overlay when clicking the dark background
+    if (event.target.classList.contains('inventory-filter-overlay')) {
+        // Extract the ID prefix (e.g., "ticketing" from "ticketingFilterOverlay")
+        const id = event.target.id.replace("FilterOverlay", "");
+        FilterUI.close(id);
+        
+        // Restart page refreshes if they were stopped while the filter was open
+        if (typeof startRefresh === 'function') startRefresh();
+        if (typeof startTrackerRefresh === 'function') startTrackerRefresh();
+        if (typeof startMaintRefresh === 'function') startMaintRefresh();
+    }
+
+    // 2. Handle closing individual dropdown menus inside the filter
+    if (!event.target.closest('.custom-filter, .custom-select')) {
+        document.querySelectorAll('.custom-filter, .custom-select').forEach(sel => {
+            sel.classList.remove('active');
+        });
+>>>>>>> 7f37e85 (CHAMS VERSION 1)
     }
 });
