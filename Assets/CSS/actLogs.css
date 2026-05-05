@@ -1,0 +1,53 @@
+/* Container for the cards */
+.activity-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+/* Base Card Style */
+.activity-card {
+    background: #fff;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 15px;
+    display: flex;
+    align-items: center;
+    transition: all 0.3s ease; /* Smooth transition for hover */
+    position: relative;
+    left: 0;
+}
+
+/* Hover Effect: Blue line and Move Up/Right */
+.activity-card:hover {
+    transform: translateY(-4px); /* Moves it "up" */
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    border-left: 5px solid #0056b3; /* The blue line on the left */
+    cursor: pointer;
+}
+
+.activity-card .ticket-avatar {
+    background: #f0f4f8;
+    color: #0056b3;
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-right: 15px;
+}
+
+.activity-card .time {
+    font-size: 0.85rem;
+    color: #888;
+}
+
+/* High Priority Highlight (Like in your image) */
+.activity-card .ticket-desc strong {
+    color: #003366;
+}
+.activity-card .ticket-desc b, .activity-card .ticket-desc span.high-priority {
+    color: #d9534f; /* Red for 'High' */
+    font-weight: bold;
+}

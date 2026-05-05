@@ -1,0 +1,66 @@
+/* --- TABLE STYLING --- */
+.table-card {
+    background: #fff;
+    border-radius: 0.6vw;
+    box-shadow: 0 0.2vw 0.8vw rgba(0, 0, 0, .05);
+    overflow: hidden;
+    border: 1px solid #e0e0e0;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+thead {
+    background: #f8f9fa;
+    border-bottom: 2px solid #eee;
+}
+
+th {
+    padding: 2vh 1.2vw;
+    text-align: center;
+    font-size: 0.75vw;
+    font-weight: 800;
+    color: #888;
+    text-transform: uppercase;
+}
+
+tbody tr {
+    border-bottom: 1px solid #eee;
+    transition: 0.2s;
+    cursor: pointer;
+    text-align: center;
+}
+
+tbody tr:hover {
+    background: #f0f7ff;
+}
+
+td {
+    padding: 3.5vh;
+    font-size: 0.85vw;
+    color: #444;
+    font-weight: 600;
+}
+
+.edit-btn {
+    background: #fff;
+    border: 1px solid #0b4a7a;
+    color: #0b4a7a;
+    padding: 0.6vh 1vw;
+    border-radius: 2vw;
+    font-weight: 800;
+    font-size: 0.7vw;
+    cursor: pointer;
+    transition: 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 0.4vw;
+}
+
+.edit-btn:hover {
+    background: #0b4a7a;
+    color: #fff;
+}
+
