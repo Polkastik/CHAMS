@@ -1,7 +1,7 @@
 <?php
 define('SMTP_HOST', 'smtp.gmail.com');
-define('SMTP_USER', 'nathanrola316@gmail.com');
-define('SMTP_PASS', 'gvxd kosk onns dcga'); 
+define('SMTP_USER', 'chamsmisd@gmail.com');
+define('SMTP_PASS', 'dxtc yrpr rwiy nuyf'); 
 define('SMTP_PORT', 587);
 
 define('DB_HOST', 'localhost');
