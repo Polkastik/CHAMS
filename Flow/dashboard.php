@@ -54,6 +54,7 @@ if (isset($_GET['ajax'])) {
         foreach ($pieRaw as $row) {
             $processedPie[$row['category_name']] = [
                 'value' => ($row['total'] / $total) * 100,
+                'count' => $row['total'],
                 'color' => $row['category_color'] ?? '#cccccc'
             ];
         }

@@ -62,8 +62,12 @@
 }
 
 .stock-box {
-    width: 22%;
-    text-align: center;
+    width: 27%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    padding: 20px;
+    height: 100%;
 }
 
 .chart-val {
@@ -77,15 +81,21 @@
     border-radius: 0.5vw;
     padding: 2%;
     background: #b6b6b62e;
+    overflow: hidden;
 }
 
 #pieChart {
-    width: 160px;  
-    height: 160px;
-    border-radius: 50%;
-    display: block;
-    border: none;  
-    margin: 15% auto;
+    margin: 20px auto;
+    width: 100% !important; 
+    height: 250px !important; 
+    max-height: 250px;
+}
+
+#staff-title {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 180px;
 }
 
 .legend-item {
@@ -128,17 +138,6 @@
     transition: all 0.5s ease;
 }
 
-.stock-legend {
-    margin-top: 10px;
-    font-size: 12px;
-}
-
-.legend-item {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 4px;
-}
-
 .activity-list {
     font-size: 0.7rem;
     color: #292929;
@@ -146,6 +145,7 @@
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    height: 95%;
 }
 
 .initial-circle {
@@ -164,6 +164,7 @@
 }
 
 .activity-item {
+    position: relative !important;
     max-height: 60px;
     width: 100%;
     display: flex;
@@ -173,8 +174,30 @@
     border-bottom: 1px solid #8080805d;
 }
 
+.activity-item:has(.overdue-badge) {
+    background: #fff0f6;
+    border-left: 3px solid #ff2d8d;
+}
+
+.overdue-badge {
+    position: absolute;
+    top: 5px;
+    right: 10px;
+    background-color: #ff2d8d;
+    color: white;
+    font-size: 0.55rem;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-weight: 800;
+    letter-spacing: 0.5px;
+    box-shadow: 0 2px 4px rgba(255, 45, 141, 0.3);
+    z-index: 5;
+    pointer-events: none;
+}
+
 .loader-overlay {
-    width: 100%; height: 100%;
+    width: 100%; 
+    height: 100%;
     background: rgba(255, 255, 255, 0.8);
     display: flex;
     flex-direction: column;

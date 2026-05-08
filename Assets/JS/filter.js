@@ -38,8 +38,8 @@ const FilterUI = {
             });
         document.querySelectorAll(`#${id}FilterOverlay .cal-date`)
             .forEach(el => el.classList.remove("selected"));
-        
-            this.close(id); 
+
+        this.close(id);
         if (typeof startRefresh === 'function') startRefresh();
         if (typeof startTrackerRefresh === 'function') startTrackerRefresh();
     },
@@ -48,7 +48,7 @@ const FilterUI = {
         if (typeof stopRefresh === 'function') stopRefresh();
         if (typeof stopTrackerRefresh === 'function') stopTrackerRefresh();
         if (typeof stopMaintRefresh === 'function') stopMaintRefresh();
-        
+
 
         const url = new URL(window.location.href);
         const filterValues = document.querySelectorAll(`#${id}FilterOverlay .select-value`);
@@ -62,6 +62,14 @@ const FilterUI = {
                 url.searchParams.set(key, value);
             } else {
                 url.searchParams.delete(key);
+            }
+        });
+
+        const flags = ['overdue', 'unassigned', 'priority'];
+        const currentParams = new URLSearchParams(window.location.search);
+        flags.forEach(flag => {
+            if (currentParams.has(flag)) {
+                url.searchParams.set(flag, currentParams.get(flag));
             }
         });
 
@@ -91,40 +99,40 @@ const FilterUI = {
         const config = endpointMap[id] || endpointMap['ticketing'];
 
         fetch(config.url + '?' + url.searchParams.toString())
-        .then(response => {
-            if (!response.ok) throw new Error('Network response was not ok');
-            return response.json();
-        })
-        .then(data => {
-            if (config.tbody) {
-                const tbody = document.getElementById(config.tbody);
-                if (tbody && data.table) {
-                    tbody.innerHTML = data.table;
-                    tbody.style.opacity = '1';
+            .then(response => {
+                if (!response.ok) throw new Error('Network response was not ok');
+                return response.json();
+            })
+            .then(data => {
+                if (config.tbody) {
+                    const tbody = document.getElementById(config.tbody);
+                    if (tbody && data.table) {
+                        tbody.innerHTML = data.table;
+                        tbody.style.opacity = '1';
+                    }
+                } else {
+                    const tileContainer = document.getElementById('ticket-list-container');
+                    if (tileContainer && data.tiles) tileContainer.innerHTML = data.tiles;
                 }
-            } else {
-                const tileContainer = document.getElementById('ticket-list-container');
-                if (tileContainer && data.tiles) tileContainer.innerHTML = data.tiles;
-            }
-            
-            const oldToolbar = document.querySelector('.toolbar');
-            if (oldToolbar && data.toolbar) {
-                const tempDiv = document.createElement('div');
-                tempDiv.innerHTML = data.toolbar;
-                const newToolbar = tempDiv.querySelector('.toolbar');
-                if (newToolbar) oldToolbar.replaceWith(newToolbar);
-            }
 
-            this.close(id);
-            
-            url.searchParams.delete('ajax');
-            window.history.pushState({ path: url.href }, '', url.href);
-            if (typeof startRefresh === 'function') startRefresh();
-            if (typeof refreshTicketList === 'function') refreshTicketList();
-            if (typeof startMaintRefresh === 'function') startMaintRefresh();
-            if (id === 'tracker' && typeof startTrackerRefresh === 'function') startTrackerRefresh();
-        })
-        .catch(err => console.error("Filter Error:", err));
+                const oldToolbar = document.querySelector('.toolbar');
+                if (oldToolbar && data.toolbar) {
+                    const tempDiv = document.createElement('div');
+                    tempDiv.innerHTML = data.toolbar;
+                    const newToolbar = tempDiv.querySelector('.toolbar');
+                    if (newToolbar) oldToolbar.replaceWith(newToolbar);
+                }
+
+                this.close(id);
+
+                url.searchParams.delete('ajax');
+                window.history.pushState({ path: url.href }, '', url.href);
+                if (typeof startRefresh === 'function') startRefresh();
+                if (typeof refreshTicketList === 'function') refreshTicketList();
+                if (typeof startMaintRefresh === 'function') startMaintRefresh();
+                if (id === 'tracker' && typeof startTrackerRefresh === 'function') startTrackerRefresh();
+            })
+            .catch(err => console.error("Filter Error:", err));
     },
 
     updateNameDropdown(id, selectedDept) {
@@ -241,7 +249,7 @@ const FilterUI = {
             },
             maintenance: {
                 url: 'maintenanceLog.php',
-                tbody: 'maintenanceTableBody' 
+                tbody: 'maintenanceTableBody'
             },
             actLog: {
                 url: 'activityLog.php',
@@ -275,16 +283,16 @@ const FilterUI = {
 
             })
             .catch(err => console.error("Pagination error:", err));
-        
+
         url.searchParams.delete('ajax');
         window.history.pushState({ path: url.href }, '', url.href);
 
         if (typeof startRefresh === 'function') startRefresh();
         if (typeof refreshTicketList === 'function') refreshTicketList();
         if (typeof startMaintRefresh === 'function') startMaintRefresh();
-        if (id === 'tracker' && typeof startTrackerRefresh === 'function') startTrackerRefresh();      
+        if (id === 'tracker' && typeof startTrackerRefresh === 'function') startTrackerRefresh();
         if (typeof refreshActivityList === 'function') refreshActivityList();
-        if (pageNum === 1 && typeof refreshActivityList === 'function') {refreshActivityList();}
+        if (pageNum === 1 && typeof refreshActivityList === 'function') { refreshActivityList(); }
     }
 };
 
@@ -318,27 +326,44 @@ function bulkAction(actionType) {
         confirmButtonText: 'Yes, proceed'
     }).then((result) => {
         if (result.isConfirmed) {
-            // Using your universal post()
+            if (!result.isConfirmed) return;
+
             post('../Config/ticketAction.php', {
                 action: 'bulk_' + actionType,
                 ids: JSON.stringify(selectedIds)
             })
                 .then(data => {
-                    if (data.includes("success")) {
-                        Swal.fire('Success!', 'Action Completed.', 'success');
+                    const isSuccess = typeof data === 'string'
+                        ? data.toLowerCase().includes('success')
+                        : data.status === 'success';
 
-                        selectedCheckboxes.forEach(cb => {
-                            cb.closest('tr').style.backgroundColor = '#ffecec';
-                            cb.closest('tr').fadeOut(500, function () { $(this).remove(); });
-                            cb.closest('tr').remove();
-                        });
-                        checkSelection();
+                    if (!isSuccess) {
+                        Swal.fire('Error', 'Bulk action failed.', 'error');
+                        return;
                     }
+
+                    Swal.fire('Success!', 'Action Completed.', 'success');
+
+                    selectedCheckboxes.forEach(cb => {
+                        cb.checked = false; 
+                        const row = cb.closest('tr');
+                        if (row) row.remove();
+                    });
+
+                    const selectAllBox = document.querySelector('input[type="checkbox"][onclick*="toggleSelectAll"]');
+                    if (selectAllBox) selectAllBox.checked = false;
+                    
+                    refreshTicketList();
+
+                    checkSelection();
+                })
+
+                .catch(err => {
+                    console.error("Bulk Action Error:", err);
+                    Swal.fire('Error', 'Something went wrong.', 'error');
                 });
         }
     });
-    startRefresh();
-    this.refreshTicketList();
 }
 
 function checkSelection() {
@@ -368,23 +393,103 @@ function toggleSelectAll(source) {
     checkSelection();
 }
 
+const initializeSummaryFilters = () => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const id = 'ticketing'; // default
+
+    let hasDashboardFilter = false;
+
+    if (urlParams.has('status')) {
+
+        const status = urlParams.get('status');
+
+        const statusLabel = document.getElementById(`${id}-status`);
+
+        if (statusLabel) {
+            statusLabel.innerText = status;
+        }
+
+        hasDashboardFilter = true;
+    }
+
+    if (urlParams.has('priority')) {
+
+        const priority = urlParams.get('priority');
+
+        const priorityLabel = document.getElementById(`${id}-priority`);
+
+        if (priorityLabel) {
+            priorityLabel.innerText = priority;
+        }
+
+        const statusLabel = document.getElementById(`${id}-status`);
+
+            if (statusLabel) {
+                statusLabel.innerText = 'Unresolved';
+            }
+
+        hasDashboardFilter = true;
+    }
+
+    if (urlParams.has('overdue')) {
+
+        const overdue = urlParams.get('overdue');
+
+        if (overdue === '1') {
+
+            const statusLabel = document.getElementById(`${id}-status`);
+
+            if (statusLabel) {
+                statusLabel.innerText = 'Unresolved';
+            }
+
+            hasDashboardFilter = true;
+        }
+    }
+
+    if (urlParams.has('unassigned')) {
+        const statusLabel = document.getElementById(`${id}-status`);
+
+            if (statusLabel) {
+                statusLabel.innerText = 'Unresolved';
+            }
+
+        hasDashboardFilter = true;
+    }
+
+    if (hasDashboardFilter) {
+        FilterUI.apply(id);
+    }
+};
+
+document.addEventListener('DOMContentLoaded', initializeSummaryFilters);
+
 window.addEventListener('click', function (event) {
-    // 1. Handle closing the Filter Overlay when clicking the dark background
     if (event.target.classList.contains('inventory-filter-overlay')) {
-        // Extract the ID prefix (e.g., "ticketing" from "ticketingFilterOverlay")
         const id = event.target.id.replace("FilterOverlay", "");
         FilterUI.close(id);
-        
-        // Restart page refreshes if they were stopped while the filter was open
+
+        if (typeof refreshTicketList === 'function') refreshTicketList();
         if (typeof startRefresh === 'function') startRefresh();
         if (typeof startTrackerRefresh === 'function') startTrackerRefresh();
         if (typeof startMaintRefresh === 'function') startMaintRefresh();
     }
 
-    // 2. Handle closing individual dropdown menus inside the filter
     if (!event.target.closest('.custom-filter, .custom-select')) {
         document.querySelectorAll('.custom-filter, .custom-select').forEach(sel => {
             sel.classList.remove('active');
         });
+    }
+});
+
+document.addEventListener('DOMContentLoaded', function() {
+    const urlParams = new URLSearchParams(window.location.search);
+    
+    const summaryKeys = ['status', 'unassigned', 'overdue', 'priority'];
+    
+    const hasFilter = summaryKeys.some(key => urlParams.has(key));
+
+    if (hasFilter) {
+        FilterUI.apply('ticketing');
     }
 });

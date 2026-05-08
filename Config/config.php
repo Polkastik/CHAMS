@@ -6,4 +6,3 @@ define('SMTP_PORT', 587);
 
 define('DB_HOST', 'localhost');
 define('DB_NAME', 'chams_db');
-?>

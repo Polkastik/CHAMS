@@ -25,7 +25,7 @@ if ($mode === 'inventory') {
 
 <div class="content">
     <?php if ($mode === 'maintenance'): ?>
-        <div class="page-header" onclick="window.location.href='../Flow/maintenanceLog.php'">
+        <div class="page-header" onclick="history.back()">
             <i class="fas fa-chevron-left"></i> VIEWING MAINTENANCE #<?= htmlspecialchars($data['M_ID']) ?>
         </div>
         <div class="info-grid">
@@ -113,7 +113,7 @@ if ($mode === 'inventory') {
         <?php endif; ?>
 
     <?php elseif ($mode === 'inventory'): ?>
-        <div class="page-header" onclick="window.location.href='../Flow/inventory.php'">
+        <div class="page-header" onclick="history.back()">
             <i class="fas fa-chevron-left"></i> VIEWING ITEM # <?= htmlspecialchars(strtoupper($data['I_ID'])) ?> :
             <?= htmlspecialchars(strtoupper($data['item_name'])) ?>
         </div>
@@ -152,7 +152,7 @@ if ($mode === 'inventory') {
         <div class="status-section">
             <div class="status-row">
                 <span class="status-label">Serial No.:</span>
-                <span class="badge assigned"><?= htmlspecialchars($data['Serial_number']) ?></span>
+                <span class="badge assigned"><?= (!empty($data['Serial_number'])) ? htmlspecialchars($data['Serial_number']) : 'N/A' ?></span>
             </div>
             <div class="status-row">
                 <span class="status-label">Quantity:</span>
@@ -182,11 +182,11 @@ if ($mode === 'inventory') {
     <?php else: ?>
         <!-- ticketing -->
         <?php if ($role === 3): ?>
-            <div class="page-header" onclick="window.location.href='../Flow/dashboard.php'">
+            <div class="page-header" onclick="history.back()">
                 <i class="fas fa-chevron-left"></i> VIEWING <?= htmlspecialchars(strtoupper($data['ticket_num'])) ?>
             </div>
         <?php else: ?>
-            <div class="page-header" onclick="window.location.href='../Flow/ticket.php'">
+            <div class="page-header" onclick="history.back()">
                 <i class="fas fa-chevron-left"></i> VIEWING <?= htmlspecialchars(strtoupper($data['ticket_num'])) ?>
             </div>
         <?php endif ?>

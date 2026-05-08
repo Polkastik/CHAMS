@@ -28,7 +28,10 @@ $selectedFilters = [
     'type' => $_GET['type'] ?? 'All',
     'item' => $_GET['item'] ?? 'All',
     'status' => $_GET['status'] ?? 'All',
-    'date' => $_GET['date'] ?? ''
+    'date' => $_GET['date'] ?? '',
+    'priority' => $_GET['priority'] ?? 'All',
+    'overdue' => $_GET['overdue'] ?? '0',
+    'unassigned' => $_GET['unassigned'] ?? '0'
 ];
 
 if ($filterId === 'actLog') {
@@ -58,7 +61,8 @@ if ($filterId === 'maintenance') {
         'department' => $departments,
         'name' => $allNames,
         'type' => $q->getFilterTypes($filterId),
-        'status' => $status
+        'status' => $status,
+        'priority' => ['All', 'Low', 'Medium', 'High']
     ];
 } else {
     $filterOptions = [

@@ -5,7 +5,7 @@ require_once '../Config/queryHandler.php';
 $db = new database();
 $db->connect();
 
-$qh = new QueryHandler();
+$q = new QueryHandler();
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
@@ -23,7 +23,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             $placeholders = implode(',', array_fill(0, count($ids), '?'));
 
-            $stmt = $qh->ticketDB->prepare("
+            $stmt = $q->ticketDB->prepare("
                 DELETE FROM tickets 
                 WHERE T_ID IN ($placeholders)
             ");
@@ -31,11 +31,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $stmt->execute($ids);
             echo "Deleted successfully";
 
+
         } elseif ($action === 'bulk_resolve') {
 
             $placeholders = implode(',', array_fill(0, count($ids), '?'));
 
-            $stmt = $qh->ticketDB->prepare("
+            $stmt = $q->ticketDB->prepare("
                 UPDATE tickets 
                 SET Status = 'Resolved', resolved_at = NOW()
                 WHERE T_ID IN ($placeholders)

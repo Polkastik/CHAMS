@@ -83,11 +83,11 @@ $stats = $q->getDashboardStats();
                                 style="margin-left: auto; font-size: 0.8rem; opacity: 0.5;"></i>
                         </div>
 
-                        <div class="profile-btn" onclick="toggleDarkMode()">
+                        <!-- <div class="profile-btn" onclick="toggleDarkMode()">
                             <i class="fas fa-moon"></i>
                             <span>Dark Mode</span>
                             <div class="custom-switch" style="margin-left: auto;"> </div>
-                        </div>
+                        </div> -->
 
                         <div class="signout-btn" onclick="window.location.href='../Config/logout.php'">
                             <i class="fas fa-power-off"></i>

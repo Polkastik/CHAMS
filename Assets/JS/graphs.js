@@ -1,59 +1,8 @@
-if (window.myChart) {
-    window.myChart.destroy();
-}
+let performanceChartInstance = null;
+let inventoryChartInstance = null;
 
 function initGraphs() {
-
-    const pie = document.getElementById("pieChart");
-    if (pie) {
-        const chartData = JSON.parse(pie.dataset.chart || '{}');
-
-        let start = 0;
-        let gradientParts = [];
-
-        for (let name in chartData) {
-            let entry = chartData[name];
-            let value = entry.value;
-            let color = entry.color;
-
-            if (value <= 0) continue;
-
-            let end = start + value;
-            gradientParts.push(`${color} ${start}% ${end}%`);
-
-            start = end;
-        }
-
-        if (gradientParts.length > 0) {
-            pie.style.background = `conic-gradient(${gradientParts.join(',')})`;
-        }
-    }
-
-    const lineCanvas = document.getElementById('performanceChart');
-    if (lineCanvas) {
-        const ctx = lineCanvas.getContext('2d');
-
-        const rawData = JSON.parse(lineCanvas.dataset.values || '[]');
-
-        const labels = (data.line || []).map(d => "Week " + d.week);
-        const values = (data.line || []).map(d => d.total);
-
-        if (window.myChart) window.myChart.destroy();
-
-        window.myChart = new Chart(ctx, {
-            type: 'line',
-            data: {
-                labels: labels,
-                datasets: [{
-                    data: values,
-                    tension: 0.3
-                }]
-            },
-            options: {
-                plugins: { legend: { display: false } }
-            }
-        });
-    }
+    refreshGraph();
 }
 
 function refreshGraph() {
@@ -71,6 +20,7 @@ function refreshGraph() {
                 const ctx = canvas.getContext('2d');
                 const months = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
                 
+                if (performanceChartInstance) performanceChartInstance.destroy();
                 if (!data.line) return;
 
                 const labels = data.line.map(d => months[d.month - 1]);
@@ -87,7 +37,10 @@ function refreshGraph() {
                         labels: labels,
                         datasets: [{
                             data: values,
-                            tension: 0.3
+                            borderColor: '#007bff',
+                            tension: 0.3,
+                            fill: true,
+                            backgroundColor: 'rgba(0, 123, 255, 0.1)'
                         }]
                     },
                     options: {
@@ -109,21 +62,40 @@ function refreshGraph() {
 
             const pie = document.getElementById("pieChart");
             if (pie && data.pie) {
-                let start = 0;
-                let gradientParts = [];
+                const labels = Object.keys(data.pie);
+                const values = labels.map(l => data.pie[l].value);
+                const colors = labels.map(l => data.pie[l].color);
 
-                for (let name in data.pie) {
-                    let entry = data.pie[name];
-                    if (entry.value <= 0) continue;
+                if (inventoryChartInstance) inventoryChartInstance.destroy();
 
-                    let end = start + entry.value;
-                    gradientParts.push(`${entry.color} ${start}% ${end}%`);
-                    start = end;
-                }
-
-                if (gradientParts.length > 0) {
-                    pie.style.background = `conic-gradient(${gradientParts.join(',')})`;
-                }
+                inventoryChartInstance = new Chart(pie.getContext('2d'), {
+                    type: 'pie',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            data: values,
+                            backgroundColor: colors,
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: { display: false },
+                            tooltip: {
+                                enabled: true,
+                                callbacks: {
+                                    label: function(context) {
+                                        let label = context.label || '';
+                                        let actualCount = data.pie[label].count; 
+                                        return ` ${label}: ${actualCount} Items`;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
             }
 
             if (data.stats) {

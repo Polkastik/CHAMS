@@ -91,7 +91,7 @@ if (isset($_GET['ajax']) && $_GET['ajax'] === 'list') {
         <?php include '../Modules/sidebar.php' ?>
 
         <div class="content">
-            <div class="page-header" onclick="window.location.href='dashboard.php'">
+            <div class="page-header" onclick="history.back()">
                 <i class="fas fa-chevron-left"></i> INVENTORY TRACKER
             </div>
             <?php $filterId = "tracker";

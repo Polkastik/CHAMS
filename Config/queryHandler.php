@@ -137,6 +137,14 @@ class QueryHandler
             $params['status'] = $filters['status'];
         }
 
+        if (isset($filters['unassigned']) && $filters['unassigned'] == '1') {
+            $sql .= " AND (t.Assigned_To IS NULL OR t.Assigned_To = 0 OR t.Assigned_To = '')";
+        }
+
+        if (isset($filters['overdue']) && $filters['overdue'] == '1') {
+            $sql .= " AND due_date < NOW() ";
+        }
+
         if (!empty($filters['priority']) && $filters['priority'] !== 'All') {
             $sql .= " AND t.Priority = :priority";
             $params['priority'] = $filters['priority'];
@@ -148,13 +156,13 @@ class QueryHandler
         $offset = ($page - 1) * $limit;
         $sql .= " LIMIT :limit OFFSET :offset";
         $stmt = $this->ticketDB->prepare($sql);
-        
+
         foreach ($params as $key => $val) {
             $stmt->bindValue(":$key", $val);
         }
-        
-        $stmt->bindValue(':limit', (int)$limit, PDO::PARAM_INT);
-        $stmt->bindValue(':offset', (int)$offset, PDO::PARAM_INT);
+
+        $stmt->bindValue(':limit', (int) $limit, PDO::PARAM_INT);
+        $stmt->bindValue(':offset', (int) $offset, PDO::PARAM_INT);
 
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -420,6 +428,7 @@ class QueryHandler
         $stmt = $this->ticketDB->query($sql);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+    // for weekly
     public function getWeeklyResolved($user_id = null, $role = null)
     {
         $where = "WHERE Status = 'Resolved' 
@@ -1095,8 +1104,8 @@ class QueryHandler
             $stmt->bindValue(":$key", $val);
         }
 
-        $stmt->bindValue(':limit', (int)$limit, PDO::PARAM_INT);
-        $stmt->bindValue(':offset', (int)$offset, PDO::PARAM_INT);
+        $stmt->bindValue(':limit', (int) $limit, PDO::PARAM_INT);
+        $stmt->bindValue(':offset', (int) $offset, PDO::PARAM_INT);
 
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -1265,8 +1274,21 @@ class QueryHandler
                 }
 
                 if (!empty($filters['status']) && $filters['status'] !== 'All') {
-                    $sql .= " AND (t.Status) = :ticket_status";
-                    $params['ticket_status'] = $filters['status'];
+                    $sql .= " AND t.Status = :status";
+                    $params['status'] = $filters['status'];
+                }
+
+                if (isset($filters['unassigned']) && $filters['unassigned'] == '1') {
+                    $sql .= " AND (t.Assigned_To IS NULL OR t.Assigned_To = 0 OR t.Assigned_To = '')";
+                }
+
+                if (isset($filters['overdue']) && $filters['overdue'] == '1') {
+                    $sql .= " AND due_date < NOW() ";
+                }
+
+                if (!empty($filters['priority']) && $filters['priority'] !== 'All') {
+                    $sql .= " AND t.Priority = :priority";
+                    $params['priority'] = $filters['priority'];
                 }
 
                 $stmt = $this->ticketDB->prepare($sql);
@@ -1346,7 +1368,7 @@ class QueryHandler
     }
 
     // activity Logs
-    public function getActivityLogs($filters = [], $page  = 1, $limit = 5)
+    public function getActivityLogs($filters = [], $page = 1, $limit = 5)
     {
         $sql = "SELECT u.FN, u.LN, a.A_ID, a.U_ID, a.act, a.module, a.ref_ID, a.created_at
             FROM act_logs a
@@ -1379,8 +1401,8 @@ class QueryHandler
             $stmt->bindValue(":$key", $val);
         }
 
-        $stmt->bindValue(':limit', (int)$limit, PDO::PARAM_INT);
-        $stmt->bindValue(':offset', (int)$offset, PDO::PARAM_INT);
+        $stmt->bindValue(':limit', (int) $limit, PDO::PARAM_INT);
+        $stmt->bindValue(':offset', (int) $offset, PDO::PARAM_INT);
 
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -1476,7 +1498,8 @@ class QueryHandler
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public function getActiveNotifications($userId) {
+    public function getActiveNotifications($userId)
+    {
         $stmt = $this->logsDB->prepare("
             SELECT n.* FROM notifications n
             LEFT JOIN notification_dismissals d 
@@ -1489,7 +1512,8 @@ class QueryHandler
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public function dismissNotification($notifId, $userId) {
+    public function dismissNotification($notifId, $userId)
+    {
         $stmt = $this->logsDB->prepare("
             INSERT IGNORE INTO notification_dismissals (notification_id, user_id) 
             VALUES (:nid, :uid)
@@ -1500,11 +1524,12 @@ class QueryHandler
         ]);
     }
 
-    public function markAllNotifsRead($userId) {
+    public function markAllNotifsRead($userId)
+    {
         $sql = "INSERT IGNORE INTO notification_dismissals (notification_id, user_id)
                 SELECT N_ID, :uid FROM notifications
                 WHERE user_id = :uid";
-        
+
         $stmt = $this->logsDB->prepare($sql);
         return $stmt->execute(['uid' => $userId]);
     }
@@ -1627,8 +1652,8 @@ class QueryHandler
             $stmt->bindValue(":$key", $val);
         }
 
-        $stmt->bindValue(':limit', (int)$limit, PDO::PARAM_INT);
-        $stmt->bindValue(':offset', (int)$offset, PDO::PARAM_INT);
+        $stmt->bindValue(':limit', (int) $limit, PDO::PARAM_INT);
+        $stmt->bindValue(':offset', (int) $offset, PDO::PARAM_INT);
 
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);

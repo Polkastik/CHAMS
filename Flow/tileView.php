@@ -158,9 +158,9 @@ if (isset($_GET['ajax']) && $_GET['ajax'] === 'view') {
             }, 5000);
         }
 
-        function stopTileRefresh() {
-            clearInterval(refreshInterval);
-        }
+        window.onpopstate = function() {
+            stopTileRefresh();
+        };
 
         startTileRefresh();
 

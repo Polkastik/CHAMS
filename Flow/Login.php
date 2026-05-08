@@ -65,7 +65,7 @@
                     <i class="fas fa-id-card"></i>
                     <input type="text" id="resetEmpId" class="form-input" placeholder="Employee ID" required>
                 </div>
-                <button type="submit" class="btn-action" id="forgotBtn">Submit Request</button>
+                <button type="submit" class="btn-action" id="forgotBtn" onclick="sendTestReset()">Submit Request</button>
                 <a class="toggle-link" onclick="toggleViews('login')">Back to Login</a>
             </form>
         </div>

@@ -1,19 +1,22 @@
 <div class="content">
     <div class="section-label">Operational Overview</div>
     <div class="ticket-summary">
-        <div class="summary-card" onclick="window.location.href='../flow/ticket.php'">
+        <div class="summary-card" onclick="window.location.href='../flow/ticket.php?overdue=1'">
             <h4>OVERDUE</h4>
             <div class="count" id="stat-overdue" style="color: #ff2d8d;"><?= $stats['overdue'] ?></div>
         </div>
-        <div class="summary-card" onclick="window.location.href='../flow/ticket.php'">
+
+        <div class="summary-card" onclick="window.location.href='../flow/ticket.php?unassigned=1'">
             <h4>OPEN</h4>
             <div class="count" id="stat-open"><?= $stats['open'] ?></div>
         </div>
-        <div class="summary-card" onclick="window.location.href='../flow/ticket.php'">
+
+        <div class="summary-card" onclick="window.location.href='../flow/ticket.php?status=Unresolved'">
             <h4>UNRESOLVED</h4>
             <div class="count" id="stat-unresolved"><?= $stats['status'] ?></div>
         </div>
-        <div class="summary-card" onclick="window.location.href='../flow/ticket.php'">
+
+        <div class="summary-card" onclick="window.location.href='../flow/ticket.php?priority=High'">
             <h4>URGENT</h4>
             <div class="count" id="stat-urgent" style="color:#bbb;"><?= $stats['urgent'] ?></div>
         </div>
@@ -28,18 +31,6 @@
                 <span>Loading Data...</span>
             </div>
             <canvas id="pieChart" data-chart='<?php echo json_encode($inventoryPieData); ?>'></canvas>
-
-            <div class="stock-legend">
-                <?php foreach ($inventoryPieData as $name => $data): ?>
-                    <?php if ($data['value'] > 0): ?>
-                        <div class="legend-item">
-                            <span class="legend-dot" style="background-color: <?= $data['color'] ?>;"></span>
-                            <span class="legend-label"><?= htmlspecialchars($name) ?></span>
-                            <span class="legend-percent"><?= round($data['value']) ?>%</span>
-                        </div>
-                    <?php endif; ?>
-                <?php endforeach; ?>
-            </div>
         </div>
 
         <!-- ticket bar graph -->
@@ -61,7 +52,7 @@
                 id="activityContainer">
                 <?php
                 // limited to the most recent 5 un lng kasya hahaha
-                $recentLogs = array_slice($logs, 0, 5);
+                $recentLogs = array_slice($logs, 0, 10);
 
                 if (empty($recentLogs)): ?>
                     <div class="activity-item">No recent activity found.</div>

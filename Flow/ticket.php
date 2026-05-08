@@ -15,7 +15,18 @@ if (isset($_GET['ajax']) && $_GET['ajax'] === 'list') {
     $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
     $tickets = $q->getTickets($role, $uid, $filters, $page);
     $filterId = "ticketing";
-    
+    $selectedFilters = [
+        'department' => $_GET['department'] ?? 'All',
+        'name' => $_GET['name'] ?? 'All',
+        'type' => $_GET['type'] ?? 'All',
+        'item' => $_GET['item'] ?? 'All',
+        'status' => $_GET['status'] ?? 'All',
+        'date' => $_GET['date'] ?? '',
+        'priority' => $_GET['priority'] ?? '',
+        'unassigned' => $_GET['unassigned'] ?? '',
+        'overdue' => $_GET['overdue'] ?? ''
+    ];
+
     ob_start();
     include '../Modules/filter.php';
     $filterHtml = ob_get_clean();
@@ -54,7 +65,7 @@ $currentPage = 'ticketing';
         <?php include '../Modules/sidebar.php' ?>
 
         <div class="content" id="content">
-            <div class="page-header" onclick="window.location.href='dashboard.php'">
+            <div class="page-header" onclick="window.location.href='../Flow/dashboard.php'">
                 <i class="fas fa-chevron-left"></i> TICKETS
             </div>
 

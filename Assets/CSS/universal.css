@@ -1,29 +1,31 @@
-:root {
+/* :root {
     --bg: #f5f7fa;
     --card-bg: #ffffff;
     --text: #222;
     --text-muted: #666;
     --border: #ddd;
 
-    --primary : #0b4a7a; /* this is all the i fas fa classes (icons) */
+    --primary : #0b4a7a; // this is all the i fas fa classes (icons)
 }
 
-body.dark-mode {
+ body.dark-mode {
     --bg: #2c2c2c;
     --card-bg: #1e1e1e;
     --text: #e0e0e0;
     --text-muted: #aaa;
     --border: #333;
 
-    --primary: #fff; /* this is all the i fas fa classes (icons) */
-}
+    --primary: #fff; // this is all the i fas fa classes (icons)
+} 
+    // for darkmode
+*/
 
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
     font-family: "Segoe UI", Arial, sans-serif;
-    scrollbar-color: #e7ebfa #224b7a !important;
+    scrollbar-color: #e7ebfa #224b7a;
 }
 
 a {

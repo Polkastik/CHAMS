@@ -57,7 +57,7 @@ if (isset($_GET['ajax']) && $_GET['ajax'] === 'list') {
         <div class="content">
             <div class="page-header">
                 <?php if ($viewMode === 'items'): ?>
-                    <div onclick="window.location.href='../Flow/inventory.php'">
+                    <div onclick="history.back()">
                         <i class="fas fa-chevron-left"></i>
                         INVENTORY: <?= htmlspecialchars(strtoupper($currentCatName)) ?>
                     </div>
@@ -69,7 +69,7 @@ if (isset($_GET['ajax']) && $_GET['ajax'] === 'list') {
                     </div>
                     <?php endif; ?>
                 <?php else: ?>
-                    <div onclick="window.location.href='../Flow/dashboard.php'">
+                    <div onclick="history.back()">
                         <i class="fas fa-chevron-left"></i>
                         INVENTORY CATEGORIES
                     </div>
