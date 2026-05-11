@@ -274,7 +274,7 @@
                             <?php endforeach; ?>
                         </select>
                     </div>
-                    <?php if($data['issued_qty'] > 0 && $role === 1): ?>
+                    <?php if (!empty($data['issued_item_name'])): ?>
                     <div class="grid-row">
                         <span class="label">Issued Quantity:</span>
                         <input type="number" name="issued_qty" class="value" 

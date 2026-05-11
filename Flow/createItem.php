@@ -17,9 +17,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         'brand' => !empty(trim($_POST['brand'])) ? trim($_POST['brand']) : null,
         'quantity' => intval($_POST['quantity']),
         'threshold' => intval($_POST['threshold']),
-        'supplier'  => !empty(trim($_POST['supplier'])) ? trim($_POST['supplier']) : null,
+        'supplier' => !empty(trim($_POST['supplier'])) ? trim($_POST['supplier']) : null,
         'defects' => $_POST['defects'] ?? 'No',
-        'serial'    => !empty(trim($_POST['serial'])) ? strtoupper(trim($_POST['serial'])) : null,
+        'serial' => !empty(trim($_POST['serial'])) ? strtoupper(trim($_POST['serial'])) : null,
         'received' => $received
     ];
 
@@ -54,8 +54,10 @@ $types = $q->getInventoryTypes();
 </head>
 
 <body>
+    <div class="ball"></div>
     <!-- Header -->
     <?php include '../Modules/header.php' ?>
+
 
     <!-- sidebar -->
     <div class="container">
@@ -78,7 +80,8 @@ $types = $q->getInventoryTypes();
                             <select name="categ_id" id="categ_id" required>
                                 <option value="" disabled selected>Select Category</option>
                                 <?php foreach ($categories as $cat): ?>
-                                    <option value="<?= $cat['IC_ID'] ?>"><?= htmlspecialchars($cat['category_name']) ?>
+                                    <option value="<?= $cat['IC_ID'] ?>">
+                                        <?= htmlspecialchars($cat['category_name']) ?>
                                     </option>
                                 <?php endforeach; ?>
                             </select>
@@ -103,7 +106,7 @@ $types = $q->getInventoryTypes();
                     <div class="inline">
                         <div class="form-group inline-item">
                             <label for="quantity">Quantity</label>
-                                <input type="number" name="quantity" id="quantity" min="1" value="1" required>
+                            <input type="number" name="quantity" id="quantity" min="1" value="1" required>
                         </div>
                         <div class="form-group inline-item">
                             <label for="threshold">Low Stock Threshold</label>
@@ -146,8 +149,11 @@ $types = $q->getInventoryTypes();
             </div>
         </div>
 
-        <script src="../Assets/JS/sidebar.js"></script>
-        <script src="../Assets/JS/createItem.js"></script>
+    </div>
+
+    <script src="../Assets/JS/sidebar.js"></script>
+    <script src="../Assets/JS/createItem.js"></script>
+    <script src="../Assets/JS/background.js"></script>
 </body>
 
 </html>

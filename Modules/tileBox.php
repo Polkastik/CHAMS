@@ -127,7 +127,7 @@ if ($filterId === 'actLog' && !isset($logs)) {
                         $currentHeader = $targetHeader; ?>
                         <div class="inventory-section-header" style="grid-column: span 2; width: 100%;">
                             <h3><?= htmlspecialchars($currentHeader) ?></h3>
-                            <hr>
+                            <hr style="border-color: #000 !important;">
                         </div>
                     <?php endif; ?>
 
@@ -233,7 +233,7 @@ if ($filterId === 'actLog' && !isset($logs)) {
         <?php else:
             foreach ($tickets as $row):
                 $ticketId = htmlspecialchars($row['T_ID']);
-                $status = htmlspecialchars($row['Status'] ?? 'Unresolved');
+                $status = htmlspecialchars($row['Status'] ==='Unresolved') ? 'Pending' : $row['Status'];
                 $assigned = !empty($row['staff_FN']) ? 'Assigned' : 'Unassigned';
                 $isOverdue = (!empty($row['due_date']) && strtotime($row['due_date']) < time() && $status !== 'Resolved');
                 ?>
@@ -253,14 +253,14 @@ if ($filterId === 'actLog' && !isset($logs)) {
                         <div class="ticket-avatar"><i class="fas fa-user"></i></div>
                         <div class="ticket-info">
                             <div class="ticket-title"><?= htmlspecialchars($row['FN'] . ' ' . $row['LN']) ?></div>
-                            <div class="ticket-desc"><?= htmlspecialchars($row['Title']) ?></div>
-                            <div class="ticket-meta"><?= htmlspecialchars($row['categ_name']) ?></div>
+                            <div class="ticket-desc"><?= htmlspecialchars($row['categ_name']) ?></div>
+                            <div class="ticket-meta"><?= htmlspecialchars(strtoupper($row['ticket_num'])) ?></div>
                         </div>
 
                         <div class="badge <?= ($assigned === 'Assigned') ? 'Assigned' : 'Unassigned' ?>"><?= $assigned ?></div>
                         <div class="badge <?= $status ?>"><?= $status ?></div>
-                        <div class="badge <?= strtolower($row['Priority']) ?>"><?= htmlspecialchars($row['Priority']) ?></div>
-                        <div class="time"><?= timeAgo($row['created_at']) ?></div>
+                        <!-- <div class="badge <?= strtolower($row['Priority']) ?>"><?= htmlspecialchars($row['Priority']) ?></div> -->
+                        <div class="time" style="margin-left: 2%;"><?= timeAgo($row['created_at']) ?></div>
                     </a>
                 </div>
             <?php endforeach;

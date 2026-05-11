@@ -35,7 +35,7 @@ body {
     height: 3vw;
     border-radius: 50%;
     background: #eef2f6;
-    color: var(--primary);
+    color: #224b7a;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -44,9 +44,9 @@ body {
 }
 
 .ticket-info { flex: 1; margin-right: 10vh;}
-.ticket-title { font-weight: 700; font-size: 0.95vw; color: #333; }
-.ticket-desc { font-size: 0.8vw; margin-top: 0.3vh; color: #666; }
-.ticket-meta { font-size: 0.7vw; margin-top: 0.5vh; color: #999; font-weight: 600; color: var(--text); }
+.ticket-title { font-weight: 700; font-size: 0.95vw; color: #2a3f64; }
+.ticket-desc { font-size: 0.85vw; margin-top: 0.3vh; color: #525252; }
+.ticket-meta { font-size: 0.7vw; margin-top: 0.5vh; color: #999; font-weight: 700; }
 
 .time { font-size: 0.75vw; color: #888; text-align: right;}
 
@@ -220,7 +220,7 @@ body {
 }
 
 .status-label {
-    width: 120px;
+    width: 180px;
     color: #888;
     font-weight: bold;
 }
@@ -379,7 +379,7 @@ body {
 .form-footer {
     display: flex;
     justify-content: flex-end;
-    margin-top: -2rem;
+    margin: -7% 3% 0 0;
     position: relative;
 }
 
@@ -437,7 +437,6 @@ body {
     display: flex;
     justify-content: flex-end;
     gap: 2vw;
-    margin-top: 2vh;
 }
 
 .actions > form {

@@ -16,6 +16,7 @@
     transition: all 0.3s ease; /* Smooth transition for hover */
     position: relative;
     left: 0;
+    color: #535353;
 }
 
 /* Hover Effect: Blue line and Move Up/Right */
@@ -45,7 +46,7 @@
 
 /* High Priority Highlight (Like in your image) */
 .activity-card .ticket-desc strong {
-    color: #003366;
+    color: #003366 !important;
 }
 .activity-card .ticket-desc b, .activity-card .ticket-desc span.high-priority {
     color: #d9534f; /* Red for 'High' */

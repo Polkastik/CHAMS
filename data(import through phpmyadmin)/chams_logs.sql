@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 06, 2026 at 03:41 PM
+-- Generation Time: May 11, 2026 at 07:34 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -355,7 +355,95 @@ INSERT INTO `act_logs` (`A_ID`, `U_ID`, `act`, `module`, `ref_ID`, `created_at`)
 (312, 2, 'Accepted Ticket: test', 'Ticketing', 37, '2026-05-06 01:08:17'),
 (313, 2, 'Updated Ticket #37 (Status to Ongoing, Assigned to anton coron Carimosanto .)', 'Ticketing', 37, '2026-05-06 01:08:17'),
 (314, 2, 'Resolved Ticket: test', 'Ticketing', 37, '2026-05-06 01:08:39'),
-(315, 2, 'Updated Ticket #37 (Status to Resolved)', 'Ticketing', 37, '2026-05-06 01:08:39');
+(315, 2, 'Updated Ticket #37 (Status to Resolved)', 'Ticketing', 37, '2026-05-06 01:08:39'),
+(316, 1, 'Reopened Ticket #37', 'Ticketing', 37, '2026-05-08 12:55:33'),
+(317, 1, 'Created Category: Printers', 'Inventory', 6, '2026-05-08 12:56:59'),
+(318, 1, 'Updated Item: LAN cables', 'Inventory', 10, '2026-05-08 13:07:59'),
+(319, 1, 'Updated Item: LAN cables', 'Inventory', 10, '2026-05-08 13:08:23'),
+(320, 1, 'Created Category: test', 'Inventory', 7, '2026-05-08 13:15:54'),
+(321, 1, 'Updated Ticket #37 (Status to Resolved)', 'Ticketing', 37, '2026-05-08 13:34:00'),
+(322, 1, 'Created Category: test', 'Inventory', 8, '2026-05-08 13:51:57'),
+(323, 1, 'Updated Item: test', 'Inventory', 12, '2026-05-08 13:52:52'),
+(324, 1, 'Updated Category: test1', 'Inventory', 7, '2026-05-08 13:53:04'),
+(325, 1, 'Updated Item: ROG 5220', 'Inventory', 1, '2026-05-08 15:11:28'),
+(326, 1, 'Saved changes to Ticket #38', 'Ticketing', 38, '2026-05-08 16:32:37'),
+(327, 1, 'Reopened Ticket #38', 'Ticketing', 38, '2026-05-08 16:57:11'),
+(328, 1, 'Reopened Ticket #38', 'Ticketing', 38, '2026-05-08 16:58:03'),
+(329, 1, 'Reopened Ticket #38', 'Ticketing', 38, '2026-05-08 16:58:43'),
+(330, 1, 'Reopened Ticket #37', 'Ticketing', 37, '2026-05-08 16:58:47'),
+(331, 1, 'Reopened Ticket #38', 'Ticketing', 38, '2026-05-08 16:59:15'),
+(332, 1, 'Reopened Ticket #37', 'Ticketing', 37, '2026-05-08 16:59:22'),
+(333, 1, 'Reopened Ticket #38', 'Ticketing', 38, '2026-05-08 17:08:48'),
+(334, 1, 'Reopened Ticket #37', 'Ticketing', 37, '2026-05-08 17:08:53'),
+(335, 1, 'Reopened Ticket #37', 'Ticketing', 37, '2026-05-08 17:15:02'),
+(336, 1, 'Reopened Ticket #38', 'Ticketing', 38, '2026-05-08 17:15:07'),
+(337, 1, 'Reopened Ticket #38', 'Ticketing', 38, '2026-05-08 17:18:39'),
+(338, 1, 'Reopened Ticket #37', 'Ticketing', 37, '2026-05-08 17:18:41'),
+(339, 1, 'Reopened Ticket #38', 'Ticketing', 38, '2026-05-08 17:19:44'),
+(340, 1, 'Reopened Ticket #37', 'Ticketing', 37, '2026-05-08 17:19:49'),
+(341, 1, 'Reopened Ticket #38', 'Ticketing', 38, '2026-05-08 17:37:35'),
+(342, 1, 'Reopened Ticket #37', 'Ticketing', 37, '2026-05-08 17:37:38'),
+(343, 1, 'Reopened Ticket #37', 'Ticketing', 37, '2026-05-08 18:21:32'),
+(344, 1, 'Updated Ticket #37 (Assigned to Unknown Staff.)', 'Ticketing', 37, '2026-05-08 18:21:42'),
+(345, 1, 'Saved changes to Ticket #37', 'Ticketing', 37, '2026-05-08 18:54:39'),
+(346, 1, 'Updated Ticket #37 (Priority)', 'Ticketing', 37, '2026-05-08 21:19:57'),
+(347, 1, 'Reopened Ticket #36', 'Ticketing', 36, '2026-05-08 22:10:21'),
+(348, 1, 'Updated Ticket #36 (Priority)', 'Ticketing', 36, '2026-05-08 22:10:30'),
+(349, 1, 'Reopened Ticket #37', 'Ticketing', 37, '2026-05-08 22:17:31'),
+(350, 1, 'Reopened Ticket #36', 'Ticketing', 36, '2026-05-08 22:17:41'),
+(351, 1, 'Reopened Ticket #37', 'Ticketing', 37, '2026-05-09 10:33:45'),
+(352, 2, 'Accepted Ticket: test', 'Ticketing', 37, '2026-05-11 11:16:20'),
+(353, 2, 'Updated Ticket #37 (Status to Ongoing, Assigned to Tech 1 MISD.)', 'Ticketing', 37, '2026-05-11 11:16:20'),
+(354, 2, 'Resolved Ticket: test', 'Ticketing', 37, '2026-05-11 11:16:21'),
+(355, 2, 'Updated Ticket #37 (Status to Resolved)', 'Ticketing', 37, '2026-05-11 11:16:21'),
+(356, 6, 'Accepted Ticket: test', 'Ticketing', 39, '2026-05-11 11:37:47'),
+(357, 6, 'Updated Ticket #39 (Status to Ongoing, Assigned to Tech 3 MISD.)', 'Ticketing', 39, '2026-05-11 11:37:47'),
+(358, 6, 'Resolved Ticket: test', 'Ticketing', 39, '2026-05-11 11:40:55'),
+(359, 6, 'Updated Ticket #39 (Status to Resolved)', 'Ticketing', 39, '2026-05-11 11:40:55'),
+(360, 6, 'Accepted Ticket: test', 'Ticketing', 40, '2026-05-11 11:44:36'),
+(361, 6, 'Updated Ticket #40 (Status to Ongoing, Assigned to Tech 3 MISD.)', 'Ticketing', 40, '2026-05-11 11:44:36'),
+(362, 1, 'Updated Ticket #40 (Status to Unresolved, Assigned to Unknown Staff.)', 'Ticketing', 40, '2026-05-11 11:49:34'),
+(363, 6, 'Accepted Ticket: test', 'Ticketing', 40, '2026-05-11 11:49:39'),
+(364, 6, 'Updated Ticket #40 (Status to Ongoing, Assigned to Tech 3 MISD.)', 'Ticketing', 40, '2026-05-11 11:49:39'),
+(365, 1, 'Updated Ticket #40 (Status to Unresolved, Assigned to Unknown Staff.)', 'Ticketing', 40, '2026-05-11 11:58:00'),
+(366, 6, 'Accepted Ticket: test', 'Ticketing', 40, '2026-05-11 11:58:02'),
+(367, 6, 'Updated Ticket #40 (Status to Ongoing, Assigned to Tech 3 MISD.)', 'Ticketing', 40, '2026-05-11 11:58:02'),
+(368, 1, 'Updated Ticket #40 (Status to Unresolved, Assigned to Unknown Staff.)', 'Ticketing', 40, '2026-05-11 11:58:18'),
+(369, 6, 'Accepted Ticket: test', 'Ticketing', 40, '2026-05-11 11:58:23'),
+(370, 6, 'Updated Ticket #40 (Status to Ongoing, Assigned to Tech 3 MISD.)', 'Ticketing', 40, '2026-05-11 11:58:23'),
+(371, 6, 'Resolved Ticket: test', 'Ticketing', 40, '2026-05-11 12:07:37'),
+(372, 6, 'Updated Ticket #40 (Status to Resolved)', 'Ticketing', 40, '2026-05-11 12:07:37'),
+(373, 2, 'Accepted Ticket: test', 'Ticketing', 41, '2026-05-11 12:10:36'),
+(374, 2, 'Updated Ticket #41 (Status to Ongoing, Assigned to Tech 1 MISD.)', 'Ticketing', 41, '2026-05-11 12:10:36'),
+(375, 2, 'Resolved Ticket: test', 'Ticketing', 41, '2026-05-11 12:23:11'),
+(376, 2, 'Updated Ticket #41 (Status to Resolved)', 'Ticketing', 41, '2026-05-11 12:23:11'),
+(377, 2, 'Accepted Ticket: test', 'Ticketing', 42, '2026-05-11 13:38:48'),
+(378, 2, 'Updated Ticket #42 (Status to Ongoing, Assigned to Tech 1 MISD.)', 'Ticketing', 42, '2026-05-11 13:38:48'),
+(379, 1, 'Updated Ticket #43 (Priority)', 'Ticketing', 43, '2026-05-11 14:09:46'),
+(380, 1, 'Updated Ticket #43 (Status to Resolved, Assigned to Tech 2 MISD.)', 'Ticketing', 43, '2026-05-11 16:26:36'),
+(381, 1, 'Reopened Ticket #43', 'Ticketing', 43, '2026-05-11 16:26:43'),
+(382, 1, 'Updated Ticket #43 (Status to Resolved)', 'Ticketing', 43, '2026-05-11 16:28:10'),
+(383, 1, 'Issued 200 units for Ticket #43', 'Inventory', 6, '2026-05-11 16:38:35'),
+(384, 1, 'Issued Item #6 to Ticket #43', 'Inventory', 6, '2026-05-11 16:38:35'),
+(385, 1, 'Reopened Ticket #43', 'Ticketing', 43, '2026-05-11 21:33:44'),
+(386, 1, 'Updated Ticket #43 (Status to Resolved)', 'Ticketing', 43, '2026-05-11 23:03:25'),
+(387, 1, 'Reopened Ticket #43', 'Ticketing', 43, '2026-05-11 23:04:33'),
+(388, 1, 'Updated Ticket #43 (Status to Resolved)', 'Ticketing', 43, '2026-05-11 23:05:36'),
+(389, 1, 'Reopened Ticket #43', 'Ticketing', 43, '2026-05-11 23:09:14'),
+(390, 1, 'Updated Ticket #43 (Status to Resolved)', 'Ticketing', 43, '2026-05-11 23:09:21'),
+(391, 1, 'Reopened Ticket #43', 'Ticketing', 43, '2026-05-11 23:09:24'),
+(392, 1, 'Updated Ticket #43 (Status to Resolved)', 'Ticketing', 43, '2026-05-11 23:09:59'),
+(393, 2, 'Accepted Ticket: ', 'Ticketing', 44, '2026-05-11 23:24:04'),
+(394, 2, 'Updated Ticket #44 (Status to Ongoing, Assigned to Mon Flores.)', 'Ticketing', 44, '2026-05-11 23:24:04'),
+(395, 2, 'Resolved Ticket: ', 'Ticketing', 44, '2026-05-11 23:25:54'),
+(396, 2, 'Updated Ticket #44 (Status to Resolved)', 'Ticketing', 44, '2026-05-11 23:25:54'),
+(397, 1, 'Issued 300 units for Ticket #44', 'Inventory', 6, '2026-05-11 23:29:03'),
+(398, 1, 'Issued Item #6 to Ticket #44', 'Inventory', 6, '2026-05-11 23:29:03'),
+(399, 2, 'Added a comment to Ticket #44', 'Ticketing', 44, '2026-05-11 23:47:08'),
+(400, 2, 'Added a comment to Ticket #37', 'Ticketing', 37, '2026-05-11 23:54:34'),
+(401, 1, 'Reopened Ticket #44', 'Ticketing', 44, '2026-05-11 23:55:14'),
+(402, 2, 'Resolved Ticket: ', 'Ticketing', 44, '2026-05-11 23:55:26'),
+(403, 2, 'Updated Ticket #44 (Status to Resolved)', 'Ticketing', 44, '2026-05-11 23:55:26');
 
 -- --------------------------------------------------------
 
@@ -494,7 +582,70 @@ INSERT INTO `login_logs` (`L_ID`, `U_ID`, `login_time`, `logout_time`, `stat`) V
 (116, 2, '2026-05-06 00:43:43', '2026-05-06 00:44:24', 'Logout'),
 (117, 1, '2026-05-06 01:02:34', '2026-05-06 01:06:43', 'Logout'),
 (118, 2, '2026-05-06 01:06:46', '2026-05-06 01:27:01', 'Logout'),
-(119, 3, '2026-05-06 01:27:04', '2026-05-06 01:31:08', 'Logout');
+(119, 3, '2026-05-06 01:27:04', '2026-05-06 01:31:08', 'Logout'),
+(120, 1, '2026-05-08 12:47:55', '2026-05-08 15:21:35', 'Logout'),
+(121, 2, '2026-05-08 12:50:17', '2026-05-08 12:51:40', 'Logout'),
+(122, 2, '2026-05-08 12:56:29', '2026-05-08 16:17:59', 'Logout'),
+(123, 1, '2026-05-08 16:31:12', '2026-05-08 16:31:54', 'Logout'),
+(124, 3, '2026-05-08 16:31:59', '2026-05-08 16:32:07', 'Logout'),
+(125, 2, '2026-05-08 16:32:12', '2026-05-08 16:32:23', 'Logout'),
+(126, 1, '2026-05-08 16:32:25', '2026-05-08 16:32:44', 'Logout'),
+(127, 2, '2026-05-08 16:32:47', '2026-05-08 16:56:02', 'Logout'),
+(128, 1, '2026-05-08 16:56:04', NULL, 'Login'),
+(129, 1, '2026-05-08 17:18:33', NULL, 'Login'),
+(130, 1, '2026-05-08 17:37:28', '2026-05-08 23:01:25', 'Logout'),
+(131, 1, '2026-05-08 23:01:51', '2026-05-08 23:02:09', 'Logout'),
+(132, 2, '2026-05-09 10:33:34', '2026-05-09 10:38:41', 'Logout'),
+(133, 1, '2026-05-09 10:33:37', '2026-05-09 10:37:26', 'Logout'),
+(134, 3, '2026-05-09 10:38:44', '2026-05-09 10:39:45', 'Logout'),
+(135, 1, '2026-05-09 10:54:08', NULL, 'Login'),
+(136, 1, '2026-05-11 11:07:55', NULL, 'failed'),
+(137, 1, '2026-05-11 11:15:30', '2026-05-11 11:15:51', 'Logout'),
+(138, 7, '2026-05-11 11:15:58', '2026-05-11 11:16:07', 'Logout'),
+(139, 2, '2026-05-11 11:16:17', '2026-05-11 11:16:37', 'Logout'),
+(140, 3, '2026-05-11 11:16:42', '2026-05-11 11:16:45', 'Logout'),
+(141, 4, '2026-05-11 11:16:49', '2026-05-11 11:16:51', 'Logout'),
+(142, 5, '2026-05-11 11:17:02', '2026-05-11 11:17:26', 'Logout'),
+(143, 6, '2026-05-11 11:17:31', '2026-05-11 11:24:38', 'Logout'),
+(144, 1, '2026-05-11 11:24:43', '2026-05-11 11:27:20', 'Logout'),
+(145, 3, '2026-05-11 11:27:22', '2026-05-11 11:27:28', 'Logout'),
+(146, 2, '2026-05-11 11:27:33', '2026-05-11 11:34:16', 'Logout'),
+(147, 2, '2026-05-11 11:34:21', '2026-05-11 11:36:22', 'Logout'),
+(148, 5, '2026-05-11 11:36:25', '2026-05-11 11:36:28', 'Logout'),
+(149, 6, '2026-05-11 11:36:35', '2026-05-11 11:37:24', 'Logout'),
+(150, 3, '2026-05-11 11:37:30', '2026-05-11 11:37:39', 'Logout'),
+(151, 6, '2026-05-11 11:37:41', '2026-05-11 11:44:14', 'Logout'),
+(152, 3, '2026-05-11 11:44:19', '2026-05-11 11:44:25', 'Logout'),
+(153, 6, '2026-05-11 11:44:30', '2026-05-11 12:09:45', 'Logout'),
+(154, 1, '2026-05-11 11:49:20', '2026-05-11 12:10:05', 'Logout'),
+(155, 2, '2026-05-11 12:09:48', '2026-05-11 12:23:58', 'Logout'),
+(156, 3, '2026-05-11 12:10:10', NULL, 'failed'),
+(157, 3, '2026-05-11 12:10:13', '2026-05-11 12:10:20', 'Logout'),
+(158, 5, '2026-05-11 12:10:25', '2026-05-11 12:23:59', 'Logout'),
+(159, 3, '2026-05-11 13:16:07', NULL, 'failed'),
+(160, 3, '2026-05-11 13:16:47', '2026-05-11 13:25:57', 'Logout'),
+(161, 1, '2026-05-11 13:19:54', '2026-05-11 13:45:45', 'Logout'),
+(162, 3, '2026-05-11 13:26:40', '2026-05-11 13:35:26', 'Logout'),
+(163, 2, '2026-05-11 13:35:33', '2026-05-11 13:45:43', 'Logout'),
+(164, 1, '2026-05-11 13:55:13', '2026-05-11 16:43:43', 'Logout'),
+(165, 3, '2026-05-11 14:09:22', '2026-05-11 16:22:20', 'Logout'),
+(166, 7, '2026-05-11 16:22:46', '2026-05-11 16:43:50', 'Logout'),
+(167, 1, '2026-05-11 16:43:45', '2026-05-12 01:05:06', 'Logout'),
+(168, 7, '2026-05-11 16:43:53', '2026-05-11 17:19:57', 'Logout'),
+(169, 3, '2026-05-11 18:46:58', '2026-05-11 19:46:24', 'Logout'),
+(170, 2, '2026-05-11 21:28:45', '2026-05-11 21:46:48', 'Logout'),
+(171, 2, '2026-05-11 21:46:51', '2026-05-11 23:03:33', 'Logout'),
+(172, 3, '2026-05-11 23:03:36', '2026-05-11 23:03:58', 'Logout'),
+(173, 2, '2026-05-11 23:04:02', '2026-05-11 23:56:19', 'Logout'),
+(174, 3, '2026-05-11 23:56:24', '2026-05-11 23:56:43', 'Logout'),
+(175, 2, '2026-05-11 23:56:47', '2026-05-11 23:59:35', 'Logout'),
+(176, 3, '2026-05-12 00:05:09', '2026-05-12 00:24:34', 'Logout'),
+(177, 1, '2026-05-12 01:05:08', '2026-05-12 01:11:04', 'Logout'),
+(178, 1, '2026-05-12 01:11:06', '2026-05-12 01:16:26', 'Logout'),
+(179, 1, '2026-05-12 01:16:28', '2026-05-12 01:27:33', 'Logout'),
+(180, 1, '2026-05-12 01:27:35', '2026-05-12 01:27:44', 'Logout'),
+(181, 1, '2026-05-12 01:27:46', NULL, 'failed'),
+(182, 1, '2026-05-12 01:27:49', NULL, 'Login');
 
 -- --------------------------------------------------------
 
@@ -628,7 +779,49 @@ INSERT INTO `notifications` (`N_ID`, `user_id`, `message`, `type`, `ref_id`, `is
 (86, 3, 'Your ticket #37 has been accepted.', 'ticket', 37, 0, '2026-05-06 01:08:17'),
 (87, 2, 'New Assignment: You have been assigned to Ticket #37 (test).', 'assignment', 37, 0, '2026-05-06 01:08:17'),
 (88, 3, 'Your ticket #37 has been resolved.', 'ticket', 37, 0, '2026-05-06 01:08:39'),
-(89, 3, 'ticket #37 has been resolved by Staff', 'ticket', 37, 0, '2026-05-06 01:08:39');
+(89, 3, 'ticket #37 has been resolved by Staff', 'ticket', 37, 0, '2026-05-06 01:08:39'),
+(90, 3, 'ticket #37 has been resolved by Staff', 'ticket', 37, 0, '2026-05-08 13:34:00'),
+(91, 0, 'New Assignment: You have been assigned to Ticket #37 (test).', 'assignment', 37, 0, '2026-05-08 18:21:42'),
+(92, 3, 'Your ticket #37 has been accepted.', 'ticket', 37, 0, '2026-05-11 11:16:20'),
+(93, 2, 'New Assignment: You have been assigned to Ticket #37 (test).', 'assignment', 37, 0, '2026-05-11 11:16:20'),
+(94, 3, 'Your ticket #37 has been resolved.', 'ticket', 37, 0, '2026-05-11 11:16:21'),
+(95, 3, 'ticket #37 has been resolved by Staff', 'ticket', 37, 0, '2026-05-11 11:16:21'),
+(96, 3, 'Your ticket #39 has been accepted.', 'ticket', 39, 0, '2026-05-11 11:37:47'),
+(97, 6, 'New Assignment: You have been assigned to Ticket #39 (test).', 'assignment', 39, 0, '2026-05-11 11:37:47'),
+(98, 3, 'Your ticket #39 has been resolved.', 'ticket', 39, 0, '2026-05-11 11:40:55'),
+(99, 3, 'ticket #39 has been resolved by Staff', 'ticket', 39, 0, '2026-05-11 11:40:55'),
+(100, 3, 'Your ticket #40 has been accepted.', 'ticket', 40, 0, '2026-05-11 11:44:36'),
+(101, 6, 'New Assignment: You have been assigned to Ticket #40 (test).', 'assignment', 40, 0, '2026-05-11 11:44:36'),
+(102, 0, 'New Assignment: You have been assigned to Ticket #40 (test).', 'assignment', 40, 0, '2026-05-11 11:49:34'),
+(103, 3, 'Your ticket #40 has been accepted.', 'ticket', 40, 0, '2026-05-11 11:49:39'),
+(104, 6, 'New Assignment: You have been assigned to Ticket #40 (test).', 'assignment', 40, 0, '2026-05-11 11:49:39'),
+(105, 0, 'New Assignment: You have been assigned to Ticket #40 (test).', 'assignment', 40, 0, '2026-05-11 11:58:00'),
+(106, 3, 'Your ticket #40 has been accepted.', 'ticket', 40, 0, '2026-05-11 11:58:02'),
+(107, 6, 'New Assignment: You have been assigned to Ticket #40 (test).', 'assignment', 40, 0, '2026-05-11 11:58:02'),
+(108, 0, 'New Assignment: You have been assigned to Ticket #40 (test).', 'assignment', 40, 0, '2026-05-11 11:58:18'),
+(109, 3, 'Your ticket #40 has been accepted.', 'ticket', 40, 0, '2026-05-11 11:58:23'),
+(110, 6, 'New Assignment: You have been assigned to Ticket #40 (test).', 'assignment', 40, 0, '2026-05-11 11:58:23'),
+(111, 3, 'Your ticket #40 has been resolved.', 'ticket', 40, 0, '2026-05-11 12:07:37'),
+(112, 3, 'ticket #40 has been resolved by Staff', 'ticket', 40, 0, '2026-05-11 12:07:37'),
+(113, 3, 'Your ticket #41 has been accepted.', 'ticket', 41, 0, '2026-05-11 12:10:36'),
+(114, 2, 'New Assignment: You have been assigned to Ticket #41 (test).', 'assignment', 41, 0, '2026-05-11 12:10:36'),
+(115, 3, 'Your ticket #41 has been resolved.', 'ticket', 41, 0, '2026-05-11 12:23:11'),
+(116, 3, 'ticket #41 has been resolved by Staff', 'ticket', 41, 0, '2026-05-11 12:23:11'),
+(117, 3, 'Your ticket #42 has been accepted.', 'ticket', 42, 0, '2026-05-11 13:38:48'),
+(118, 2, 'New Assignment: You have been assigned to Ticket #42 (test).', 'assignment', 42, 0, '2026-05-11 13:38:48'),
+(119, 5, 'New Assignment: You have been assigned to Ticket #43 (ss).', 'assignment', 43, 0, '2026-05-11 16:26:36'),
+(120, 3, 'ticket #43 has been resolved by Staff', 'ticket', 43, 0, '2026-05-11 16:26:36'),
+(121, 3, 'ticket #43 has been resolved by Staff', 'ticket', 43, 0, '2026-05-11 16:28:10'),
+(122, 3, 'ticket #43 has been resolved by Staff', 'ticket', 43, 0, '2026-05-11 23:03:25'),
+(123, 3, 'ticket #43 has been resolved by Staff', 'ticket', 43, 0, '2026-05-11 23:05:36'),
+(124, 3, 'ticket #43 has been resolved by Staff', 'ticket', 43, 0, '2026-05-11 23:09:21'),
+(125, 3, 'ticket #43 has been resolved by Staff', 'ticket', 43, 0, '2026-05-11 23:09:59'),
+(126, 3, 'Your ticket #44 has been accepted.', 'ticket', 44, 0, '2026-05-11 23:24:04'),
+(127, 2, 'New Assignment: You have been assigned to Ticket #44 ().', 'assignment', 44, 0, '2026-05-11 23:24:04'),
+(128, 3, 'Your ticket #44 has been resolved.', 'ticket', 44, 0, '2026-05-11 23:25:54'),
+(129, 3, 'ticket #44 has been resolved by Staff', 'ticket', 44, 0, '2026-05-11 23:25:54'),
+(130, 3, 'Your ticket #44 has been resolved.', 'ticket', 44, 0, '2026-05-11 23:55:26'),
+(131, 3, 'ticket #44 has been resolved by Staff', 'ticket', 44, 0, '2026-05-11 23:55:26');
 
 -- --------------------------------------------------------
 
@@ -745,7 +938,45 @@ INSERT INTO `notification_dismissals` (`id`, `notification_id`, `user_id`, `dism
 (102, 71, 2, '2026-05-05 16:44:20'),
 (103, 75, 2, '2026-05-05 16:44:20'),
 (104, 79, 2, '2026-05-05 16:44:20'),
-(105, 82, 2, '2026-05-05 16:44:20');
+(105, 82, 2, '2026-05-05 16:44:20'),
+(106, 87, 2, '2026-05-08 05:45:20'),
+(107, 115, 3, '2026-05-11 05:17:05'),
+(108, 62, 3, '2026-05-11 05:17:07'),
+(109, 64, 3, '2026-05-11 05:17:07'),
+(110, 65, 3, '2026-05-11 05:17:07'),
+(111, 66, 3, '2026-05-11 05:17:07'),
+(112, 68, 3, '2026-05-11 05:17:07'),
+(113, 69, 3, '2026-05-11 05:17:07'),
+(114, 70, 3, '2026-05-11 05:17:07'),
+(115, 72, 3, '2026-05-11 05:17:07'),
+(116, 73, 3, '2026-05-11 05:17:07'),
+(117, 74, 3, '2026-05-11 05:17:07'),
+(118, 76, 3, '2026-05-11 05:17:07'),
+(119, 77, 3, '2026-05-11 05:17:07'),
+(120, 78, 3, '2026-05-11 05:17:07'),
+(121, 80, 3, '2026-05-11 05:17:07'),
+(122, 81, 3, '2026-05-11 05:17:07'),
+(123, 83, 3, '2026-05-11 05:17:07'),
+(124, 84, 3, '2026-05-11 05:17:07'),
+(125, 85, 3, '2026-05-11 05:17:07'),
+(126, 86, 3, '2026-05-11 05:17:07'),
+(127, 88, 3, '2026-05-11 05:17:07'),
+(128, 89, 3, '2026-05-11 05:17:07'),
+(129, 90, 3, '2026-05-11 05:17:07'),
+(130, 92, 3, '2026-05-11 05:17:07'),
+(131, 94, 3, '2026-05-11 05:17:07'),
+(132, 95, 3, '2026-05-11 05:17:07'),
+(133, 96, 3, '2026-05-11 05:17:07'),
+(134, 98, 3, '2026-05-11 05:17:07'),
+(135, 99, 3, '2026-05-11 05:17:07'),
+(136, 100, 3, '2026-05-11 05:17:07'),
+(137, 103, 3, '2026-05-11 05:17:07'),
+(138, 106, 3, '2026-05-11 05:17:07'),
+(139, 109, 3, '2026-05-11 05:17:07'),
+(140, 111, 3, '2026-05-11 05:17:07'),
+(141, 112, 3, '2026-05-11 05:17:07'),
+(142, 113, 3, '2026-05-11 05:17:07'),
+(143, 116, 3, '2026-05-11 05:17:07');
 
 --
 -- Indexes for dumped tables
@@ -794,13 +1025,13 @@ ALTER TABLE `notification_dismissals`
 -- AUTO_INCREMENT for table `act_logs`
 --
 ALTER TABLE `act_logs`
-  MODIFY `A_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=316;
+  MODIFY `A_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=404;
 
 --
 -- AUTO_INCREMENT for table `login_logs`
 --
 ALTER TABLE `login_logs`
-  MODIFY `L_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=120;
+  MODIFY `L_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=183;
 
 --
 -- AUTO_INCREMENT for table `maintenance`
@@ -812,13 +1043,13 @@ ALTER TABLE `maintenance`
 -- AUTO_INCREMENT for table `notifications`
 --
 ALTER TABLE `notifications`
-  MODIFY `N_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=90;
+  MODIFY `N_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=132;
 
 --
 -- AUTO_INCREMENT for table `notification_dismissals`
 --
 ALTER TABLE `notification_dismissals`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=106;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=171;
 
 --
 -- Constraints for dumped tables

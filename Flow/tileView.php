@@ -59,24 +59,26 @@ if (isset($_GET['ajax']) && $_GET['ajax'] === 'view') {
 </head>
 
 <body>
+    <div class="ball"></div>
 
     <?php include '../Modules/header.php' ?>
 
     <div class="container">
         <?php include '../Modules/sidebar.php' ?>
 
-        <?php        
-            if ($isEditMode) {
-                include '../Modules/edit.php';
-            } else {
-                include '../Modules/view.php';
-            }
+        <?php
+        if ($isEditMode) {
+            include '../Modules/edit.php';
+        } else {
+            include '../Modules/view.php';
+        }
         ?>
 
     </div>
 
     <script src="../Assets/JS/sidebar.js"></script>
     <script src="../Assets/JS/edit.js"></script>
+    <script src="../Assets/JS/background.js"></script>
 
     <script> // I put it here cuz it has php codes -Nathan
 
@@ -136,13 +138,14 @@ if (isset($_GET['ajax']) && $_GET['ajax'] === 'view') {
         function startTileRefresh() {
 
             if (IS_EDIT_MODE) return;
-
             const id = <?= json_encode($id) ?>;
             const mode = "<?= $mode ?>";
+            const urlParams = new URLSearchParams(window.location.search);
+            const from = urlParams.get('from') || '';
 
             refreshInterval = setInterval(() => {
-                fetch(`tileView.php?id=${id}&mode=${mode}&ajax=view`)
-                    .then(res => res.text()) 
+                fetch(`tileView.php?id=${id}&mode=${mode}&from=${from}&ajax=view`)
+                    .then(res => res.text())
                     .then(html => {
                         const parser = new DOMParser();
                         const doc = parser.parseFromString(html, 'text/html');
@@ -155,14 +158,41 @@ if (isset($_GET['ajax']) && $_GET['ajax'] === 'view') {
                         }
                     })
                     .catch(err => console.error("Tile refresh error:", err));
-            }, 5000);
+            }, 1000);
         }
 
-        window.onpopstate = function() {
-            stopTileRefresh();
-        };
+        function stopRefresh() {
+            clearInterval(refreshInterval);
+        }
 
         startTileRefresh();
+
+        async function openCommentModal() {
+            const { value: text } = await Swal.fire({
+                title: 'Add a Comment',
+                input: 'textarea',
+                inputLabel: 'Message',
+                inputPlaceholder: 'Type your comment here...',
+                inputAttributes: { 'aria-label': 'Type your comment here' },
+                showCancelButton: true,
+                confirmButtonColor: '#28ba1b'
+            });
+
+            if (text) {
+                // Send to your PHP action handler
+                post('../Config/updateAction.php', {
+                    action: 'add_comment',
+                    ticket_id: '<?= $id ?>',
+                    comment: text
+                }).then(res => {
+                    if (res.includes('success')) {
+                        Swal.fire('Saved', '', 'success').then(() => location.reload());
+                    } else {
+                        Swal.fire('Error', res, 'error');
+                    }
+                });
+            }
+        }
 
     </script>
 </body>

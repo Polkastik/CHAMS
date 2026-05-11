@@ -45,8 +45,7 @@ if (isset($_GET['ajax']) && $_GET['ajax'] === 'list') {
     <link rel="stylesheet" type="text/css" href="../Assets/CSS/filter.css">
 </head>
 
-<body>
-
+<body id="altBody">
     <!-- Header -->
     <?php include '../Modules/header.php' ?>
 
@@ -55,6 +54,7 @@ if (isset($_GET['ajax']) && $_GET['ajax'] === 'list') {
         <?php include '../Modules/sidebar.php' ?>
 
         <div class="content">
+            <div id="pageHeadText">
             <div class="page-header">
                 <?php if ($viewMode === 'items'): ?>
                     <div onclick="history.back()">
@@ -62,11 +62,11 @@ if (isset($_GET['ajax']) && $_GET['ajax'] === 'list') {
                         INVENTORY: <?= htmlspecialchars(strtoupper($currentCatName)) ?>
                     </div>
                     <?php if ($role === 1): ?>
-                    <div class="plus-icon">
-                        <div class="plus-icon-item" onclick="window.location.href='createItem.php'">
-                            <i class="fas fa-plus"></i>
+                        <div class="plus-icon">
+                            <div class="plus-icon-item" onclick="window.location.href='createItem.php'">
+                                <i class="fas fa-plus"></i>
+                            </div>
                         </div>
-                    </div>
                     <?php endif; ?>
                 <?php else: ?>
                     <div onclick="history.back()">
@@ -74,12 +74,12 @@ if (isset($_GET['ajax']) && $_GET['ajax'] === 'list') {
                         INVENTORY CATEGORIES
                     </div>
                     <?php if ($role === 1): ?>
-                    <div class="plus-icon">
-                        <div class="plus-icon-item" onclick="document.getElementById('catModal').style.display='flex'"
-                        title="Add Category">
-                            <i class="fas fa-folder-plus"></i>
+                        <div class="plus-icon">
+                            <div class="plus-icon-item" onclick="document.getElementById('catModal').style.display='flex'"
+                                title="Add Category">
+                                <i class="fas fa-folder-plus"></i>
+                            </div>
                         </div>
-                    </div>
                     <?php endif; ?>
                 <?php endif; ?>
             </div>
@@ -88,8 +88,8 @@ if (isset($_GET['ajax']) && $_GET['ajax'] === 'list') {
             <div id="catModal" class="modal-overlay">
                 <div class="modal-content">
                     <div class="modal-header">
-                            <i class="fas fa-folder-plus"></i>
-                            <h3>Create New Category</h3>
+                        <i class="fas fa-folder-plus"></i>
+                        <h3>Create New Category</h3>
                     </div>
                     <form action="../Config/updateAction.php" method="POST">
                         <input type="hidden" name="action" value="create_category">
@@ -114,12 +114,11 @@ if (isset($_GET['ajax']) && $_GET['ajax'] === 'list') {
             </div>
             <?php include '../Modules/tileBox.php'; ?>
         </div>
-
+    </div>
     </div>
     <script src="../Assets/JS/sidebar.js"></script>
     <script src="../Assets/JS/inventory.js"></script>
     <script src="../Assets/JS/filter.js"></script>
-
 </body>
 
 </html>

@@ -38,6 +38,14 @@ const FilterUI = {
             });
         document.querySelectorAll(`#${id}FilterOverlay .cal-date`)
             .forEach(el => el.classList.remove("selected"));
+        const url = new URL(window.location.href);
+        
+        const keysToRemove = ['status', 'priority', 'overdue', 'unassigned', 'date', 'department', 'name', 'type'];
+        keysToRemove.forEach(key => url.searchParams.delete(key));
+        
+        url.searchParams.delete('ajax');
+
+        window.history.pushState({ path: url.href }, '', url.href);
 
         this.close(id);
         if (typeof startRefresh === 'function') startRefresh();
@@ -297,6 +305,8 @@ const FilterUI = {
 };
 
 function toggleInventorySelect(element) {
+    if (event) event.stopPropagation();
+
     document.querySelectorAll('.custom-filter, .custom-select').forEach(sel => {
         if (sel !== element) sel.classList.remove('active');
     });
@@ -309,7 +319,7 @@ window.addEventListener('click', function (e) {
     }
 });
 
-function bulkAction(actionType) {
+async function bulkAction(actionType) {
     const selectedCheckboxes = document.querySelectorAll('.ticket-checkbox:checked');
     const selectedIds = Array.from(selectedCheckboxes).map(cb => cb.value);
 
@@ -318,53 +328,63 @@ function bulkAction(actionType) {
         return;
     }
 
-    Swal.fire({
-        title: `Confirm ${actionType}?`,
-        text: `You are about to ${actionType} ${selectedIds.length} tickets.`,
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonText: 'Yes, proceed'
-    }).then((result) => {
-        if (result.isConfirmed) {
-            if (!result.isConfirmed) return;
+    let adminPassword = null;
+    if (actionType === 'delete') {
+        const { value: password } = await Swal.fire({
+            title: 'Confirm Admin Password',
+            input: 'password',
+            inputLabel: 'This action is permanent. Enter password to proceed:',
+            inputPlaceholder: 'Enter your password',
+            showCancelButton: true,
+            inputAttributes: {
+                autocapitalize: 'off',
+                autocorrect: 'off'
+            }
+        });
 
-            post('../Config/ticketAction.php', {
-                action: 'bulk_' + actionType,
-                ids: JSON.stringify(selectedIds)
-            })
-                .then(data => {
-                    const isSuccess = typeof data === 'string'
-                        ? data.toLowerCase().includes('success')
-                        : data.status === 'success';
+        if (!password) return;
+        adminPassword = password;
+    }
+        
+    post('../Config/ticketAction.php', {
+        action: 'bulk_' + actionType,
+        ids: JSON.stringify(selectedIds),
+        confirm_password: adminPassword
+    })
+        .then(data => {
+            console.log("Server Response:", data);
 
-                    if (!isSuccess) {
-                        Swal.fire('Error', 'Bulk action failed.', 'error');
-                        return;
-                    }
+            const responseString = typeof data === 'string' ? data : JSON.stringify(data);
+            const isSuccess = responseString.toLowerCase().includes('success');
+            
+            if (!isSuccess) {
+                Swal.fire('Error', 'Message: ' + responseString, 'error');
+                return;
+            }
 
-                    Swal.fire('Success!', 'Action Completed.', 'success');
+            Swal.fire('Success!', 'Action Completed.', 'success');
 
-                    selectedCheckboxes.forEach(cb => {
-                        cb.checked = false; 
-                        const row = cb.closest('tr');
-                        if (row) row.remove();
-                    });
+            selectedCheckboxes.forEach(cb => {
+                cb.checked = false;
+                const row = cb.closest('tr');
+                if (row) row.remove();
+            });
 
-                    const selectAllBox = document.querySelector('input[type="checkbox"][onclick*="toggleSelectAll"]');
-                    if (selectAllBox) selectAllBox.checked = false;
-                    
-                    refreshTicketList();
+            const selectAllBox = document.querySelector('input[type="checkbox"][onclick*="toggleSelectAll"]');
+            if (selectAllBox) selectAllBox.checked = false;
 
-                    checkSelection();
-                })
+            refreshTicketList();
 
-                .catch(err => {
-                    console.error("Bulk Action Error:", err);
-                    Swal.fire('Error', 'Something went wrong.', 'error');
-                });
-        }
-    });
+            checkSelection();
+        })
+
+        .catch(err => {
+            console.error("Full Error Response:", err);
+            Swal.fire('Error', 'Server said: ' + err, 'error');
+        });
+
 }
+
 
 function checkSelection() {
     const checkedCount = document.querySelectorAll('.ticket-checkbox:checked').length;
@@ -393,77 +413,6 @@ function toggleSelectAll(source) {
     checkSelection();
 }
 
-const initializeSummaryFilters = () => {
-    const urlParams = new URLSearchParams(window.location.search);
-    const id = 'ticketing'; // default
-
-    let hasDashboardFilter = false;
-
-    if (urlParams.has('status')) {
-
-        const status = urlParams.get('status');
-
-        const statusLabel = document.getElementById(`${id}-status`);
-
-        if (statusLabel) {
-            statusLabel.innerText = status;
-        }
-
-        hasDashboardFilter = true;
-    }
-
-    if (urlParams.has('priority')) {
-
-        const priority = urlParams.get('priority');
-
-        const priorityLabel = document.getElementById(`${id}-priority`);
-
-        if (priorityLabel) {
-            priorityLabel.innerText = priority;
-        }
-
-        const statusLabel = document.getElementById(`${id}-status`);
-
-            if (statusLabel) {
-                statusLabel.innerText = 'Unresolved';
-            }
-
-        hasDashboardFilter = true;
-    }
-
-    if (urlParams.has('overdue')) {
-
-        const overdue = urlParams.get('overdue');
-
-        if (overdue === '1') {
-
-            const statusLabel = document.getElementById(`${id}-status`);
-
-            if (statusLabel) {
-                statusLabel.innerText = 'Unresolved';
-            }
-
-            hasDashboardFilter = true;
-        }
-    }
-
-    if (urlParams.has('unassigned')) {
-        const statusLabel = document.getElementById(`${id}-status`);
-
-            if (statusLabel) {
-                statusLabel.innerText = 'Unresolved';
-            }
-
-        hasDashboardFilter = true;
-    }
-
-    if (hasDashboardFilter) {
-        FilterUI.apply(id);
-    }
-};
-
-document.addEventListener('DOMContentLoaded', initializeSummaryFilters);
-
 window.addEventListener('click', function (event) {
     if (event.target.classList.contains('inventory-filter-overlay')) {
         const id = event.target.id.replace("FilterOverlay", "");
@@ -482,11 +431,11 @@ window.addEventListener('click', function (event) {
     }
 });
 
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     const urlParams = new URLSearchParams(window.location.search);
-    
+
     const summaryKeys = ['status', 'unassigned', 'overdue', 'priority'];
-    
+
     const hasFilter = summaryKeys.some(key => urlParams.has(key));
 
     if (hasFilter) {

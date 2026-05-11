@@ -1,11 +1,14 @@
 <?php
 session_start();
+ob_clean();
 require_once '../Config/auth.php';
 require_once '../Config/queryHandler.php';
 $q = new QueryHandler();
 
 $user = $q->getUserByEmpId($uid);
 $stats = $q->getDashboardStats();
+$firstName = $user['FN'] ?? ''; 
+$lastName = $user['LN'] ?? '';
 ?>
 
 <!DOCTYPE html>
@@ -27,7 +30,7 @@ $stats = $q->getDashboardStats();
     <div class="container">
         <?php include '../Modules/sidebar.php' ?>
 
-
+    <!-- Overlays -->
         <div id="bugOverlay">
             <div class="bug-container">
                 <div class="bug-close" onclick="closeBugReport()">×</div>
@@ -44,6 +47,7 @@ $stats = $q->getDashboardStats();
             </div>
         </div>
 
+        <!-- setting start -->
         <div class="content">
             <div class="page-header" onclick="window.location.href='dashboard.php'">
                 <i class="fa-solid fa-chevron-left"></i> SETTINGS
@@ -59,7 +63,7 @@ $stats = $q->getDashboardStats();
 
                     <div class="action-container">
                         <?php if ($role === 2): ?>
-                        <div class="profile-btn" onclick="window.location.href='profile.php'">
+                            <div class="profile-btn" onclick="window.location.href='profile.php'">
 
                                 <i class="fas fa-user-circle"></i>
                                 <span>Account Profile</span>
@@ -68,7 +72,17 @@ $stats = $q->getDashboardStats();
                             </div>
                         <?php endif; ?>
 
+                        <div class="profile-btn" onclick="openEditName()">
+                            <i class="fas fa-edit"></i>
+                            <span>Change Display Name</span>
+                            <i class="fas fa-chevron-right" style="margin-left: auto; font-size: 0.8rem; opacity: 0.5;"></i>
+                        </div>
 
+                        <div class="profile-btn" onclick="openChangePassword()">
+                            <i class="fas fa-lock"></i>
+                            <span>Security & Password</span>
+                            <i class="fas fa-chevron-right" style="margin-left: auto; font-size: 0.8rem; opacity: 0.5;"></i>
+                        </div>
                         <div class="profile-btn" onclick="window.location.href='faqs.php'">
                             <i class="fas fa-question-circle"></i>
                             <span>Frequently Asked Questions</span>

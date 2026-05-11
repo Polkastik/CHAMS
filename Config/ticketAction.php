@@ -1,4 +1,5 @@
 <?php
+session_start();
 require_once '../Config/db.php';
 require_once '../Config/queryHandler.php';
 
@@ -20,6 +21,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     try {
 
         if ($action === 'bulk_delete') {
+            $password = $_POST['confirm_password'] ?? '';
+            $stmt = $q->usersDB->prepare("SELECT pass_hash FROM users WHERE U_ID = ?");
+            $stmt->execute([$_SESSION['user_id']]);
+            $admin = $stmt->fetch();
+
+            if (!$admin || !password_verify($password, $admin['pass_hash'])) {
+                echo "Error: Unauthorized. Incorrect password.";
+                exit;
+            }
 
             $placeholders = implode(',', array_fill(0, count($ids), '?'));
 

@@ -30,6 +30,26 @@ $allowedPriority = ['Low', 'Medium', 'High', 'N/A'];
 $allowedStatus = ['Scheduled', 'Ongoing', 'Resolved', null];
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // Comments
+    if (isset($_POST['action']) && $_POST['action'] === 'add_comment') {
+        $ticketId = toInt($_POST['ticket_id']);
+        $commentText = $_POST['comment'];
+        $userId = $_SESSION['user_id'];
+
+        if (!$ticketId || empty($commentText)) {
+            echo "Error: Invalid data provided.";
+            exit;
+        }
+
+        if ($q->addTicketComment($ticketId, $userId, $commentText)) {
+            $q->logActivity($userId, "Added a comment to Ticket #$ticketId", $ticketId, 'Ticketing');
+            echo "success";
+        } else {
+            echo "Error: Database insertion failed.";
+        }
+        exit;
+    }
+
     // Determine if we are updating a category or a record first
     if (isset($_POST['action']) && $_POST['action'] === 'create_category') {
         $name = $_POST['cat_name'];
@@ -123,9 +143,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $current = $q->getMaintenanceById($id);
 
         $asset = $_POST['asset_name'] ?? $current['Asset_name'];
-        $dept  = $_POST['Dept_ID'] ?? $current['Dept_ID'];
-        $type  = $_POST['m_type'] ?? $current['M_type'];
-        $desc  = $_POST['description'] ?? $current['desc'];
+        $dept = $_POST['Dept_ID'] ?? $current['Dept_ID'];
+        $type = $_POST['m_type'] ?? $current['M_type'];
+        $desc = $_POST['description'] ?? $current['desc'];
         $priority = $_POST['priority'] ?? $current['Priority'];
         $status = $_POST['status'] ?? $current['Status'];
         $interval = $_POST['interval'] ?? null;
@@ -177,8 +197,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                 $current = $q->getMaintenanceById($id);
 
-                $baseDate = !empty($current['next_m']) 
-                    ? strtotime($current['next_m']) 
+                $baseDate = !empty($current['next_m'])
+                    ? strtotime($current['next_m'])
                     : time();
 
                 $nextDate = date('Y-m-d H:i:s', strtotime($interval, $baseDate));
@@ -190,7 +210,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     $current['M_type'],
                     $current['desc'],
                     $current['Priority'],
-                    'Resolved', 
+                    'Resolved',
                     $nextDate
                 );
 
@@ -294,6 +314,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         switch ($_POST['action']) {
             case 'accept':
+                if (!empty($current['Assigned_To'])) {
+                    header("Location: ../Flow/tileView.php?id=$id&mode=ticketing&error=already_assigned");
+                    exit;
+                }
+
                 $status = 'Ongoing';
                 $staff_id = $_SESSION['user_id'];
                 $q->logActivity($_SESSION['user_id'], "Accepted Ticket: " . $title, $id, 'Ticketing');
@@ -302,6 +327,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 break;
 
             case 'resolve':
+                if ($current['Assigned_To'] != $_SESSION['user_id']) {
+                    header("Location: ../Flow/tileView.php?id=$id&mode=ticketing&error=unauthorized_tech");
+                    exit;
+                }
                 $status = 'Resolved';
 
                 $q->logActivity($_SESSION['user_id'], "Resolved Ticket: " . $title, $id, 'Ticketing');
@@ -419,9 +448,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $changes[] = "Assigned to $staffName.";
 
             $q->createNotification(
-                $staff_id, 
-                "New Assignment: You have been assigned to Ticket #$id (" . htmlspecialchars($title) . ").", 
-                "assignment", 
+                $staff_id,
+                "New Assignment: You have been assigned to Ticket #$id (" . htmlspecialchars($title) . ").",
+                "assignment",
                 $id
             );
         }

@@ -12,9 +12,34 @@ window.addEventListener('click', function (e) {
 });
 
 function confirmDelete(ticketNum) {
-    if (confirm("WARNING: This will permanently remove Ticket #" + ticketNum + ". This action cannot be undone. Proceed?")) {
-        
-        window.location.href = "../Config/deleteTicket.php?tnum=" + encodeURIComponent(ticketNum);
+    const { value: password } = await Swal.fire({
+        title: 'Delete Ticket #' + ticketNum + '?',
+        text: "This action cannot be undone!",
+        icon: 'warning',
+        input: 'password',
+        inputLabel: 'Enter Admin Password to confirm:',
+        showCancelButton: true,
+        confirmButtonColor: '#d33',
+        confirmButtonText: 'Yes, Delete it!'
+    });
+
+    if (password) {
+        const form = document.createElement('form');
+        form.method = 'POST';
+        form.action = '../Config/deleteTicket.php';
+
+        const tnumInput = document.createElement('input');
+        tnumInput.name = 'tnum';
+        tnumInput.value = ticketNum;
+        form.appendChild(tnumInput);
+
+        const passInput = document.createElement('input');
+        passInput.name = 'confirm_password';
+        passInput.value = password;
+        form.appendChild(passInput);
+
+        document.body.appendChild(form);
+        form.submit();
     }
 }
 

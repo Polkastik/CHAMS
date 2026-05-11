@@ -6,12 +6,11 @@ $q = new QueryHandler();
 $message = "";
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $title = trim($_POST['title'] ?? "");
     $desc = trim($_POST['description'] ?? "");
     $categ = $_POST['type'] ?? "";
     $attachmentName = null;
 
-    if (empty($title) || empty($desc) || empty($categ)) {
+    if (empty($desc) || empty($categ)) {
         $message = "All required fields must be filled out.";
     } else {
         if (isset($_FILES['attachment']) && $_FILES['attachment']['error'] === 0) {
@@ -30,7 +29,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             }
         }
 
-        $ticketNum = $q->createTicket($title, $desc, $uid, $dept, $categ, $attachmentName);
+        $ticketNum = $q->createTicket($desc, $uid, $dept, $categ, $attachmentName);
 
         if ($ticketNum) {
             header("Location: dashboard.php?success=1");
@@ -54,6 +53,7 @@ $stats = $q->getDashboardStats();
 </head>
 
 <body>
+    <div class="ball"></div>
     <!-- Header -->
     <?php include '../Modules/header.php' ?>
 
@@ -67,10 +67,10 @@ $stats = $q->getDashboardStats();
             </div>
             <div class="form-container">
                 <form id="ticketForm" method="POST" enctype="multipart/form-data">
-                    <div class="form-group">
+                    <!-- <div class="form-group">
                         <label for="title">Subject / Title</label>
                         <input type="text" id="title" name="title" placeholder="e.g., Printer not working" required>
-                    </div>
+                    </div> -->
 
                     <div class="form-group">
                         <label for="type">Category</label>
@@ -93,7 +93,7 @@ $stats = $q->getDashboardStats();
                     </div>
 
                     <div class="form-group attachment">
-                        <label for="attachment">Attachment (Optional - Images Only)</label>
+                        <label for="attachment">Image Attachment: (MAXIMUM OF 5MB) </label>
                         <input type="file" name="attachment" id="attachment" accept="image/*">
                     </div>
 
@@ -108,6 +108,7 @@ $stats = $q->getDashboardStats();
 
         <script src="../Assets/JS/sidebar.js"></script>
         <script src="../Assets/JS/createTicket.js"></script>
+        <script src="../Assets/JS/background.js"></script>
 </body>
 
 </html>

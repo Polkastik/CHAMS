@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 06, 2026 at 03:42 PM
+-- Generation Time: May 11, 2026 at 07:34 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -77,14 +77,19 @@ INSERT INTO `tickets` (`T_ID`, `ticket_num`, `Title`, `T_description`, `attachme
 (25, 'TICKET-C127A8', 'das', 'das', NULL, 2, 'Unlabeled', 'Resolved', 4, 2, 2, NULL, 1, '2026-04-28 20:53:02', NULL, '2026-04-30 16:38:02', '2026-04-28 20:58:49'),
 (28, 'TICKET-F1127E', 'asd', 'asd', NULL, 4, 'Unlabeled', 'Resolved', 3, 2, 4, NULL, 1, '2026-04-30 13:18:45', NULL, '2026-04-30 16:32:39', '2026-04-30 16:32:39'),
 (29, 'TICKET-43F9A5', 'test dash', 'test dash', NULL, 5, 'Unlabeled', 'Resolved', 4, 2, 2, NULL, 1, '2026-04-30 13:45:02', NULL, '2026-04-30 16:33:00', '2026-04-30 16:33:00'),
-(30, 'TICKET-133AE7', 'ASD', 'ASD', NULL, 4, 'Unlabeled', 'Unresolved', 3, 2, 4, NULL, 1, '2026-04-30 18:56:17', NULL, '2026-04-30 19:02:55', NULL),
+(30, 'TICKET-133AE7', 'ASD', 'ASD', NULL, 4, 'Unlabeled', 'Resolved', 3, 2, 4, NULL, 1, '2026-04-30 18:56:17', NULL, '2026-04-30 19:02:55', '2026-05-08 22:21:58'),
 (31, 'TICKET-D03FC5', 'sad', 'asd', NULL, 5, 'Unlabeled', 'Resolved', 3, 2, 4, NULL, 1, '2026-04-30 19:05:14', NULL, '2026-04-30 19:30:40', '2026-04-30 19:30:40'),
 (32, 'TICKET-8D41FF', 'testimh', 'test img', 'CHAMS_69f33780eb817.jpg', 1, 'Unlabeled', 'Resolved', 3, 2, 4, NULL, 1, '2026-04-30 19:05:36', NULL, '2026-04-30 19:31:48', '2026-04-30 19:31:48'),
 (33, 'TICKET-C16975', 'asd', 'asd', NULL, 4, 'Unlabeled', 'Resolved', 3, 2, 4, NULL, 1, '2026-04-30 19:08:03', NULL, '2026-04-30 19:30:47', '2026-04-30 19:30:47'),
 (34, 'TICKET-53FBE7', 'asd', 'asd', NULL, 4, 'Unlabeled', 'Resolved', 3, 2, 4, NULL, 1, '2026-04-30 19:12:20', NULL, '2026-04-30 19:22:32', '2026-04-30 19:22:32'),
 (35, 'TICKET-56BE6E', 'asd', 'asd', NULL, 5, 'Unlabeled', 'Resolved', 3, 2, 4, NULL, 1, '2026-04-30 19:22:42', NULL, '2026-05-01 23:55:49', '2026-05-01 23:55:49'),
-(36, 'TICKET-A495D9', 'asd', 'asd', NULL, 5, 'Unlabeled', 'Resolved', 3, 2, 4, NULL, 1, '2026-04-30 19:29:08', NULL, '2026-05-06 00:43:57', '2026-05-06 00:43:57'),
-(37, 'TICKET-6DA9CC', 'test', 'test', NULL, 4, 'Unlabeled', 'Resolved', 3, 2, 4, NULL, 1, '2026-05-05 19:28:00', NULL, '2026-05-06 01:08:39', '2026-05-06 01:08:39');
+(36, 'TICKET-A495D9', 'asd', 'asd', NULL, 5, 'High', 'Resolved', 3, 2, 4, NULL, 1, '2026-04-30 19:29:08', '2026-05-07 22:10:00', '2026-05-08 22:17:41', '2026-05-08 22:17:46'),
+(37, 'TICKET-6DA9CC', 'test', 'test', NULL, 4, 'High', 'Resolved', 3, 2, 4, NULL, 1, '2026-05-05 19:28:00', '2026-05-07 18:54:00', '2026-05-11 11:16:21', '2026-05-11 11:16:21'),
+(39, 'TICKET-4BF79F', 'test', 'test', NULL, 4, 'Unlabeled', 'Resolved', 3, 6, 4, NULL, 1, '2026-05-11 11:37:36', NULL, '2026-05-11 11:40:55', '2026-05-11 11:40:55'),
+(40, 'TICKET-0F675C', 'test', 'test', NULL, 4, 'Unlabeled', 'Resolved', 3, 6, 4, NULL, 1, '2026-05-11 11:44:23', NULL, '2026-05-11 12:07:37', '2026-05-11 12:07:37'),
+(43, 'TICKET-D8AB38', 'ss', 'ss', NULL, 4, 'High', 'Resolved', 3, 5, 4, 6, 200, '2026-05-11 14:09:31', '2026-05-11 23:15:00', '2026-05-11 23:09:59', '2026-05-11 23:09:59'),
+(44, 'TICKET-B7D3BC', '', '20 005', NULL, 5, 'Unlabeled', 'Resolved', 3, 2, 4, 6, 300, '2026-05-11 23:03:48', NULL, '2026-05-11 23:55:26', '2026-05-11 23:55:26'),
+(45, 'TICKET-22654F', '', 'test', NULL, 4, 'Unlabeled', 'Unresolved', 3, NULL, 4, NULL, 0, '2026-05-12 00:05:14', NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -114,17 +119,24 @@ INSERT INTO `ticket_categories` (`TC_ID`, `categ_name`, `created_at`, `updated_a
 -- --------------------------------------------------------
 
 --
--- Table structure for table `ticket_updates`
+-- Table structure for table `ticket_comments`
 --
 
-CREATE TABLE `ticket_updates` (
-  `TU_ID` int(11) NOT NULL,
-  `T_ID` int(11) NOT NULL,
-  `U_ID` int(11) NOT NULL,
-  `comment` text NOT NULL,
-  `stat_change` varchar(50) NOT NULL,
-  `created_at` datetime NOT NULL
+CREATE TABLE `ticket_comments` (
+  `id` int(11) NOT NULL,
+  `T_ID` int(11) DEFAULT NULL,
+  `U_ID` int(11) DEFAULT NULL,
+  `comment_text` text DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `ticket_comments`
+--
+
+INSERT INTO `ticket_comments` (`id`, `T_ID`, `U_ID`, `comment_text`, `created_at`) VALUES
+(1, 44, 2, 'test', '2026-05-11 15:47:08'),
+(2, 37, 2, 'test2', '2026-05-11 15:54:34');
 
 --
 -- Indexes for dumped tables
@@ -150,12 +162,11 @@ ALTER TABLE `ticket_categories`
   ADD KEY `created_by` (`created_by`);
 
 --
--- Indexes for table `ticket_updates`
+-- Indexes for table `ticket_comments`
 --
-ALTER TABLE `ticket_updates`
-  ADD PRIMARY KEY (`TU_ID`),
-  ADD KEY `T_ID` (`T_ID`),
-  ADD KEY `U_ID` (`U_ID`);
+ALTER TABLE `ticket_comments`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `T_ID` (`T_ID`);
 
 --
 -- AUTO_INCREMENT for dumped tables
@@ -165,7 +176,7 @@ ALTER TABLE `ticket_updates`
 -- AUTO_INCREMENT for table `tickets`
 --
 ALTER TABLE `tickets`
-  MODIFY `T_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=38;
+  MODIFY `T_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=46;
 
 --
 -- AUTO_INCREMENT for table `ticket_categories`
@@ -174,10 +185,10 @@ ALTER TABLE `ticket_categories`
   MODIFY `TC_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
--- AUTO_INCREMENT for table `ticket_updates`
+-- AUTO_INCREMENT for table `ticket_comments`
 --
-ALTER TABLE `ticket_updates`
-  MODIFY `TU_ID` int(11) NOT NULL AUTO_INCREMENT;
+ALTER TABLE `ticket_comments`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- Constraints for dumped tables
@@ -200,11 +211,10 @@ ALTER TABLE `ticket_categories`
   ADD CONSTRAINT `ticket_categories_ibfk_1` FOREIGN KEY (`created_by`) REFERENCES `chams_users`.`users` (`U_ID`);
 
 --
--- Constraints for table `ticket_updates`
+-- Constraints for table `ticket_comments`
 --
-ALTER TABLE `ticket_updates`
-  ADD CONSTRAINT `ticket_updates_ibfk_1` FOREIGN KEY (`T_ID`) REFERENCES `tickets` (`T_ID`),
-  ADD CONSTRAINT `ticket_updates_ibfk_2` FOREIGN KEY (`U_ID`) REFERENCES `chams_users`.`users` (`U_ID`);
+ALTER TABLE `ticket_comments`
+  ADD CONSTRAINT `ticket_comments_ibfk_1` FOREIGN KEY (`T_ID`) REFERENCES `tickets` (`T_ID`) ON DELETE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

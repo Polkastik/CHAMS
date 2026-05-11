@@ -21,6 +21,14 @@ if ($mode === 'inventory') {
         $defects = 'good';
     }
 }
+
+$from = $_GET['from'] ?? '';
+
+if ($from === 'inventory') {
+    $backPath = "window.location.href='inventoryTracker.php'";
+} else {
+    $backPath = "window.location.href='ticket.php'";
+}
 ?>
 
 <div class="content">
@@ -74,7 +82,7 @@ if ($mode === 'inventory') {
             <div class="status-row">
                 <span class="status-label">Status:</span>
                 <span
-                    class="badge Status <?= strtolower($data['Status']) ?>"><?= htmlspecialchars($data['Status'] ?? 'N/A') ?></span>
+                    class="badge Status <?= strtolower($data['Status']) ?>"><?= htmlspecialchars(strtoupper($displayStatus)) ?></span>
             </div>
         </div>
 
@@ -149,10 +157,11 @@ if ($mode === 'inventory') {
             </div>
         </div>
 
-        <div class="status-section">
+        <div class="status-section" id="pageHeadText">
             <div class="status-row">
                 <span class="status-label">Serial No.:</span>
-                <span class="badge assigned"><?= (!empty($data['Serial_number'])) ? htmlspecialchars($data['Serial_number']) : 'N/A' ?></span>
+                <span
+                    class="badge assigned"><?= (!empty($data['Serial_number'])) ? htmlspecialchars($data['Serial_number']) : 'N/A' ?></span>
             </div>
             <div class="status-row">
                 <span class="status-label">Quantity:</span>
@@ -167,7 +176,7 @@ if ($mode === 'inventory') {
             </div>
         </div>
 
-        <div class="actions">
+        <div class="actions" id="pageHeadText">
             <?php if ($data['Quantity'] != 0 && $role === 1): ?>
                 <a href="../Flow/tileView.php?id=<?= $id ?>&mode=<?= $mode ?>&edit=true" class="btn edit-btn">
                     EDIT <i class="fas fa-pen"></i>
@@ -182,11 +191,12 @@ if ($mode === 'inventory') {
     <?php else: ?>
         <!-- ticketing -->
         <?php if ($role === 3): ?>
-            <div class="page-header" onclick="history.back()">
+            <div class="page-header" id="pageHeadText" style="padding: 1.3%;"
+                onclick="window.location.href='../Flow/dashboard.php'">
                 <i class="fas fa-chevron-left"></i> VIEWING <?= htmlspecialchars(strtoupper($data['ticket_num'])) ?>
             </div>
         <?php else: ?>
-            <div class="page-header" onclick="history.back()">
+            <div class="page-header" id="pageHeadText" style="padding: 1.3%;" onclick="<?= $backPath ?>">
                 <i class="fas fa-chevron-left"></i> VIEWING <?= htmlspecialchars(strtoupper($data['ticket_num'])) ?>
             </div>
         <?php endif ?>
@@ -198,9 +208,13 @@ if ($mode === 'inventory') {
                     <span class="value"><?= htmlspecialchars($data['creator_FN'] . ' ' . $data['creator_LN']) ?></span>
                 </div>
                 <div class="grid-row">
+                    <span class="label">Category:</span>
+                    <span class="value"><?= htmlspecialchars($data['categ_name']) ?></span>
+                </div>
+                <!-- <div class="grid-row">
                     <span class="label">Title:</span>
                     <span class="value"><?= htmlspecialchars($data['Title']) ?></span>
-                </div>
+                </div> -->
                 <?php if (!empty($data['issued_item_name'])): ?>
                     <div class="grid-row" style="color: #28a745; font-weight: bold;">
                         <span class="label">Issued Item:</span>
@@ -215,10 +229,7 @@ if ($mode === 'inventory') {
                     <span class="label">Department:</span>
                     <span class="value"><?= htmlspecialchars($data['dept_name'] ?? 'N/A') ?></span>
                 </div>
-                <div class="grid-row">
-                    <span class="label">Category:</span>
-                    <span class="value"><?= htmlspecialchars($data['categ_name']) ?></span>
-                </div>
+                
                 <?php if (!empty($data['issued_item_name'])): ?>
                     <div class="grid-row" style="color: #28a745; font-weight: bold;">
                         <span class="label">Quantity:</span>
@@ -227,38 +238,60 @@ if ($mode === 'inventory') {
                 <?php endif; ?>
             </div>
         </div>
-
-        <span class="message-label">Description:</span>
-        <div class="message-box" id="dispMessage">
-            <?= nl2br(htmlspecialchars($data['T_description'])) ?>
+        <div id="pageHeadText" style="border-radius: 25px 25px 0 0;">
+            <span class="message-label"><i class="fas fa-newspaper"></i> Description:</span>
+            <div class="message-box" id="dispMessage">
+                <?= nl2br(htmlspecialchars($data['T_description'])) ?>
+            </div>
+            <span class="message-label"><i class="fas fa-comments"></i> Technician Comments:</span>
+            <div class="message-box" id="commentSection">
+                <?php 
+                $comments = $q->getTicketComments($id);
+                if (empty($comments)): ?>
+                    <p style="color: #999; font-style: italic;">No comments yet.</p>
+                <?php else: foreach ($comments as $c): ?>
+                        <?= nl2br(htmlspecialchars($c['comment_text'])) ?>
+                <?php endforeach; endif; ?>
+            </div>
         </div>
-
-        <div class="status-section">
+        <div class="status-section" id="pageHeadText" style="border-radius: 0 0 25px 25px;">
             <div class="status-row">
-                <span class="status-label">Priority:</span>
-                <span class="badge <?= strtolower($data['Priority']) ?>"><?= htmlspecialchars($data['Priority']) ?></span>
+                <span class="status-label">Time Created | Resolved:</span>
+                <span class="badge <?= strtolower($data['Status']) ?>">
+                    <?= htmlspecialchars($data['created_at'] . " | " . $data['resolved_at']) ?>
+                </span>
             </div>
             <div class="status-row">
-                <span class="status-label">Status:</span>
-                <span class="badge <?= strtolower($data['Status']) ?>"><?= htmlspecialchars($data['Status']) ?></span>
-            </div>
-            <div class="status-row">
-                <span class="status-label">Assigned to:</span>
-                <?php if (!empty($data['staff_FN'])): ?>
-                    <span class="badge assigned"><i class="fas fa-user-check"></i>
-                        <?= htmlspecialchars($data['staff_FN'] . ' ' . $data['staff_LN']) ?></span>
+                <span class="status-label">Due Date:</span>
+                <?php if ($data['Status'] === 'Resolved'): ?>
+                    <span class="badge assigned" style="background-color: #28ba1b;">
+                        Resolved</span>
+                <?php elseif (!empty($data['due_date'])): ?>
+                    <span class="badge assigned"><i class="far fa-calendar-alt"></i>
+                        <?= date("M d, Y h:i:A", strtotime($data['due_date'])) ?></span>
                 <?php else: ?>
                     <span class="badge unassigned">Unassigned</span>
                 <?php endif; ?>
             </div>
             <div class="status-row">
-                <span class="status-label">Due Date:</span>
-                <?php if ($data['Status'] === 'Resolved'): ?>
-                    <span class="badge assigned" style="background-color: #28ba1b;"><i class="fas fa-check-circle"></i>
-                        COMPLETED</span>
-                <?php elseif (!empty($data['due_date'])): ?>
-                    <span class="badge assigned"><i class="far fa-calendar-alt"></i>
-                        <?= date("M d, Y h:i:A", strtotime($data['due_date'])) ?></span>
+                <?php
+                $displayStatus = ($data['Status'] === 'Unresolved') ? 'Pending' : $data['Status'];
+
+                ?>
+                <span class="status-label">Status:</span>
+                <span class="badge <?= strtolower($data['Status']) ?>"><?= htmlspecialchars($displayStatus) ?></span>
+            </div>
+            <?php if ($role === 1): ?>
+                <div class="status-row">
+                    <span class="status-label">Priority:</span>
+                    <span class="badge <?= strtolower($data['Priority']) ?>"><?= htmlspecialchars($data['Priority']) ?></span>
+                </div>
+            <?php endif; ?>
+            <div class="status-row">
+                <span class="status-label">Assigned to:</span>
+                <?php if (!empty($data['staff_FN'])): ?>
+                    <span class="badge assigned"><i class="fas fa-user-check"></i>
+                        <?= htmlspecialchars($data['staff_FN'] . ' ' . $data['staff_LN']) ?></span>
                 <?php else: ?>
                     <span class="badge unassigned">Unassigned</span>
                 <?php endif; ?>
@@ -275,7 +308,7 @@ if ($mode === 'inventory') {
             </div>
         </div>
 
-        <div class="actions">
+        <div class="actions" style="margin-right: 3%;">
             <?php if ($role === 1 && $data['Status'] === 'Resolved' && $mode === 'ticketing' && empty($data['issued_item_name'])): ?>
                 <form method="POST" action="../Config/updateAction.php" onsubmit="submitEditForm(this)">
                     <input type="hidden" name="id" value="<?= $id ?>">
@@ -285,7 +318,8 @@ if ($mode === 'inventory') {
                         <p style="font-size: 0.8rem; font-weight: bold; margin-bottom: 5px;">
                             <i class="fas fa-shield-alt"></i> ADMIN: ISSUE ASSETS
                         </p>
-                        <select name="issued_item_id" class="value" style="width: 100%; margin-bottom: 5px;" onfocus="stopTileRefresh()">
+                        <select name="issued_item_id" class="value" style="width: 100%; margin-bottom: 5px;"
+                            onfocus="stopRefresh()">
                             <option value="">-- No Item Issued --</option>
                             <?php
                             $inventory = $q->getAllInventory(true);
@@ -305,16 +339,18 @@ if ($mode === 'inventory') {
                             <?php endif; ?>
                         </select>
                         <div style="display: flex; gap: 5%;">
-                            <input type="number" name="issued_qty" placeholder="Qty" min="0" value="1" style="width: 60px;" onfocus="stopTileRefresh()">
+                            <input type="number" name="issued_qty" placeholder="Qty" min="0" value="1" style="width: 60px;"
+                                onfocus="stopRefresh()">
                             <button name="action" value="save" class="btn resolved">
                                 SAVE <i class="fas fa-check"></i>
                             </button>
                         </div>
                     </div>
                 </form>
-                <form action="../Config/updateAction.php" method="POST"  style="margin-left: -70vh;">
+                <form action="../Config/updateAction.php" method="POST" style="margin-left: -95vh;">
                     <input type="hidden" name="id" value="<?= $id ?>"> <input type="hidden" name="ticket_id" value="<?= $id ?>">
-                    <input type="hidden" name="mode" value="ticketing"> <input type="hidden" name="action" value="reopen_ticket">
+                    <input type="hidden" name="mode" value="ticketing"> <input type="hidden" name="action"
+                        value="reopen_ticket">
                     <button type="submit" class="btn edit-btn"><i class="fas fa-history"></i>Reopen Ticket</button>
                 </form>
             <?php elseif ($data['Status'] != 'Resolved' && $role === 1): ?>
@@ -324,7 +360,8 @@ if ($mode === 'inventory') {
             <?php elseif ($data['Status'] === 'Resolved' && $role === 1): ?>
                 <form action="../Config/updateAction.php" method="POST">
                     <input type="hidden" name="id" value="<?= $id ?>"> <input type="hidden" name="ticket_id" value="<?= $id ?>">
-                    <input type="hidden" name="mode" value="ticketing"> <input type="hidden" name="action" value="reopen_ticket">
+                    <input type="hidden" name="mode" value="ticketing"> <input type="hidden" name="action"
+                        value="reopen_ticket">
                     <button type="submit" class="btn edit-btn"><i class="fas fa-history"></i>Reopen Ticket</button>
                 </form>
             <?php endif; ?>
@@ -342,22 +379,24 @@ if ($mode === 'inventory') {
                     <form method="POST" action="../Config/updateAction.php" onsubmit="submitEditForm(this)">
                         <input type="hidden" name="id" value="<?= $id ?>">
                         <input type="hidden" name="mode" value="ticketing">
-                        <button type="submit" name="action" value="accept" class="btn download">ACCEPT <i class="fas fa-check"></i></button>
+                        <button type="submit" name="action" value="accept" class="btn download">ACCEPT <i
+                                class="fas fa-check"></i></button>
                     </form>
-                <?php elseif ($data['staff_FN'] && $data['Status'] !== 'Resolved'): ?>
+                <?php elseif ($data['Status'] !== 'Resolved' && $data['Assigned_To'] == $uid): ?>
                     <form method="POST" action="../Config/updateAction.php" onsubmit="submitEditForm(this)">
                         <input type="hidden" name="id" value="<?= $id ?>">
                         <input type="hidden" name="mode" value="ticketing">
                         <button name="action" value="resolve" class="btn resolved">RESOLVE <i class="fas fa-check"></i></button>
                     </form>
+                <?php elseif ($data['Assigned_To'] != $uid && !empty($data['staff_FN'])): ?>
+                    <span class="badge assigned" style="padding-top: 0.9%; cursor: default;">Assigned to
+                        <?= htmlspecialchars($data['staff_FN']) ?> </span>
+                <?php elseif ($data['Status'] == 'Resolved' && empty($comments)): ?>
+                    <button type="button" class="btn edit-btn" onclick="openCommentModal()">
+                        COMMENT <i class="fas fa-comment-dots"></i>
+                    </button>
                 <?php endif; ?>
             <?php endif; ?>
-
-            <button class="btn download" style="max-height: 50px;"
-                onclick="<?= ($mode === 'inventory') ? 'window.print()' : 'downloadTicket()' ?>">
-                <?= ($mode === 'inventory') ? 'PRINT' : 'DOWNLOAD' ?>
-                <i class="fas fa-<?= ($mode === 'inventory') ? 'print' : 'download' ?>"></i>
-            </button>
         </div>
     <?php endif; ?>
 </div>

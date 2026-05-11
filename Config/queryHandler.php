@@ -77,6 +77,19 @@ class QueryHandler
         ]);
     }
 
+    // update details from settings.php and updateAccount.php
+    public function updateUserName($userId, $fn, $ln) {
+        $sql = "UPDATE users SET FN = ?, LN = ? WHERE U_ID = ?";
+        $stmt = $this->usersDB->prepare($sql);
+        return $stmt->execute([$fn, $ln, $userId]);
+    }
+
+    public function updateUserPassword($userId, $hashedPassword) {
+        $sql = "UPDATE users SET pass_hash = ? WHERE U_ID = ?";
+        $stmt = $this->usersDB->prepare($sql);
+        return $stmt->execute([$hashedPassword, $userId]);
+    }
+
     // role based for tickets im crien
     public function getTickets($role, $user_id, $filters = [], $page = 1, $limit = 5)
     {
@@ -98,7 +111,7 @@ class QueryHandler
 
         // SECURITY LAYER
         if ($role == 2) {
-            $sql .= " AND (t.Assigned_To = :uid OR t.Assigned_To IS NULL)";
+            $sql .= " AND (t.Assigned_To = :uid OR (t.Assigned_To IS NULL AND t.Status != 'Resolved'))";
             $params['uid'] = $user_id;
         } elseif ($role != 1) {
             $sql .= " AND t.Created_By = :uid";
@@ -253,18 +266,23 @@ class QueryHandler
     }
 
     // CREATE TICKET
-    public function createTicket($title, $desc, $user_id, $dept_id, $categ_id, $attachment = null)
+    
+    // public function createTicket($desc, $title, $user_id, $dept_id, $categ_id, $attachment = null)
+    // INSERT INTO tickets (ticket_num, title, T_description, Created_By, Dept_ID, t_type, attachment, created_at)
+    // VALUES (:tnum, :title, :desc, :user, :dept, :categ, :attach, NOW())
+
+    // if you want title i removed it because of professor request
+    public function createTicket($desc, $user_id, $dept_id, $categ_id, $attachment = null)
     {
         $ticketNum = $this->generateTicketNum();
         $sql = "
-            INSERT INTO tickets (ticket_num, Title, T_description, Created_By, Dept_ID, t_type, attachment, created_at)
-            VALUES (:tnum, :title, :desc, :user, :dept, :categ, :attach, NOW())
+            INSERT INTO tickets (ticket_num, T_description, Created_By, Dept_ID, t_type, attachment, created_at)
+            VALUES (:tnum, :desc, :user, :dept, :categ, :attach, NOW())
         ";
 
         $stmt = $this->ticketDB->prepare($sql);
         $stmt->execute([
             'tnum' => $ticketNum,
-            'title' => $title,
             'desc' => $desc,
             'user' => $user_id,
             'dept' => $dept_id,
@@ -285,6 +303,27 @@ class QueryHandler
     {
         $stmt = $this->ticketDB->query("SELECT * FROM ticket_categories ORDER BY categ_name ASC");
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    // Comments
+    public function getTicketComments($ticket_id) {
+        $sql = "SELECT tc.*, u.FN, u.LN 
+                FROM ticket_comments tc
+                JOIN chams_users.users u ON tc.U_ID = u.U_ID
+                WHERE tc.T_ID = ?
+                ORDER BY tc.created_at DESC";
+                
+        $stmt = $this->ticketDB->prepare($sql);
+        $stmt->execute([$ticket_id]);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function addTicketComment($ticket_id, $user_id, $text) {
+        $sql = "INSERT INTO ticket_comments (T_ID, U_ID, comment_text, created_at) 
+                VALUES (?, ?, ?, NOW())";
+                
+        $stmt = $this->ticketDB->prepare($sql);
+        return $stmt->execute([$ticket_id, $user_id, $text]);
     }
 
     // ASSIGN TICKET

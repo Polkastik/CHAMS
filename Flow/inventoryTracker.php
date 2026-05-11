@@ -10,15 +10,17 @@ $stats = $q->getDashboardStats();
 $trackerFilters = $q->getTrackerFilters();
 
 if (isset($_GET['ajax']) && $_GET['ajax'] === 'list') {
-    while (ob_get_level()) { ob_end_clean(); }
+    while (ob_get_level()) {
+        ob_end_clean();
+    }
 
     $filters = [
-    'department' => $_GET['department'] ?? 'All',
-    'item'       => $_GET['item'] ?? 'All',
-    'date'       => $_GET['date'] ?? ''
+        'department' => $_GET['department'] ?? 'All',
+        'item' => $_GET['item'] ?? 'All',
+        'date' => $_GET['date'] ?? ''
     ];
 
-    $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+    $page = isset($_GET['page']) ? (int) $_GET['page'] : 1;
     $items = $q->getFilteredTracker($filters, $page);
     $currentPage = 'inventory';
 
@@ -30,9 +32,9 @@ if (isset($_GET['ajax']) && $_GET['ajax'] === 'list') {
         foreach ($items as $row) {
 
             if (!empty($row['reference_ticket'])) {
-                $viewUrl = "../Flow/tileView.php?id=" . $row['reference_ticket'] . "&mode=ticketing";
+                $viewUrl = "../Flow/tileView.php?id=" . $row['reference_ticket'] . "&mode=ticketing&from=inventory";
             } else {
-                $viewUrl = "../Flow/tileView.php?id=" . $row['I_ID'] . "&mode=inventory";
+                $viewUrl = "../Flow/tileView.php?id=" . $row['I_ID'] . "&mode=inventory&from=inventory";
             }
 
             echo '<tr>
@@ -55,12 +57,12 @@ if (isset($_GET['ajax']) && $_GET['ajax'] === 'list') {
         }
     }
 
-    
+
     $tableHTML = ob_get_clean();
 
     ob_start();
     $filterId = "tracker";
-    $filters = $trackerFilters; 
+    $filters = $trackerFilters;
     include '../Modules/filter.php';
     $toolbarHTML = ob_get_clean();
 
@@ -70,7 +72,7 @@ if (isset($_GET['ajax']) && $_GET['ajax'] === 'list') {
         'toolbar' => $toolbarHTML
     ]);
     exit;
-    }
+}
 ?>
 
 <!DOCTYPE html>
@@ -83,74 +85,78 @@ if (isset($_GET['ajax']) && $_GET['ajax'] === 'list') {
     <link rel="stylesheet" href="../Assets/CSS/filter.css">
 </head>
 
-<body>
+<body id="altBody">
+
 
     <?php include '../Modules/header.php' ?>
 
     <div class="container">
         <?php include '../Modules/sidebar.php' ?>
 
-        <div class="content">
-            <div class="page-header" onclick="history.back()">
-                <i class="fas fa-chevron-left"></i> INVENTORY TRACKER
-            </div>
-            <?php $filterId = "tracker";
-            $filters = $trackerFilters;
-            include '../Modules/filter.php' ?>
+        <div class="content" style="overflow-x: hidden;">
+            <div id="pageHeadText" style="padding: 2%; width: 105%; margin: -1.3% 0 0 -2.3%">
 
-            <div class="table-card">
+                <div class="page-header" onclick="history.back()">
+                    <i class="fas fa-chevron-left"></i> INVENTORY TRACKER
+                </div>
+                <?php $filterId = "tracker";
+                $filters = $trackerFilters;
+                include '../Modules/filter.php' ?>
 
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Date Delivered</th>
-                            <th>Department</th>
-                            <th>Item</th>
-                            <th>Brand</th>
-                            <th>Qty</th>
-                            <th>Defects</th>
-                            <th>Supplier</th>
-                            <th>Serial Number</th>
-                            <th>Input By</th>
-                            <th>Action</th>
-                        </tr>
-                    </thead>
-                    <tbody id="trackerTableBody">
-                        <?php if (empty($items)): ?>
+                <div class="table-card">
+
+                    <table>
+                        <thead>
                             <tr>
-                                <td colspan="10" style="text-align:center; padding: 20px;">No tracking data found.</td>
+                                <th>Date Delivered</th>
+                                <th>Department</th>
+                                <th>Item</th>
+                                <th>Brand</th>
+                                <th>Qty</th>
+                                <th>Defects</th>
+                                <th>Supplier</th>
+                                <th>Serial Number</th>
+                                <th>Input By</th>
+                                <th>Action</th>
                             </tr>
-                        <?php else: ?>
-                            <?php foreach ($items as $row): ?>
+                        </thead>
+                        <tbody id="trackerTableBody">
+                            <?php if (empty($items)): ?>
                                 <tr>
-                                    <td><?= date('m/d/y', strtotime($row['date_delivered'])) ?></td>
-                                    <td><?= htmlspecialchars($row['Dept_Name'] ?? 'N/A') ?></td>
-                                    <td><?= htmlspecialchars($row['item_name']) ?></td>
-                                    <td><?= htmlspecialchars($row['item_brand']) ?></td>
-                                    <td><?= htmlspecialchars($row['tracker_qty']) ?></td>
-                                    <td><?= htmlspecialchars($row['Defects']) ?></td>
-                                    <td><?= htmlspecialchars($row['item_supplier']) ?></td>
-                                    <td><?= htmlspecialchars($row['Serial_number'] ?? 'N/A') ?></td>
-                                    <td><?= htmlspecialchars($row['input_by_name']) ?></td>
-                                    <td>
-                                        <?php
-                                        if (!empty($row['reference_ticket'])) {
-                                            $viewUrl = "../Flow/tileView.php?id=" . $row['reference_ticket'] . "&mode=ticketing";
-                                        } else {
-                                            $viewUrl = "../Flow/tileView.php?id=" . $row['I_ID'] . "&mode=inventory";
-                                        }
-                                        ?>
-                                        <button class="edit-btn" onclick="window.location.href='<?= $viewUrl ?>'">
-                                            <i
-                                                class="fas <?= !empty($row['reference_ticket']) ? 'fa-ticket-alt' : 'fa-box' ?>"></i>
-                                            <?= !empty($row['reference_ticket']) ? 'VIEW TICKET' : 'VIEW ITEM' ?>
-                                        </button>
-                                    </td>
+                                    <td colspan="10" style="text-align:center; padding: 20px;">No tracking data found.</td>
                                 </tr>
-                            <?php endforeach; ?>
-                        <?php endif; ?>
-                    </tbody>
-                </table>
+                            <?php else: ?>
+                                <?php foreach ($items as $row): ?>
+                                    <tr>
+                                        <td><?= date('m/d/y', strtotime($row['date_delivered'])) ?></td>
+                                        <td><?= htmlspecialchars($row['Dept_Name'] ?? 'N/A') ?></td>
+                                        <td><?= htmlspecialchars($row['item_name']) ?></td>
+                                        <td><?= htmlspecialchars($row['item_brand']) ?></td>
+                                        <td><?= htmlspecialchars($row['tracker_qty']) ?></td>
+                                        <td><?= htmlspecialchars($row['Defects']) ?></td>
+                                        <td><?= htmlspecialchars($row['item_supplier']) ?></td>
+                                        <td><?= htmlspecialchars($row['Serial_number'] ?? 'N/A') ?></td>
+                                        <td><?= htmlspecialchars($row['input_by_name']) ?></td>
+                                        <td>
+                                            <?php
+                                            if (!empty($row['reference_ticket'])) {
+                                                $viewUrl = "../Flow/tileView.php?id=" . $row['reference_ticket'] . "&mode=ticketing&from=inventory";
+                                            } else {
+                                                $viewUrl = "../Flow/tileView.php?id=" . $row['I_ID'] . "&mode=inventory&from=inventory";
+                                            }
+                                            ?>
+                                            <button class="edit-btn" onclick="window.location.href='<?= $viewUrl ?>'">
+                                                <i
+                                                    class="fas <?= !empty($row['reference_ticket']) ? 'fa-ticket-alt' : 'fa-box' ?>"></i>
+                                                <?= !empty($row['reference_ticket']) ? 'VIEW TICKET' : 'VIEW ITEM' ?>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                <?php endforeach; ?>
+                            <?php endif; ?>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>

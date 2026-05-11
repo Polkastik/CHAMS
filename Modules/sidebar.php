@@ -53,7 +53,7 @@ $fullname = $fname . " " . $lname;
         </button>
 
         <a href="dashboard.php" style="text-decoration: none;">
-                <div class="menu-item"><i class="fas fa-home"></i> <span>HOME</span></div>
+                <div class="menu-item"><i class="fas fa-home"></i> <span>HOMEPAGE</span></div>
             </a>
 
         <?php endif; ?>
@@ -62,7 +62,7 @@ $fullname = $fname . " " . $lname;
         
         <?php if ($role != 3): ?>
             <a href="dashboard.php" style="text-decoration: none;">
-                <div class="menu-item"><i class="fas fa-home"></i> <span>HOME</span></div>
+                <div class="menu-item"><i class="fas fa-gauge"></i> <span>DASHBOARD</span></div>
             </a>
 
             <a href="ticket.php" style="text-decoration: none;">

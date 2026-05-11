@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 06, 2026 at 03:42 PM
+-- Generation Time: May 11, 2026 at 07:34 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -57,7 +57,7 @@ INSERT INTO `departments` (`D_ID`, `Dept_Name`, `descript`) VALUES
 (17, 'Billing and Claims Division', ''),
 (18, 'Billing and Philhealth Section', ''),
 (19, 'Blood Bank Section (BBK)', ''),
-(20, 'Blood Donor Recruitment and Apheresis section (BDR', ''),
+(20, 'Blood Donor Recruitment and Apheresis section (BDRA)', ''),
 (21, 'Breast Center', ''),
 (22, 'Budget Division', ''),
 (23, 'Building Administration and Housekeeping', ''),
@@ -66,7 +66,7 @@ INSERT INTO `departments` (`D_ID`, `Dept_Name`, `descript`) VALUES
 (26, 'Cardiac Catheterization Laboratory Section', ''),
 (27, 'Cardiovascular Laboratory Section', ''),
 (28, 'Care Therapeutic Transplant Unit / HICU', ''),
-(29, 'Cellular Immunology and Flow Cytometry Section (CE', ''),
+(29, 'Cellular Immunology and Flow Cytometry Section', ''),
 (30, 'Cellular Transplantation Section', ''),
 (31, 'Central Supply and Sterilization Unit', ''),
 (32, 'Clinical Chemistry Section (CCH)', ''),
@@ -146,11 +146,14 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`U_ID`, `employee_ID`, `FN`, `LN`, `email`, `pass_hash`, `role_id`, `Dept_ID`, `status`, `created_at`, `updated_at`) VALUES
-(1, 123, 'Admin', 'MISD', 'nathanrola316@gmail.com', '$2y$10$/cpmmlB/jcTAi1xNQ475Mu6t2lmdyxAc36nOYbwNwMwowpTLN7SR2', 1, 1, 'active', '2026-03-22 08:15:21', '2026-03-22 08:15:21'),
-(2, 456, 'anton coron', 'Carimosanto ', 'nathanrola315@gmail.com', '$2y$10$Ou.6.Ej7BKRZsc6bHMut6.pKvb3h.rvGyIZz.t9l4yyNWWqxOM.RS', 2, 1, 'active', '2026-03-22 09:40:08', '2026-03-22 09:40:08'),
-(3, 789, 'gen', 'user', 'nathanrola316@gmail.com', '$2y$10$zSxMFb/Wxkzi/F8taTELuumYiUk6seicKaEBIxJV3Uu5Cbrw50O5W', 3, 4, 'active', '2026-03-22 09:40:08', '2026-03-22 09:40:08'),
-(4, 101, 'another', 'gen user', '22@gmail.com', '$2y$10$p6PVV32Q9jh59Jr4Wxv7weW.E.B9HsP7GYL7uXgclOtuX4CKksmra', 3, 2, 'active', '2026-03-31 14:03:11', '2026-03-31 14:03:11'),
-(5, 454, 'another', 'staff', '222@gmail.cpm', '$2y$10$Qtq5X/Y.X0PkoGgnWc6BL.XTXs57Z3bFlwaTZDD0QYUYZfl9JDUwq', 2, 1, 'active', '2026-04-03 12:54:42', '2026-04-03 12:54:42');
+(1, 111, 'Nathan', 'Rola', 'nathanrola316@gmail.com', '$2y$10$cT2KdFQHLZXJTOKlB3KNcOZZeEUmBj.uujpHvvD36e/oQcuQqczhG', 1, 1, 'active', '2026-03-22 08:15:21', '2026-03-22 08:15:21'),
+(2, 211, 'Mon', 'Flores', 'nathanrola316@gmail.com', '$2y$10$CMtg1AAJfrKMsvh5YnB9FuKXvMjcfh3fS1Nl7FpbzhTr6.bk595nq', 2, 1, 'active', '2026-03-22 09:40:08', '2026-03-22 09:40:08'),
+(3, 311, 'Ychezda', 'Chevy', 'nathanrola316@gmail.com', '$2y$10$ncfRbZIXd6K/hSOk3dmyJeFW4Y7nPUGewslmDJP/JjCjZ9lXuGvTG', 3, 4, 'active', '2026-03-22 09:40:08', '2026-03-22 09:40:08'),
+(4, 312, 'Elena', 'Rodriguez', '22@gmail.com', '$2y$10$F.Rw4gtJ5VbxsebKlr6YvusH.gEZ1l/iAi4B4Jx1iPAbDEvt4j0L6', 3, 2, 'active', '2026-03-31 14:03:11', '2026-03-31 14:03:11'),
+(5, 212, 'James', 'Tapic', '222@gmail.cpm', '$2y$10$XCw8yqkg03lKdJKZ9nkWielJizhxF504qYBvdg4vijUOct4GVgK7e', 2, 1, 'active', '2026-04-03 12:54:42', '2026-04-03 12:54:42'),
+(6, 213, 'Mark', 'Ocasla', 'chamsmisd@gmail.com', '$2y$10$zu9UHP8raNTr8W5vet.Due7rjHNuiZBfatkXdAiHwbmxpNMglqQH2', 2, 1, 'active', '2026-05-11 05:13:27', '2026-05-11 05:13:27'),
+(7, 112, 'Joshua', 'Lim', 'chamsmisd@gmail.com', '$2y$10$9714HWQShO/1eIDcqJtoiupFShKrdg.sPBInjQw.V4Gv9ZVe564d2', 1, 1, 'active', '2026-05-11 05:13:27', '2026-05-11 05:13:27'),
+(8, 214, 'Clarice', 'Villafuerte', 'chamsmisd@gmail.com', '214', 2, 1, 'active', '2026-05-11 10:44:43', '2026-05-11 10:44:43');
 
 --
 -- Indexes for dumped tables
@@ -198,7 +201,7 @@ ALTER TABLE `roles`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `U_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `U_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- Constraints for dumped tables

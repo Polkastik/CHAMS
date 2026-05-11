@@ -30,7 +30,7 @@ function refreshActivityList() {
 let actLogInterval;
 function startActLogRefresh() {
     if (!actLogInterval) {
-        actLogInterval = setInterval(refreshActivityList, 10000);
+        actLogInterval = setInterval(refreshActivityList, 1000);
     }
 }
 

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 06, 2026 at 03:41 PM
+-- Generation Time: May 11, 2026 at 07:34 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -45,7 +45,10 @@ INSERT INTO `inventory_categories` (`IC_ID`, `category_name`, `IC_Desc`, `catego
 (1, 'Networking', 'Lan cables, USB cables you name it\r\n', '#ec3cdd', '2026-03-31 19:00:37', NULL, 1),
 (2, 'Peripherals', '', '#f4a357', '2026-03-31 19:00:37', NULL, 1),
 (3, 'Computers', 'Consists of hardware items if not marked as consumables', '#f95d5d', '2026-03-31 19:00:37', NULL, 1),
-(4, 'Consumables', '', '#c8bdff', '2026-03-31 19:00:37', NULL, 1);
+(4, 'Consumables', '', '#c8bdff', '2026-03-31 19:00:37', NULL, 1),
+(6, 'Printers', '', '#e3f2fd', '2026-05-08 12:56:59', NULL, 1),
+(7, 'test1', 'test', '#e3f2fd', '2026-05-08 13:15:54', NULL, 1),
+(8, 'test', '', '#e3f2fd', '2026-05-08 13:51:57', NULL, 1);
 
 -- --------------------------------------------------------
 
@@ -76,13 +79,18 @@ CREATE TABLE `inventory_items` (
 --
 
 INSERT INTO `inventory_items` (`I_ID`, `categ_ID`, `item_name`, `item_type`, `item_brand`, `Quantity`, `Threshold`, `item_supplier`, `Defects`, `Serial_number`, `date_received`, `collected_by`, `created_at`, `updated_at`, `created_by`) VALUES
-(1, 3, 'ROG 5220', 3, 'ROG', 1122, 200, 'INTELI', 'No', '1234', '2026-04-05 18:15:00', NULL, '2026-04-05 18:16:20', '2026-04-10 00:16:45', 1),
+(1, 3, 'ROG 5220', 3, 'ROG', 2000, 200, 'INTELI', 'No', '1234', '2026-04-05 18:15:00', NULL, '2026-04-05 18:16:20', '2026-05-08 15:11:28', 1),
 (2, 4, '005', 1, 'brand', 400, 100, 'supplier', 'No', NULL, '2026-04-05 21:20:00', NULL, '2026-04-05 21:20:56', NULL, 1),
 (3, 4, '005', 1, 'SONY', 0, 200, 'INTELI', 'No', NULL, '2026-04-05 21:20:00', NULL, '2026-04-05 21:40:16', '2026-04-17 21:11:18', 1),
 (4, 4, '005', 1, 'Delta', 0, 2, 'supplier', 'No', NULL, '2026-04-17 21:47:00', NULL, '2026-04-17 21:48:25', NULL, 1),
 (5, 4, '005', 1, '123', 500, 200, 'INTELI', 'No', NULL, '2026-04-29 21:22:00', NULL, '2026-04-29 21:22:36', NULL, 1),
-(6, 4, '005', 1, '123', 1000, 200, 'INTELI', 'No', NULL, '2026-04-30 20:56:00', NULL, '2026-04-30 20:56:41', NULL, 1),
-(7, 4, '005', 1, '123', 15, 2, 'INFINI', 'No', NULL, '2026-04-30 22:43:00', NULL, '2026-04-30 22:43:19', NULL, 1);
+(6, 4, '005', 1, '123', 500, 200, 'INTELI', 'No', NULL, '2026-04-30 20:56:00', NULL, '2026-04-30 20:56:41', NULL, 1),
+(7, 4, '005', 1, '123', 15, 2, 'INFINI', 'No', NULL, '2026-04-30 22:43:00', NULL, '2026-04-30 22:43:19', NULL, 1),
+(8, 6, 'LaserJet pro', 2, 'Delta', 150, 20, 'ErgoFurniture Ltd.', 'No', NULL, '2026-05-08 12:57:00', NULL, '2026-05-08 12:57:44', NULL, 1),
+(9, 2, 'Intelli mouse', 2, 'Delta', 100, 20, 'ErgoFurniture Ltd.', 'No', NULL, '2026-05-08 12:59:00', NULL, '2026-05-08 12:59:30', NULL, 1),
+(10, 1, 'LAN cables', 2, 'brand', 250, 20, 'ErgoFurniture Ltd.', 'No', 'N/A', '2026-05-08 13:06:00', NULL, '2026-05-08 13:07:14', '2026-05-08 13:08:23', 1),
+(11, 7, 'test', 3, '123', 10, 2, 'INFINI', 'No', NULL, '2026-05-08 13:16:00', NULL, '2026-05-08 13:16:12', NULL, 1),
+(12, 8, 'test', 2, 'test', 10, 2, 'ErgoFurniture Ltd.', 'No', 'N/A', '2026-05-08 13:52:00', NULL, '2026-05-08 13:52:21', '2026-05-08 13:52:52', 1);
 
 -- --------------------------------------------------------
 
@@ -115,7 +123,9 @@ INSERT INTO `inventory_tracker` (`IT_ID`, `I_ID`, `Quantity`, `reference_ticket`
 (7, 2, 5, 6, 1, 3, '2026-04-22 16:06:40', '2026-04-23 16:06:40'),
 (8, 4, 5, 6, 1, 3, '2026-04-17 16:06:40', '2026-04-22 16:06:40'),
 (9, 2, 5, 6, 1, 3, '2026-04-14 16:06:40', '2026-04-15 16:06:40'),
-(10, 1, 1, 7, 1, 4, '2026-04-22 16:53:16', '0000-00-00 00:00:00');
+(10, 1, 1, 7, 1, 4, '2026-04-22 16:53:16', '0000-00-00 00:00:00'),
+(11, 6, 200, 43, 1, 3, '2026-05-11 16:38:35', '0000-00-00 00:00:00'),
+(12, 6, 300, 44, 1, 3, '2026-05-11 23:29:03', '0000-00-00 00:00:00');
 
 -- --------------------------------------------------------
 
@@ -182,19 +192,19 @@ ALTER TABLE `inventory_type`
 -- AUTO_INCREMENT for table `inventory_categories`
 --
 ALTER TABLE `inventory_categories`
-  MODIFY `IC_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `IC_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `inventory_items`
 --
 ALTER TABLE `inventory_items`
-  MODIFY `I_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `I_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT for table `inventory_tracker`
 --
 ALTER TABLE `inventory_tracker`
-  MODIFY `IT_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `IT_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT for table `inventory_type`

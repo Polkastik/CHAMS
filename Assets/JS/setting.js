@@ -44,25 +44,107 @@ function submitBug() {
     });
 }
 
-// Close overlays on outside click
-window.onclick = function (event) {
-    if (event.target.id === "bugOverlay") closeBugReport();
-    if (event.target.id === "notifOverlay") closeNotif();
-    if (event.target.classList.contains("modal-overlay")) {
-        event.target.style.display = "none";
+// anything abt password start
+async function openEditName() {
+    const { value: formValues } = await Swal.fire({
+        title: 'Edit Display Name',
+        html:
+            `<input id="swal-fn" class="swal2-input" placeholder="First Name">` +
+            `<input id="swal-ln" class="swal2-input" placeholder="Last Name">`,
+        focusConfirm: false,
+        showCancelButton: true,
+        confirmButtonText: 'Save Changes',
+        preConfirm: () => {
+            return {
+                fn: document.getElementById('swal-fn').value.trim(),
+                ln: document.getElementById('swal-ln').value.trim()
+            }
+        }
+    });
+
+    if (formValues) {
+        if (!formValues.fn || !formValues.ln) {
+            Swal.fire('Error', 'Names cannot be empty.', 'error');
+            return;
+        }
+
+        fetch('../Config/updateAccount.php', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: `action=update_name&fn=${encodeURIComponent(formValues.fn)}&ln=${encodeURIComponent(formValues.ln)}`
+        })
+        .then(res => res.text())
+        .then(res => {
+            if (res.toLowerCase().includes("success")) { 
+                Swal.fire('Success', 'Action completed!', 'success').then(() => {
+                    location.reload(); 
+                });
+            } else {
+                Swal.fire('Error', `Server sent: "${res}"`, 'error');
+            }
+        });
     }
 }
 
-function toggleDarkMode() {
-    document.body.classList.toggle("dark-mode");
-    console.log("Dark mode:", document.body.classList.contains("dark-mode"));
-    localStorage.setItem(
-        "theme",
-        document.body.classList.contains("dark-mode") ? "dark" : "light"
-    );
+async function openChangePassword() {
+    const { value: formValues } = await Swal.fire({
+        title: 'Change Password',
+        html:
+            '<input id="swal-curr" class="swal2-input" placeholder="Current Password" type="password">' +
+            '<input id="swal-new" class="swal2-input" placeholder="New Password" type="password">' +
+            '<input id="swal-conf" class="swal2-input" placeholder="Confirm New Password" type="password">',
+        focusConfirm: false,
+        showCancelButton: true,
+        confirmButtonText: 'Update Security',
+        confirmButtonColor: '#d33',
+        preConfirm: () => {
+            return {
+                curr: document.getElementById('swal-curr').value,
+                next: document.getElementById('swal-new').value,
+                conf: document.getElementById('swal-conf').value
+            }
+        }
+    });
+
+    if (formValues) {
+        if (formValues.next !== formValues.conf) {
+            Swal.fire('Error', 'New passwords do not match.', 'error');
+            return;
+        }
+
+        fetch('../Config/updateAccount.php', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: `action=update_pass&curr=${encodeURIComponent(formValues.curr)}&next=${encodeURIComponent(formValues.next)}`
+        })
+        .then(res => res.text())
+        .then(res => {
+            if (res.toLowerCase().includes("success")) { 
+                Swal.fire('Success', 'Action completed!', 'success').then(() => {
+                    location.reload(); 
+                });
+            } else {
+                Swal.fire('Error', `Server sent: "${res}"`, 'error');
+            }
+        });
+    }
 }
 
-// Load saved theme
-if (localStorage.getItem("theme") === "dark") {
-    document.body.classList.add("dark-mode");
+// Close overlays on outside click
+window.onclick = function (event) {
+    if (event.target.id === "bugOverlay") closeBugReport();
 }
+
+// function toggleDarkMode() {
+//     document.body.classList.toggle("dark-mode");
+//     console.log("Dark mode:", document.body.classList.contains("dark-mode"));
+//     localStorage.setItem(
+//         "theme",
+//         document.body.classList.contains("dark-mode") ? "dark" : "light"
+//     );
+// }
+
+// Load saved theme
+// if (localStorage.getItem("theme") === "dark") {
+//     document.body.classList.add("dark-mode");
+// }

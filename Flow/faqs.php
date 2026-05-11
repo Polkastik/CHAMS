@@ -30,14 +30,14 @@ $stats = $q->getDashboardStats();
 </head>
 
 <body>
-
+    <div class="ball"></div>
     <?php include '../Modules/header.php' ?>
 
     <div class="container">
         <?php include '../Modules/sidebar.php'; ?>
-    
+
         <div class="content">
-            <div class="page-header" onclick="window.location.href='setting.php'">
+            <div class="page-header" id="pageHeadText" style="width: 11.5%; padding: 1.5%;" onclick="window.location.href='setting.php'">
                 <i class="fa-solid fa-chevron-left"></i> FAQs
             </div>
 
@@ -92,6 +92,7 @@ $stats = $q->getDashboardStats();
 
     <script src="../Assets/JS/sidebar.js"></script>
     <script src="../Assets/JS/faq.js"></script>
+    <script src="../Assets/JS/background.js"></script>
 </body>
 
 </html>

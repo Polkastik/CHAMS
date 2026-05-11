@@ -129,7 +129,7 @@ $stats = $q->getDashboardStats();
 </head>
 
 <body>
-
+<div class="ball"></div>
     <!-- Header -->
     <?php include '../Modules/header.php' ?>
 
@@ -157,7 +157,7 @@ $stats = $q->getDashboardStats();
     <?php endif; ?>
     <?php if ($role === 2): ?> <script src="../Assets/JS/ticket.js"></script> <?php endif; ?>
     <script src="../Assets/JS/dashboard.js"></script>
-
+    <script src="../Assets/JS/background.js"></script>
 </body>
 
 </html>

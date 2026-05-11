@@ -1,13 +1,13 @@
 <div class="content">
-    <div class="section-label">Operational Overview</div>
+    <div class="section-label" id="dashTitle">Operational Overview</div>
     <div class="ticket-summary">
-        <div class="summary-card" onclick="window.location.href='../flow/ticket.php?overdue=1'">
+        <div class="summary-card" onclick="window.location.href='../flow/ticket.php?overdue=1&status=Unresolved'">
             <h4>OVERDUE</h4>
             <div class="count" id="stat-overdue" style="color: #ff2d8d;"><?= $stats['overdue'] ?></div>
         </div>
 
-        <div class="summary-card" onclick="window.location.href='../flow/ticket.php?unassigned=1'">
-            <h4>OPEN</h4>
+        <div class="summary-card" onclick="window.location.href='../flow/ticket.php?unassigned=1&status=Unresolved'">
+            <h4>UNASSIGNED</h4>
             <div class="count" id="stat-open"><?= $stats['open'] ?></div>
         </div>
 
@@ -16,7 +16,7 @@
             <div class="count" id="stat-unresolved"><?= $stats['status'] ?></div>
         </div>
 
-        <div class="summary-card" onclick="window.location.href='../flow/ticket.php?priority=High'">
+        <div class="summary-card" onclick="window.location.href='../flow/ticket.php?priority=High&status=Unresolved'">
             <h4>URGENT</h4>
             <div class="count" id="stat-urgent" style="color:#bbb;"><?= $stats['urgent'] ?></div>
         </div>

@@ -75,7 +75,7 @@ document.addEventListener("DOMContentLoaded", function () {
         clearInterval(refreshInterval);
     }
 
-    refreshInterval = setInterval(refreshTicketList, 10000);
+    refreshInterval = setInterval(refreshTicketList, 5000);
 });
 
 function stopRefresh() {
@@ -84,5 +84,5 @@ function stopRefresh() {
 
 function startRefresh() {
     clearInterval(refreshInterval);
-    refreshInterval = setInterval(refreshTicketList, 10000);
+    refreshInterval = setInterval(refreshTicketList, 5000);
 }

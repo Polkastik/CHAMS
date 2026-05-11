@@ -33,10 +33,23 @@ a {
 }
 
 body {
-    background: var(--bg);
-    overflow: hidden;
-    width: 100%;
+    overflow: hidden !important;
+    max-width: 100%;
     height: 100vh;
+    background: rgb(255, 255, 255);
+    position: relative;
+    z-index: 0;
+}
+
+#altBody{
+    background: linear-gradient(to bottom, rgb(75, 95, 134), rgb(255, 255, 255));
+
+}
+
+.pageHeadText, #pageHeadText {
+    padding: 3%;
+    background: rgba(255, 255, 255, 0.8);
+    border-radius: 25px;
 }
 
 .sidebar {
@@ -65,4 +78,21 @@ body {
 
 .page-header:hover {
     transform: translateX(-5px);
+}
+
+/* For Background */
+.ball {
+    position: absolute;
+    display: inline-block;
+    border-radius: 50%;
+    width: 450px;
+    height: 450px;
+    transform: scale(2);
+    will-change: transform;
+    background: rgb(169, 73, 193);
+    background: radial-gradient(circle, rgb(37, 6, 109) 0%, rgb(0, 51, 255) 100%);
+    filter: blur(70px);
+    opacity: 0.7;
+    z-index: -1; 
+    pointer-events: none;
 }

@@ -1,3 +1,6 @@
+.content {
+    overflow: hidden !important;
+}
 .section-label {
     font-size: 0.85vw;
     font-weight: 800;
@@ -119,6 +122,14 @@
 
 #staff {
     width: 70%;
+}
+
+#dashTitle {
+    background: rgba(255, 255, 255, 0.9);
+    width: 18%;
+    padding: 1%;
+    border-radius: 25px;
+    margin-top: -1%;
 }
 
 .perf-box {
