@@ -10,7 +10,7 @@ balls.forEach(function (ball) {
 });
 
 function moveBall(ball, x, y, dx, dy) {
-    let speed = 1.5;
+    let speed = 1.8;
 
     function changeDirectionIfNecessary(x, y) {
         let rect = ball.getBoundingClientRect();

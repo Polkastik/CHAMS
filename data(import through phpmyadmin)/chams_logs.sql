@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 11, 2026 at 07:34 PM
+-- Generation Time: May 12, 2026 at 06:08 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -443,7 +443,12 @@ INSERT INTO `act_logs` (`A_ID`, `U_ID`, `act`, `module`, `ref_ID`, `created_at`)
 (400, 2, 'Added a comment to Ticket #37', 'Ticketing', 37, '2026-05-11 23:54:34'),
 (401, 1, 'Reopened Ticket #44', 'Ticketing', 44, '2026-05-11 23:55:14'),
 (402, 2, 'Resolved Ticket: ', 'Ticketing', 44, '2026-05-11 23:55:26'),
-(403, 2, 'Updated Ticket #44 (Status to Resolved)', 'Ticketing', 44, '2026-05-11 23:55:26');
+(403, 2, 'Updated Ticket #44 (Status to Resolved)', 'Ticketing', 44, '2026-05-11 23:55:26'),
+(404, 2, 'Accepted Ticket: ', 'Ticketing', 46, '2026-05-12 20:49:33'),
+(405, 2, 'Updated Ticket #46 (Status to Ongoing, Assigned to Mon Flores.)', 'Ticketing', 46, '2026-05-12 20:49:33'),
+(406, 2, 'Accepted Ticket: ', 'Ticketing', 45, '2026-05-12 20:51:11'),
+(407, 2, 'Updated Ticket #45 (Status to Ongoing, Assigned to Mon Flores.)', 'Ticketing', 45, '2026-05-12 20:51:11'),
+(408, 1, 'Saved changes to Ticket #45', 'Ticketing', 45, '2026-05-12 23:49:10');
 
 -- --------------------------------------------------------
 
@@ -645,7 +650,15 @@ INSERT INTO `login_logs` (`L_ID`, `U_ID`, `login_time`, `logout_time`, `stat`) V
 (179, 1, '2026-05-12 01:16:28', '2026-05-12 01:27:33', 'Logout'),
 (180, 1, '2026-05-12 01:27:35', '2026-05-12 01:27:44', 'Logout'),
 (181, 1, '2026-05-12 01:27:46', NULL, 'failed'),
-(182, 1, '2026-05-12 01:27:49', NULL, 'Login');
+(182, 1, '2026-05-12 01:27:49', '2026-05-12 01:34:53', 'Logout'),
+(183, 1, '2026-05-12 20:47:23', '2026-05-12 20:48:48', 'Logout'),
+(184, 3, '2026-05-12 20:48:54', '2026-05-12 20:49:19', 'Logout'),
+(185, 2, '2026-05-12 20:49:07', '2026-05-12 20:50:56', 'Logout'),
+(186, 1, '2026-05-12 20:49:21', '2026-05-13 00:07:05', 'Logout'),
+(187, 3, '2026-05-12 20:50:58', '2026-05-12 20:51:06', 'Logout'),
+(188, 2, '2026-05-12 20:51:08', '2026-05-12 22:05:09', 'Logout'),
+(189, 3, '2026-05-12 22:33:26', '2026-05-12 22:48:53', 'Logout'),
+(190, 3, '2026-05-12 22:48:56', NULL, 'Login');
 
 -- --------------------------------------------------------
 
@@ -662,7 +675,7 @@ CREATE TABLE `maintenance` (
   `created_at` datetime NOT NULL,
   `next_m` datetime DEFAULT NULL,
   `Priority` varchar(20) DEFAULT NULL,
-  `Status` varchar(20) DEFAULT NULL,
+  `Status` varchar(20) NOT NULL DEFAULT 'Pending',
   `T_description` text DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -671,9 +684,10 @@ CREATE TABLE `maintenance` (
 --
 
 INSERT INTO `maintenance` (`M_ID`, `Asset_name`, `Dept_ID`, `M_type`, `desc`, `created_at`, `next_m`, `Priority`, `Status`, `T_description`) VALUES
-(1, 'test', 7, 'Preventive', '', '2026-04-20 21:17:29', NULL, 'High', NULL, NULL),
+(1, 'test', 7, 'Preventive', '', '2026-04-20 21:17:29', NULL, 'High', 'Pending', NULL),
 (2, 's', NULL, 'Predictive', '', '2026-04-20 21:18:24', '2027-05-02 14:57:15', NULL, 'Resolved', NULL),
-(4, 'sa', NULL, 'Preventive', '', '2026-04-20 23:39:01', '2026-08-02 14:57:05', NULL, 'Resolved', NULL);
+(4, 'sa', NULL, 'Preventive', '', '2026-04-20 23:39:01', '2026-08-02 14:57:05', NULL, 'Resolved', NULL),
+(6, 'test', 9, 'Preventive', 'test', '2026-05-12 21:38:30', NULL, 'Medium', 'Pending', NULL);
 
 -- --------------------------------------------------------
 
@@ -821,7 +835,11 @@ INSERT INTO `notifications` (`N_ID`, `user_id`, `message`, `type`, `ref_id`, `is
 (128, 3, 'Your ticket #44 has been resolved.', 'ticket', 44, 0, '2026-05-11 23:25:54'),
 (129, 3, 'ticket #44 has been resolved by Staff', 'ticket', 44, 0, '2026-05-11 23:25:54'),
 (130, 3, 'Your ticket #44 has been resolved.', 'ticket', 44, 0, '2026-05-11 23:55:26'),
-(131, 3, 'ticket #44 has been resolved by Staff', 'ticket', 44, 0, '2026-05-11 23:55:26');
+(131, 3, 'ticket #44 has been resolved by Staff', 'ticket', 44, 0, '2026-05-11 23:55:26'),
+(132, 3, 'Your ticket #46 has been accepted.', 'ticket', 46, 0, '2026-05-12 20:49:33'),
+(133, 2, 'New Assignment: You have been assigned to Ticket #46 ().', 'assignment', 46, 0, '2026-05-12 20:49:33'),
+(134, 3, 'Your ticket #45 has been accepted.', 'ticket', 45, 0, '2026-05-12 20:51:11'),
+(135, 2, 'New Assignment: You have been assigned to Ticket #45 ().', 'assignment', 45, 0, '2026-05-12 20:51:11');
 
 -- --------------------------------------------------------
 
@@ -1025,31 +1043,31 @@ ALTER TABLE `notification_dismissals`
 -- AUTO_INCREMENT for table `act_logs`
 --
 ALTER TABLE `act_logs`
-  MODIFY `A_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=404;
+  MODIFY `A_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=409;
 
 --
 -- AUTO_INCREMENT for table `login_logs`
 --
 ALTER TABLE `login_logs`
-  MODIFY `L_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=183;
+  MODIFY `L_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=191;
 
 --
 -- AUTO_INCREMENT for table `maintenance`
 --
 ALTER TABLE `maintenance`
-  MODIFY `M_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `M_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `notifications`
 --
 ALTER TABLE `notifications`
-  MODIFY `N_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=132;
+  MODIFY `N_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=136;
 
 --
 -- AUTO_INCREMENT for table `notification_dismissals`
 --
 ALTER TABLE `notification_dismissals`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=171;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=144;
 
 --
 -- Constraints for dumped tables

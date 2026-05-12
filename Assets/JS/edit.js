@@ -11,7 +11,7 @@ window.addEventListener('click', function (e) {
     }
 });
 
-function confirmDelete(ticketNum) {
+async function confirmDelete(ticketNum, id) {
     const { value: password } = await Swal.fire({
         title: 'Delete Ticket #' + ticketNum + '?',
         text: "This action cannot be undone!",
@@ -32,6 +32,12 @@ function confirmDelete(ticketNum) {
         tnumInput.name = 'tnum';
         tnumInput.value = ticketNum;
         form.appendChild(tnumInput);
+
+        const idInput = document.createElement('input');
+        idInput.type = 'hidden';
+        idInput.name = 'id';
+        idInput.value = id;
+        form.appendChild(idInput);
 
         const passInput = document.createElement('input');
         passInput.name = 'confirm_password';
@@ -69,3 +75,23 @@ function submitEditForm(form) {
 
     return; 
 }
+
+document.addEventListener('DOMContentLoaded', function() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const errorType = urlParams.get('error');
+
+    if (errorType === 'wrong_password') {
+        Swal.fire({
+            icon: 'error',
+            title: 'Authentication Failed',
+            text: 'The password you entered is incorrect. Please try again.',
+            confirmButtonColor: '#d33'
+        });
+    } else if (errorType === 'db_error') {
+        Swal.fire({
+            icon: 'warning',
+            title: 'Database Error',
+            text: 'We couldn\'t delete the ticket right now. Please contact system admin.',
+        });
+    }
+});

@@ -292,10 +292,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             exit;
         }
 
-        $title = $_POST['title'] ?? $current['Title'];
+        // $title = $_POST['title'] ?? $current['Title'];
         $description = $_POST['description'] ?? $current['T_description'];
         $priority = $_POST['priority'] ?? $current['Priority'];
         $type = $_POST['type'] ?? $current['t_type'];
+        $sub_type = $_POST['sub_type'] ?? $current['sub_type_id'];
         $adminId = $_SESSION['user_id'];
         $staff_id = $_POST['staff_id'] ?? $current['Assigned_To'];
         $status = $_POST['status'] ?? $current['Status'];
@@ -321,7 +322,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                 $status = 'Ongoing';
                 $staff_id = $_SESSION['user_id'];
-                $q->logActivity($_SESSION['user_id'], "Accepted Ticket: " . $title, $id, 'Ticketing');
+                $q->logActivity($_SESSION['user_id'], "Accepted Ticket: #", $id, 'Ticketing');
 
                 $q->createNotification($current['Created_By'], "Your ticket #$id has been accepted.", "ticket", $id);
                 break;
@@ -333,7 +334,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 }
                 $status = 'Resolved';
 
-                $q->logActivity($_SESSION['user_id'], "Resolved Ticket: " . $title, $id, 'Ticketing');
+                $q->logActivity($_SESSION['user_id'], "Resolved Ticket: #", $id, 'Ticketing');
 
                 $q->createNotification($current['Created_By'], "Your ticket #$id has been resolved.", "ticket", $id);
                 break;
@@ -437,8 +438,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         $changes = [];
 
-        if ($title != $current['Title'])
-            $changes[] = "Title";
+        // if ($title != $current['Title'])
+        //     $changes[] = "Title";
         if ($status != $current['Status'])
             $changes[] = "Status to $status";
         if ($priority != $current['Priority'])
@@ -449,7 +450,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             $q->createNotification(
                 $staff_id,
-                "New Assignment: You have been assigned to Ticket #$id (" . htmlspecialchars($title) . ").",
+                "New Assignment: You have been assigned to Ticket #$id .",
                 "assignment",
                 $id
             );
@@ -465,7 +466,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             );
         }
 
-        $success = $q->updateTicket($id, $title, $description, $priority, $status, $staff_id, $due_date, $type, $issued_item_id, $issued_qty);
+        $success = $q->updateTicket($id, $description, $priority, $status, $staff_id, $due_date, $type, $issued_item_id, $issued_qty, $sub_type);
 
         if ($success) {
             $userId = $_SESSION['user_id'];

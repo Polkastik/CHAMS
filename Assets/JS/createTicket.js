@@ -1,20 +1,28 @@
-document.addEventListener('DOMContentLoaded', function() {
-    const ticketForm = document.getElementById('ticketForm');
+function fetchSubCategories(categoryId) {
+    const subGroup = document.getElementById('subCategoryGroup');
+    const subSelect = document.getElementById('sub_type');
 
-    ticketForm.addEventListener('submit', function(event) {
-        const title = document.getElementById('title').value.trim();
-        const type = document.getElementById('type').value;
-        const description = document.getElementById('description').value.trim();
+    if (!categoryId) {
+        subGroup.style.display = 'none';
+        return;
+    }
 
-        // if not filled and/or required tag removed in inspect
-        if (!title || !type || !description) {
-            event.preventDefault(); 
-            alert("⚠️ Please fill in all required fields before submitting.");
-            return false;
-        }
-
-        const submitBtn = document.querySelector('.btn-submit');
-        submitBtn.innerText = "Creating...";
-        submitBtn.disabled = true;
-    });
-});
+    fetch(`../Config/subCategories.php?cat_id=${categoryId}`)
+        .then(response => response.json())
+        .then(data => {
+            subSelect.innerHTML = '<option value="">Select a sub-category</option>';
+            
+            if (data.length > 0) {
+                data.forEach(sub => {
+                    let option = document.createElement('option');
+                    option.value = sub.sub_id;
+                    option.textContent = sub.sub_name;
+                    subSelect.appendChild(option);
+                });
+                subGroup.style.display = 'block';
+            } else {
+                subGroup.style.display = 'none';
+            }
+        })
+        .catch(err => console.error('Error fetching subcategories:', err));
+}

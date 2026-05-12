@@ -33,9 +33,11 @@ if ($from === 'inventory') {
 
 <div class="content">
     <?php if ($mode === 'maintenance'): ?>
-        <div class="page-header" onclick="history.back()">
+        <div class="page-header" id="pageHeadText" style="padding: 1.3% 1.3% 0 1.4%; width: 40%;">
+        <div class="page-header" style="width: 100%;" onclick="history.back()">
             <i class="fas fa-chevron-left"></i> VIEWING MAINTENANCE #<?= htmlspecialchars($data['M_ID']) ?>
         </div>
+    </div>
         <div class="info-grid">
             <div>
                 <div class="grid-row">
@@ -67,7 +69,7 @@ if ($from === 'inventory') {
                 </div>
             </div>
         </div>
-
+        <div id="pageHeadText">
         <span class="message-label">Maintenance Description:</span>
         <div class="message-box" id="dispMessage">
             <?= nl2br(htmlspecialchars($data['desc'])) ?>
@@ -81,8 +83,8 @@ if ($from === 'inventory') {
             </div>
             <div class="status-row">
                 <span class="status-label">Status:</span>
-                <span
-                    class="badge Status <?= strtolower($data['Status']) ?>"><?= htmlspecialchars(strtoupper($displayStatus)) ?></span>
+                <?php $statusText = !empty($data['Status']) ? $data['Status'] : 'Pending'; ?>
+                <span class="badge Status <?= strtolower($data['Status']) ?>"><?= htmlspecialchars(strtoupper($statusText)) ?></span>
             </div>
         </div>
 
@@ -108,7 +110,7 @@ if ($from === 'inventory') {
                                 RESOLVE & SCHEDULE <i class="fas fa-calendar-check"></i>
                             </button>
                         </div>
-                        <a href="../Flow/tileView.php?id=<?= $data['M_ID'] ?>&mode=maintenance&edit=true" class="btn edit-btn">
+                        <a href="../Flow/tileView.php?id=<?= $data['M_ID'] ?>&mode=maintenance&edit=true" class="btn edit-btn" style="height: 50px; margin-top: 15%;">
                             EDIT <i class="fas fa-pen"></i>
                         </a>
                     <?php else: ?>
@@ -119,9 +121,9 @@ if ($from === 'inventory') {
                 </div>
             </form>
         <?php endif; ?>
-
+</div>
     <?php elseif ($mode === 'inventory'): ?>
-        <div class="page-header" onclick="history.back()">
+        <div class="page-header" id="pageHeadText" style="padding: 1.3%;" onclick="history.back()">
             <i class="fas fa-chevron-left"></i> VIEWING ITEM # <?= htmlspecialchars(strtoupper($data['I_ID'])) ?> :
             <?= htmlspecialchars(strtoupper($data['item_name'])) ?>
         </div>
@@ -176,7 +178,7 @@ if ($from === 'inventory') {
             </div>
         </div>
 
-        <div class="actions" id="pageHeadText">
+        <div class="actions" style="margin: -5.5% 2.5% 0 0;">
             <?php if ($data['Quantity'] != 0 && $role === 1): ?>
                 <a href="../Flow/tileView.php?id=<?= $id ?>&mode=<?= $mode ?>&edit=true" class="btn edit-btn">
                     EDIT <i class="fas fa-pen"></i>
@@ -230,6 +232,11 @@ if ($from === 'inventory') {
                     <span class="value"><?= htmlspecialchars($data['dept_name'] ?? 'N/A') ?></span>
                 </div>
                 
+                <div class="grid-row">
+                    <span class="label">Sub-Category:</span>
+                    <span class="value"><?= htmlspecialchars($data['sub_name'] ?? 'N/A') ?></span>
+                </div>
+                
                 <?php if (!empty($data['issued_item_name'])): ?>
                     <div class="grid-row" style="color: #28a745; font-weight: bold;">
                         <span class="label">Quantity:</span>
@@ -276,7 +283,6 @@ if ($from === 'inventory') {
             <div class="status-row">
                 <?php
                 $displayStatus = ($data['Status'] === 'Unresolved') ? 'Pending' : $data['Status'];
-
                 ?>
                 <span class="status-label">Status:</span>
                 <span class="badge <?= strtolower($data['Status']) ?>"><?= htmlspecialchars($displayStatus) ?></span>
@@ -287,15 +293,17 @@ if ($from === 'inventory') {
                     <span class="badge <?= strtolower($data['Priority']) ?>"><?= htmlspecialchars($data['Priority']) ?></span>
                 </div>
             <?php endif; ?>
-            <div class="status-row">
-                <span class="status-label">Assigned to:</span>
-                <?php if (!empty($data['staff_FN'])): ?>
-                    <span class="badge assigned"><i class="fas fa-user-check"></i>
-                        <?= htmlspecialchars($data['staff_FN'] . ' ' . $data['staff_LN']) ?></span>
-                <?php else: ?>
-                    <span class="badge unassigned">Unassigned</span>
-                <?php endif; ?>
-            </div>
+            <?php if ($role === 1): ?>
+                <div class="status-row">
+                    <span class="status-label">Assigned to:</span>
+                    <?php if (!empty($data['staff_FN'])): ?>
+                        <span class="badge assigned"><i class="fas fa-user-check"></i>
+                            <?= htmlspecialchars($data['staff_FN'] . ' ' . $data['staff_LN']) ?></span>
+                    <?php else: ?>
+                        <span class="badge unassigned">Unassigned</span>
+                    <?php endif; ?>
+                </div>
+            <?php endif; ?>
         </div>
     <?php endif; ?>
 

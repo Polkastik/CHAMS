@@ -49,7 +49,7 @@ if (isset($_GET['ajax']) && $_GET['ajax'] === 'activity') {
 
         foreach ($tableData as $row) {
             $status = ($row['avg_time'] <= 2) ? 'excellent' :
-                      (($row['avg_time'] <= 5) ? 'good' : 'poor');
+                (($row['avg_time'] <= 5) ? 'good' : 'poor');
 
             $rows .= "
                 <tr>
@@ -71,7 +71,7 @@ if (isset($_GET['ajax']) && $_GET['ajax'] === 'activity') {
 
         foreach ($staffActivity as $row) {
             $status = ($row['response_time'] <= 2) ? 'excellent' :
-                      (($row['response_time'] <= 5) ? 'good' : 'poor');
+                (($row['response_time'] <= 5) ? 'good' : 'poor');
 
             $rows .= "
                 <tr>
@@ -108,7 +108,7 @@ if (isset($_GET['ajax']) && $_GET['ajax'] === 'activity') {
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 
-<body>
+<body id="altBody">
     <?php include '../Modules/header.php' ?>
 
 
@@ -117,128 +117,131 @@ if (isset($_GET['ajax']) && $_GET['ajax'] === 'activity') {
 
 
         <div class="content">
-            <?php if ($role === 1): ?>
-                <div class="page-title">SYSTEM ADMINISTRATOR PROFILE</div>
-            <?php else: ?>
-                <div class="page-title">
-                    <i class="fas fa-avatar"></i>
-                    PROFILE
-                </div>
-            <?php endif; ?>
-
-            <div class="summary-container">
-                <div class="summary-left">
-                    <div class="summary-avatar">
-                        <i class="fas fa-user-shield"></i>
+            <div id="pageHeadText" style="margin: -1.5% -2.5% 0 -2%;">
+                <?php if ($role === 1): ?>
+                    <div class="page-header" onclick="history.back()" style="font-size: 20px;">
+                        <i class="fa-solid fa-chevron-left"></i> SYSTEM ADMINISTRATOR PROFILE
                     </div>
+                <?php else: ?>
+                    <div class="page-header" onclick="history.back()" style="font-size: 20px;">
+                        <i class="fa-solid fa-chevron-left"></i> PROFILE
+                    </div>
+                <?php endif; ?>
+
+                <div class="summary-container">
+                    <div class="summary-left">
+                        <div class="summary-avatar">
+                            <i class="fas fa-user-shield"></i>
+                        </div>
 
 
-                    <div class="summary-info">
-                        <h2><?php echo htmlspecialchars($fullname) ?></h2>
-                        <span><?php echo htmlspecialchars($rna) ?></span>
+                        <div class="summary-info">
+                            <h2><?php echo htmlspecialchars($fullname) ?></h2>
+                            <span><?php echo htmlspecialchars($rna) ?></span>
 
 
-                        <div class="summary-report">
-                            <h3>SUMMARY PERFORMANCE REPORT</h3>
-                            <div class="stat-item">
-                                <span><?= $avgLabel ?></span>
-                                <strong><?= $perf['avg_time'] ?> Hours</strong>
-                            </div>
-                            <?php if ($role == 1): ?>
+                            <div class="summary-report">
+                                <h3>SUMMARY PERFORMANCE REPORT</h3>
                                 <div class="stat-item">
-                                    <span><?= $dailyLabel ?></span>
-                                    <strong><?= $perf['daily_avg'] ?> / day</strong>
+                                    <span><?= $avgLabel ?></span>
+                                    <strong><?= $perf['avg_time'] ?> Hours</strong>
                                 </div>
-                            <?php endif; ?>
-                            <div class="stat-item">
-                                <span>
-                                    <?= ($role == 1) ? "MISD's Ticket Resolved this Month:" : "Your Tickets Resolved this Month:" ?>
-                                </span>
-                                <strong>
-                                    <?= $perf['resolved_month'] ?>
-                                </strong>
+                                <?php if ($role == 1): ?>
+                                    <div class="stat-item">
+                                        <span><?= $dailyLabel ?></span>
+                                        <strong><?= $perf['daily_avg'] ?> / day</strong>
+                                    </div>
+                                <?php endif; ?>
+                                <div class="stat-item">
+                                    <span>
+                                        <?= ($role == 1) ? "MISD's Ticket Resolved this Month:" : "Your Tickets Resolved this Month:" ?>
+                                    </span>
+                                    <strong>
+                                        <?= $perf['resolved_month'] ?>
+                                    </strong>
+                                </div>
                             </div>
                         </div>
                     </div>
+
+
+                    <div class="chart-box">
+                        <canvas id="performanceChart"></canvas>
+                        <!-- graph goes here -->
+                    </div>
                 </div>
 
 
-                <div class="chart-box">
-                    <canvas id="performanceChart"></canvas> 
-                    <!-- graph goes here -->
-                </div>
-            </div>
-
-
-            <div class="table-box">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>(weekly)</th>
-                        </tr>
-                        <tr>
+                <div class="table-box">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>(weekly)</th>
+                            </tr>
+                            <tr>
+                                <?php if ($role == 1): ?>
+                                    <th>Staff Name</th>
+                                    <th>Ticket Counts</th>
+                                    <th>Avg Response Time</th>
+                                    <th>Performance Status</th>
+                                <?php else: ?>
+                                    <th>Recent Activity</th>
+                                    <th>Response Time</th>
+                                    <th>Performance</th>
+                                <?php endif; ?>
+                            </tr>
+                        </thead>
+                        <tbody>
                             <?php if ($role == 1): ?>
-                                <th>Staff Name</th>
-                                <th>Ticket Counts</th>
-                                <th>Avg Response Time</th>
-                                <th>Performance Status</th>
-                            <?php else: ?>
-                                <th>Recent Activity</th>
-                                <th>Response Time</th>
-                                <th>Performance</th>
-                            <?php endif; ?>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php if ($role == 1): ?>
 
-                            <?php foreach ($tableData as $row):
-                                $status = ($row['avg_time'] <= 2) ? 'excellent' :
-                                    (($row['avg_time'] <= 5) ? 'good' : 'poor');
-                                ?>
-                                <tr>
-                                    <td><?= htmlspecialchars($row['full_name']) ?></td>
-                                    <td><?= $row['ticket_count'] ?></td>
-                                    <td><?= $row['avg_time'] ?> hrs</td>
-                                    <td>
-                                        <span class="performance-tag <?= $status ?>">
-                                            <?= getPerformanceStatus($row['avg_time']) ?>
-                                        </span>
-                                    </td>
-                                </tr>
-                            <?php endforeach; ?>
-
-                        <?php else: ?>
-
-                            <?php if (!empty($staffActivity)): ?>
-                                <?php foreach ($staffActivity as $row):
-                                    $status = ($row['response_time'] <= 2) ? 'excellent' :
-                                        (($row['response_time'] <= 5) ? 'good' : 'poor');
+                                <?php foreach ($tableData as $row):
+                                    $status = ($row['avg_time'] <= 2) ? 'excellent' :
+                                        (($row['avg_time'] <= 5) ? 'good' : 'poor');
                                     ?>
                                     <tr>
-                                        <td>
-                                            <?= htmlspecialchars($row['Title']) ?><br>
-                                            <small>
-                                                <?= date("M d, Y h:i A", strtotime($row['resolved_at'])) ?>
-                                            </small>
-                                        </td>
-                                        <td><?= $row['response_time'] ?> hrs</td>
+                                        <td><?= htmlspecialchars($row['full_name']) ?></td>
+                                        <td><?= $row['ticket_count'] ?></td>
+                                        <td><?= $row['avg_time'] ?> hrs</td>
                                         <td>
                                             <span class="performance-tag <?= $status ?>">
-                                                <?= getPerformanceStatus($row['response_time']) ?>
+                                                <?= getPerformanceStatus($row['avg_time']) ?>
                                             </span>
                                         </td>
                                     </tr>
                                 <?php endforeach; ?>
-                            <?php else: ?>
-                                <tr>
-                                    <td colspan="3" style="text-align:center;">No recent activity</td>
-                                </tr>
-                            <?php endif; ?>
 
-                        <?php endif; ?>
-                    </tbody>
-                </table>
+                            <?php else: ?>
+
+                                <?php if (!empty($staffActivity)): ?>
+                                    <?php foreach ($staffActivity as $row):
+                                        $status = ($row['response_time'] <= 2) ? 'excellent' :
+                                            (($row['response_time'] <= 5) ? 'good' : 'poor');
+                                        ?>
+                                        <tr>
+                                            <td>
+                                                <?= htmlspecialchars($row['Title']) ?><br>
+                                                <small>
+                                                    <?= date("M d, Y h:i A", strtotime($row['resolved_at'])) ?>
+                                                </small>
+                                            </td>
+                                            <td><?= $row['response_time'] ?> hrs</td>
+                                            <td>
+                                                <span class="performance-tag <?= $status ?>">
+                                                    <?= getPerformanceStatus($row['response_time']) ?>
+                                                </span>
+                                            </td>
+                                        </tr>
+                                    <?php endforeach; ?>
+                                <?php else: ?>
+                                    <tr>
+                                        <td colspan="3" style="text-align:center;">No recent activity</td>
+                                    </tr>
+                                <?php endif; ?>
+
+                            <?php endif; ?>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>

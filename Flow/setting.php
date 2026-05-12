@@ -23,7 +23,7 @@ $lastName = $user['LN'] ?? '';
 </head>
 
 <body>
-
+<div class="ball"></div>
     <?php include '../Modules/header.php' ?>
 
 
@@ -49,7 +49,8 @@ $lastName = $user['LN'] ?? '';
 
         <!-- setting start -->
         <div class="content">
-            <div class="page-header" onclick="window.location.href='dashboard.php'">
+            <div class="page-header" id="pageHeadText" style="width: 19%; padding: 2%;"
+             onclick="window.location.href='dashboard.php'">
                 <i class="fa-solid fa-chevron-left"></i> SETTINGS
             </div>
 
@@ -115,6 +116,7 @@ $lastName = $user['LN'] ?? '';
 
     <script src="../Assets/JS/sidebar.js"></script>
     <script src="../Assets/JS/setting.js"></script>
+    <script src="../Assets/JS/background.js"></script>
 </body>
 
 </html>

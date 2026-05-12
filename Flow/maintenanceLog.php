@@ -23,7 +23,7 @@ if (isset($_GET['ajax']) && $_GET['ajax'] === 'list') {
             $viewUrl = "../Flow/tileView.php?id=" . $row['M_ID'] . "&mode=maintenance";
             $prioText = !empty($row['Priority']) ? $row['Priority'] : 'Not Set';
             $prioClass = strtolower(str_replace(' ', '-', $prioText));
-            $statusText = !empty($row['Status']) ? $row['Status'] : 'Not Scheduled';
+            $statusText = !empty($row['Status']) ? $row['Status'] : 'Pending';
             $statusClass = strtolower(str_replace(' ', '-', $statusText));
 
             echo '<tr>
@@ -70,6 +70,8 @@ if (isset($_GET['ajax']) && $_GET['ajax'] === 'list') {
     <link rel="stylesheet" type="text/css" href="../Assets/CSS/filter.css">
     <link rel="stylesheet" href="../Assets/CSS/invTracker.css">
     <link rel="stylesheet" href="../Assets/CSS/mainLog.css">
+    <link rel="stylesheet" href="../Assets/CSS/tile.css">
+    <link rel="stylesheet" type="text/css" href="../Assets/CSS/inventory.css">
 </head>
 
 <body id="altBody">
@@ -89,15 +91,16 @@ if (isset($_GET['ajax']) && $_GET['ajax'] === 'list') {
                     <div onclick="window.location.href='dashboard.php'">
                         <i class="fas fa-chevron-left"></i> MAINTENANCE LOG
                     </div>
-                    <?php if ($role === 1): ?>
+                <?php if ($role === 1): ?>
                         <div class="plus-icon">
                             <div class="plus-icon-item" onclick="document.getElementById('maintModal').style.display='flex'"
                                 title="Add Maintenance">
-                                <i class="fas fa-tools"></i>
+                                <i class="fas fa-plus"></i>
                             </div>
                         </div>
                     <?php endif; ?>
                 </div>
+
                 <?php $filterId = "maintenance";
                 include '../Modules/filter.php' ?>
 
@@ -180,7 +183,7 @@ if (isset($_GET['ajax']) && $_GET['ajax'] === 'list') {
 
                                         <td>
                                             <?php
-                                            $statusText = !empty($row['Status']) ? $row['Status'] : 'Not Scheduled';
+                                            $statusText = !empty($row['Status']) ? $row['Status'] : 'Pending';
 
                                             $statusClass = strtolower(str_replace(' ', '-', $statusText));
 
@@ -257,7 +260,7 @@ if (isset($_GET['ajax']) && $_GET['ajax'] === 'list') {
                     </select>
                 </div>
 
-                <div class="form-group">
+                <!-- <div class="form-group">
                     <label>Status</label>
                     <select name="status" class="form-control">
                         <option value="">Unscheduled</option>
@@ -276,7 +279,7 @@ if (isset($_GET['ajax']) && $_GET['ajax'] === 'list') {
                         <option value="+6 months">Semi-Annual</option>
                         <option value="+1 year">Annual</option>
                     </select>
-                </div>
+                </div> -->
 
                 <div style="display:flex; justify-content:flex-end; gap:10px;">
                     <button type="button" class="btn cancel"

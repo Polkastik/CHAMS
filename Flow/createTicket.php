@@ -1,13 +1,16 @@
 <?php
 session_start();
+ob_clean(); 
 require_once '../Config/auth.php';
 require_once '../Config/queryHandler.php';
 $q = new QueryHandler();
 $message = "";
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    ob_clean(); 
     $desc = trim($_POST['description'] ?? "");
     $categ = $_POST['type'] ?? "";
+    $sub_categ = $_POST['sub_type'] ?? null;
     $attachmentName = null;
 
     if (empty($desc) || empty($categ)) {
@@ -29,7 +32,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             }
         }
 
-        $ticketNum = $q->createTicket($desc, $uid, $dept, $categ, $attachmentName);
+        $ticketNum = $q->createTicket($desc, $uid, $dept, $categ, $sub_categ, $attachmentName);
 
         if ($ticketNum) {
             header("Location: dashboard.php?success=1");
@@ -74,7 +77,7 @@ $stats = $q->getDashboardStats();
 
                     <div class="form-group">
                         <label for="type">Category</label>
-                        <select name="type" id="type" required>
+                        <select name="type" id="type" onchange="fetchSubCategories(this.value)" required>
                             <option value="" disabled selected>Select a category</option>
                             <?php
                             $categories = $q->getTicketCategories();
@@ -83,6 +86,13 @@ $stats = $q->getDashboardStats();
                                     <?= htmlspecialchars($cat['categ_name']) ?>
                                 </option>
                             <?php endforeach; ?>
+                        </select>
+                    </div>
+
+                    <div class="form-group" id="subCategoryGroup" style="display:none;">
+                        <label for="sub_type">Sub-Category</label><br>
+                        <select name="sub_type" id="sub_type" style="width: 100%;">
+                            <option value="">Select a sub-category</option>
                         </select>
                     </div>
 

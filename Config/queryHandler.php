@@ -189,9 +189,11 @@ class QueryHandler
                u.FN as creator_FN, u.LN as creator_LN, u.Dept_ID as creator_dept,
                s.FN as staff_FN, s.LN as staff_LN,
                d.dept_name,
+               sc.sub_name,
                inv.item_name as issued_item_name
         FROM tickets t
         LEFT JOIN ticket_categories tc ON t.t_type = tc.TC_ID
+        LEFT JOIN ticket_subcategories sc ON t.sub_type_id = sc.sub_id
         LEFT JOIN chams_users.users u ON t.Created_By = u.U_ID
         LEFT JOIN chams_users.users s ON t.Assigned_To = s.U_ID
         LEFT JOIN chams_users.departments d ON u.Dept_ID = d.D_ID
@@ -214,19 +216,19 @@ class QueryHandler
         return $stmt->execute(['id' => $id]);
     }
 
-    public function updateTicket($ticket_id, $title, $description, $priority, $status, $staff_id, $due_date, $type, $issued_item_id, $issued_qty)
+    public function updateTicket($ticket_id, $description, $priority, $status, $staff_id, $due_date, $type, $issued_item_id, $issued_qty, $sub_type)
     {
         // Check if the incoming status is 'Resolved'
         $resolvedPart = ($status === 'Resolved') ? ", resolved_at = IFNULL(resolved_at, NOW())" : "";
 
         $stmt = $this->ticketDB->prepare("
             UPDATE tickets
-            SET Title = :title,
-                T_description = :desc,
+            SET T_description = :desc,
                 Priority = :priority,
                 Status = :status,
                 Assigned_To = :staff,
                 t_type = :type,
+                sub_type_id = :sub_type,
                 due_date = :due,
                 updated_at = NOW(),
                 issued_item_id = :i_id,
@@ -236,12 +238,12 @@ class QueryHandler
         ");
 
         return $stmt->execute([
-            'title' => $title,
             'desc' => $description,
             'priority' => $priority,
             'status' => $status,
             'staff' => !empty($staff_id) ? $staff_id : null,
             'type' => $type,
+            'sub_type' => !empty($sub_type) ? $sub_type : null,
             'due' => ($due_date !== '') ? $due_date : null,
             'i_id' => !empty($issued_item_id) ? $issued_item_id : null,
             'i_qty' => !empty($issued_qty) ? $issued_qty : 0,
@@ -272,12 +274,12 @@ class QueryHandler
     // VALUES (:tnum, :title, :desc, :user, :dept, :categ, :attach, NOW())
 
     // if you want title i removed it because of professor request
-    public function createTicket($desc, $user_id, $dept_id, $categ_id, $attachment = null)
+    public function createTicket($desc, $user_id, $dept_id, $categ_id, $sub_categ_id = null,$attachment = null)
     {
         $ticketNum = $this->generateTicketNum();
         $sql = "
-            INSERT INTO tickets (ticket_num, T_description, Created_By, Dept_ID, t_type, attachment, created_at)
-            VALUES (:tnum, :desc, :user, :dept, :categ, :attach, NOW())
+            INSERT INTO tickets (ticket_num, T_description, Created_By, Dept_ID, t_type, sub_type_id, attachment, created_at)
+            VALUES (:tnum, :desc, :user, :dept, :categ, :sub_categ, :attach, NOW())
         ";
 
         $stmt = $this->ticketDB->prepare($sql);
@@ -287,6 +289,7 @@ class QueryHandler
             'user' => $user_id,
             'dept' => $dept_id,
             'categ' => $categ_id,
+            'sub_categ' => $sub_categ_id,
             'attach' => $attachment
         ]);
         return $ticketNum;
@@ -304,6 +307,13 @@ class QueryHandler
         $stmt = $this->ticketDB->query("SELECT * FROM ticket_categories ORDER BY categ_name ASC");
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+
+    public function getSubCategoriesByCatId($catId) {
+    $sql = "SELECT sub_id, sub_name FROM ticket_subcategories WHERE category_id = ?";
+    $stmt = $this->ticketDB->prepare($sql);
+    $stmt->execute([$catId]);
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
 
     // Comments
     public function getTicketComments($ticket_id) {
