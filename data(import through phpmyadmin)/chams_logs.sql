@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 12, 2026 at 06:08 PM
+-- Generation Time: May 14, 2026 at 10:16 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -448,7 +448,8 @@ INSERT INTO `act_logs` (`A_ID`, `U_ID`, `act`, `module`, `ref_ID`, `created_at`)
 (405, 2, 'Updated Ticket #46 (Status to Ongoing, Assigned to Mon Flores.)', 'Ticketing', 46, '2026-05-12 20:49:33'),
 (406, 2, 'Accepted Ticket: ', 'Ticketing', 45, '2026-05-12 20:51:11'),
 (407, 2, 'Updated Ticket #45 (Status to Ongoing, Assigned to Mon Flores.)', 'Ticketing', 45, '2026-05-12 20:51:11'),
-(408, 1, 'Saved changes to Ticket #45', 'Ticketing', 45, '2026-05-12 23:49:10');
+(408, 1, 'Saved changes to Ticket #45', 'Ticketing', 45, '2026-05-12 23:49:10'),
+(409, 1, 'Deducted Item # 7', 'Inventory', 7, '2026-05-14 16:15:52');
 
 -- --------------------------------------------------------
 
@@ -658,7 +659,10 @@ INSERT INTO `login_logs` (`L_ID`, `U_ID`, `login_time`, `logout_time`, `stat`) V
 (187, 3, '2026-05-12 20:50:58', '2026-05-12 20:51:06', 'Logout'),
 (188, 2, '2026-05-12 20:51:08', '2026-05-12 22:05:09', 'Logout'),
 (189, 3, '2026-05-12 22:33:26', '2026-05-12 22:48:53', 'Logout'),
-(190, 3, '2026-05-12 22:48:56', NULL, 'Login');
+(190, 3, '2026-05-12 22:48:56', NULL, 'Login'),
+(191, 1, '2026-05-14 10:32:52', '2026-05-14 11:39:03', 'Logout'),
+(192, 1, '2026-05-14 11:39:06', '2026-05-14 16:06:04', 'Logout'),
+(193, 1, '2026-05-14 16:09:09', NULL, 'Login');
 
 -- --------------------------------------------------------
 
@@ -1043,13 +1047,13 @@ ALTER TABLE `notification_dismissals`
 -- AUTO_INCREMENT for table `act_logs`
 --
 ALTER TABLE `act_logs`
-  MODIFY `A_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=409;
+  MODIFY `A_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=410;
 
 --
 -- AUTO_INCREMENT for table `login_logs`
 --
 ALTER TABLE `login_logs`
-  MODIFY `L_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=191;
+  MODIFY `L_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=194;
 
 --
 -- AUTO_INCREMENT for table `maintenance`

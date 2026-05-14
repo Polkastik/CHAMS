@@ -29,6 +29,13 @@ if ($from === 'inventory') {
 } else {
     $backPath = "window.location.href='ticket.php'";
 }
+
+$depts = $q->getDepartments(); 
+$deptOptions = '<option value="">-- Select Department --</option>';
+foreach($depts as $d) {
+    $deptOptions .= "<option value='{$d['D_ID']}'>".htmlspecialchars($d['Dept_Name'])."</option>";
+}
+$deptOptions = str_replace(["\r", "\n"], '', $deptOptions);
 ?>
 
 <div class="content">
@@ -180,6 +187,9 @@ if ($from === 'inventory') {
 
         <div class="actions" style="margin: -5.5% 2.5% 0 0;">
             <?php if ($data['Quantity'] != 0 && $role === 1): ?>
+            <div class="btn cancel" onclick="promptDeduct('<?= $data['I_ID'] ?>', '<?= htmlspecialchars($data['item_name']) ?>', <?= $data['Quantity'] ?>)">
+                <i class="fas fa-minus-circle"></i> Deduct Stock
+            </div>
                 <a href="../Flow/tileView.php?id=<?= $id ?>&mode=<?= $mode ?>&edit=true" class="btn edit-btn">
                     EDIT <i class="fas fa-pen"></i>
                 </a>

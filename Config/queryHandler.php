@@ -754,6 +754,37 @@ class QueryHandler
         ]);
     }
 
+    public function deductInventory($itemId, $qty, $deptId, $adminId) {
+        try {
+            $this->inventoryDB->beginTransaction();
+
+            $stmt1 = $this->inventoryDB->prepare("UPDATE inventory_items SET Quantity = Quantity - ? WHERE I_ID = ?");
+            $stmt1->execute([(int)$qty, (int)$itemId]);
+
+            $stmt2 = $this->inventoryDB->prepare("
+                INSERT INTO inventory_tracker 
+                (I_ID, Quantity, reference_ticket, Input_by, Received_by, D_ID, date_received, created_at) 
+                VALUES (?, ?, NULL, ?, NULL, ?, NOW(), NOW())
+            ");
+            
+            $stmt2->execute([
+                (int)$itemId, 
+                (int)$qty, 
+                (int)$adminId, 
+                (int)$deptId
+            ]);
+
+            $this->inventoryDB->commit();
+            return true;
+
+        } catch (Exception $e) {
+            if ($this->inventoryDB->inTransaction()) {
+                $this->inventoryDB->rollBack();
+            }
+            die("SQL Error: " . $e->getMessage()); 
+        }
+    }
+
     public function getGroupedInventory($categoryId = null)
     {
         $sql = "SELECT 
@@ -1105,19 +1136,21 @@ class QueryHandler
                 i.item_name, i.item_brand, i.item_supplier,
                 i.Serial_number, i.Defects,
                 CONCAT(u_input.FN, ' ', u_input.LN) AS input_by_name,
-                d_rec.Dept_Name
+                d_rec.Dept_Name,
+                d_tracker.Dept_Name
             FROM inventory_tracker it
             LEFT JOIN inventory_items i ON it.I_ID = i.I_ID
             LEFT JOIN chams_users.users u_input ON it.Input_by = u_input.U_ID
             LEFT JOIN chams_users.users u_rec ON it.Received_by = u_rec.U_ID
             LEFT JOIN chams_users.departments d_rec ON u_rec.Dept_ID = d_rec.D_ID
+            LEFT JOIN chams_users.departments d_tracker ON it.D_ID = d_tracker.D_ID
             LEFT JOIN inventory_categories c ON i.categ_ID = c.IC_ID
             WHERE 1=1";
 
         $params = [];
 
         if (!empty($filters['department']) && $filters['department'] !== 'All') {
-            $sql .= " AND d_rec.Dept_Name = :dept";
+            $sql .= " AND (d_rec.Dept_Name = :dept OR d_tracker.Dept_Name = :dept)";
             $params['dept'] = $filters['department'];
         }
 
@@ -1233,12 +1266,13 @@ class QueryHandler
                     FROM inventory_tracker it
                     LEFT JOIN chams_users.users u ON it.Received_by = u.U_ID 
                     LEFT JOIN chams_users.departments d ON u.Dept_ID = d.D_ID
+                    LEFT JOIN chams_users.departments d_tracker ON it.D_ID = d_tracker.D_ID
                     LEFT JOIN inventory_items i ON it.I_ID = i.I_ID
                     LEFT JOIN inventory_categories c ON i.categ_ID = c.IC_ID
                     WHERE 1=1";
 
                 if (!empty($filters['department']) && $filters['department'] !== 'All') {
-                    $sql .= " AND d.Dept_Name = :dept";
+                    $sql .= " AND (d_rec.Dept_Name = :dept OR d_tracker.Dept_Name = :dept)";
                     $params['dept'] = $filters['department'];
                 }
 

@@ -95,3 +95,55 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 });
+
+window.promptDeduct = promptDeduct;
+
+    async function promptDeduct(itemId, itemName, currentStock) {
+    const { value: formValues } = await Swal.fire({
+        title: `Deduct from ${itemName}`,
+        html:
+            '<label style="display:block; text-align:left;">Quantity to Deduct</label>' +
+            '<input style="width: 80%;" id="swal-qty" class="swal2-input" type="number" min="1" max="' + currentStock + '">' +
+            '<label style="display:block; text-align:left; margin-top:10px;">Target Department</label>' +
+            `<select id="swal-dept" class="swal2-input">${globalDeptOptions}</select>`,
+        focusConfirm: false,
+        preConfirm: () => {
+            const qty = document.getElementById('swal-qty').value;
+            const dept = document.getElementById('swal-dept').value;
+            if (!qty || !dept) {
+                Swal.showValidationMessage('Both fields are required');
+            }
+            return { qty, dept };
+        }
+    });
+
+    if (formValues) {
+        const params = new URLSearchParams();
+        params.append('action', 'deduct');
+        params.append('item_id', itemId);
+        params.append('qty', formValues.qty);
+        params.append('d_id', formValues.dept);
+
+        fetch('../Config/inventoryAction.php', {
+            method: 'POST',
+            body: params
+        })
+        .then(res => {
+            if (!res.ok) throw new Error('Network response was not ok');
+            return res.text();
+        })
+        .then(res => {
+            console.log("Server Response:", res);
+            if (res.trim().toLowerCase().includes("success")) {
+                Swal.fire('Updated!', 'Stock has been deducted.', 'success')
+                    .then(() => location.reload());
+            } else {
+                Swal.fire('Error', 'Server said: ' + res, 'error');
+            }
+        })
+        .catch(err => {
+            console.error("Fetch error:", err);
+            Swal.fire('Upload Failed', 'Check console for details', 'error');
+        });
+    }
+}

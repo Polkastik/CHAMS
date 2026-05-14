@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 12, 2026 at 06:08 PM
+-- Generation Time: May 14, 2026 at 10:16 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -79,13 +79,13 @@ CREATE TABLE `inventory_items` (
 --
 
 INSERT INTO `inventory_items` (`I_ID`, `categ_ID`, `item_name`, `item_type`, `item_brand`, `Quantity`, `Threshold`, `item_supplier`, `Defects`, `Serial_number`, `date_received`, `collected_by`, `created_at`, `updated_at`, `created_by`) VALUES
-(1, 3, 'ROG 5220', 3, 'ROG', 2000, 200, 'INTELI', 'No', '1234', '2026-04-05 18:15:00', NULL, '2026-04-05 18:16:20', '2026-05-08 15:11:28', 1),
+(1, 3, 'ROG 5220', 3, 'ROG', 1300, 200, 'INTELI', 'No', '1234', '2026-04-05 18:15:00', NULL, '2026-04-05 18:16:20', '2026-05-08 15:11:28', 1),
 (2, 4, '005', 1, 'brand', 400, 100, 'supplier', 'No', NULL, '2026-04-05 21:20:00', NULL, '2026-04-05 21:20:56', NULL, 1),
 (3, 4, '005', 1, 'SONY', 0, 200, 'INTELI', 'No', NULL, '2026-04-05 21:20:00', NULL, '2026-04-05 21:40:16', '2026-04-17 21:11:18', 1),
 (4, 4, '005', 1, 'Delta', 0, 2, 'supplier', 'No', NULL, '2026-04-17 21:47:00', NULL, '2026-04-17 21:48:25', NULL, 1),
 (5, 4, '005', 1, '123', 500, 200, 'INTELI', 'No', NULL, '2026-04-29 21:22:00', NULL, '2026-04-29 21:22:36', NULL, 1),
 (6, 4, '005', 1, '123', 500, 200, 'INTELI', 'No', NULL, '2026-04-30 20:56:00', NULL, '2026-04-30 20:56:41', NULL, 1),
-(7, 4, '005', 1, '123', 15, 2, 'INFINI', 'No', NULL, '2026-04-30 22:43:00', NULL, '2026-04-30 22:43:19', NULL, 1),
+(7, 4, '005', 1, '123', 10, 2, 'INFINI', 'No', NULL, '2026-04-30 22:43:00', NULL, '2026-04-30 22:43:19', NULL, 1),
 (8, 6, 'LaserJet pro', 2, 'Delta', 150, 20, 'ErgoFurniture Ltd.', 'No', NULL, '2026-05-08 12:57:00', NULL, '2026-05-08 12:57:44', NULL, 1),
 (9, 2, 'Intelli mouse', 2, 'Delta', 100, 20, 'ErgoFurniture Ltd.', 'No', NULL, '2026-05-08 12:59:00', NULL, '2026-05-08 12:59:30', NULL, 1),
 (10, 1, 'LAN cables', 2, 'brand', 250, 20, 'ErgoFurniture Ltd.', 'No', 'N/A', '2026-05-08 13:06:00', NULL, '2026-05-08 13:07:14', '2026-05-08 13:08:23', 1),
@@ -102,9 +102,10 @@ CREATE TABLE `inventory_tracker` (
   `IT_ID` int(11) NOT NULL,
   `I_ID` int(11) NOT NULL,
   `Quantity` int(11) NOT NULL,
-  `reference_ticket` int(11) NOT NULL,
+  `reference_ticket` int(11) DEFAULT NULL,
   `Input_by` int(11) NOT NULL,
-  `Received_by` int(11) NOT NULL,
+  `Received_by` int(11) DEFAULT NULL,
+  `D_ID` int(11) DEFAULT NULL,
   `date_received` datetime NOT NULL,
   `created_at` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -113,19 +114,23 @@ CREATE TABLE `inventory_tracker` (
 -- Dumping data for table `inventory_tracker`
 --
 
-INSERT INTO `inventory_tracker` (`IT_ID`, `I_ID`, `Quantity`, `reference_ticket`, `Input_by`, `Received_by`, `date_received`, `created_at`) VALUES
-(1, 2, 191, 1, 1, 3, '2026-04-12 16:06:40', '2026-04-12 16:06:40'),
-(2, 3, 200, 2, 1, 3, '2026-04-11 16:06:40', '2026-04-12 16:06:40'),
-(3, 3, 0, 4, 1, 3, '2026-04-13 16:06:40', '2026-04-13 16:06:40'),
-(4, 3, 20, 5, 1, 3, '2026-04-13 16:06:40', '2026-04-15 16:06:40'),
-(5, 3, 5, 3, 1, 3, '2026-04-22 16:06:40', '2026-04-22 16:06:40'),
-(6, 3, 20, 4, 1, 3, '2026-04-01 16:06:40', '2026-04-02 16:06:40'),
-(7, 2, 5, 6, 1, 3, '2026-04-22 16:06:40', '2026-04-23 16:06:40'),
-(8, 4, 5, 6, 1, 3, '2026-04-17 16:06:40', '2026-04-22 16:06:40'),
-(9, 2, 5, 6, 1, 3, '2026-04-14 16:06:40', '2026-04-15 16:06:40'),
-(10, 1, 1, 7, 1, 4, '2026-04-22 16:53:16', '0000-00-00 00:00:00'),
-(11, 6, 200, 43, 1, 3, '2026-05-11 16:38:35', '0000-00-00 00:00:00'),
-(12, 6, 300, 44, 1, 3, '2026-05-11 23:29:03', '0000-00-00 00:00:00');
+INSERT INTO `inventory_tracker` (`IT_ID`, `I_ID`, `Quantity`, `reference_ticket`, `Input_by`, `Received_by`, `D_ID`, `date_received`, `created_at`) VALUES
+(1, 2, 191, 1, 1, 3, NULL, '2026-04-12 16:06:40', '2026-04-12 16:06:40'),
+(2, 3, 200, 2, 1, 3, NULL, '2026-04-11 16:06:40', '2026-04-12 16:06:40'),
+(3, 3, 0, 4, 1, 3, NULL, '2026-04-13 16:06:40', '2026-04-13 16:06:40'),
+(4, 3, 20, 5, 1, 3, NULL, '2026-04-13 16:06:40', '2026-04-15 16:06:40'),
+(5, 3, 5, 3, 1, 3, NULL, '2026-04-22 16:06:40', '2026-04-22 16:06:40'),
+(6, 3, 20, 4, 1, 3, NULL, '2026-04-01 16:06:40', '2026-04-02 16:06:40'),
+(7, 2, 5, 6, 1, 3, NULL, '2026-04-22 16:06:40', '2026-04-23 16:06:40'),
+(8, 4, 5, 6, 1, 3, NULL, '2026-04-17 16:06:40', '2026-04-22 16:06:40'),
+(9, 2, 5, 6, 1, 3, NULL, '2026-04-14 16:06:40', '2026-04-15 16:06:40'),
+(10, 1, 1, 7, 1, 4, NULL, '2026-04-22 16:53:16', '0000-00-00 00:00:00'),
+(11, 6, 200, 43, 1, 3, NULL, '2026-05-11 16:38:35', '0000-00-00 00:00:00'),
+(12, 6, 300, 44, 1, 3, NULL, '2026-05-11 23:29:03', '0000-00-00 00:00:00'),
+(15, 1, 500, NULL, 1, NULL, 23, '2026-05-14 15:26:27', '2026-05-14 15:26:27'),
+(16, 1, 200, NULL, 1, NULL, 13, '2026-05-14 16:10:48', '2026-05-14 16:10:48'),
+(17, 7, 2, NULL, 1, NULL, 21, '2026-05-14 16:14:18', '2026-05-14 16:14:18'),
+(18, 7, 3, NULL, 1, NULL, 15, '2026-05-14 16:15:52', '2026-05-14 16:15:52');
 
 -- --------------------------------------------------------
 
@@ -176,7 +181,8 @@ ALTER TABLE `inventory_tracker`
   ADD KEY `I_ID` (`I_ID`),
   ADD KEY `Input_by` (`Input_by`),
   ADD KEY `Received_by` (`Received_by`),
-  ADD KEY `reference_ticket` (`reference_ticket`);
+  ADD KEY `reference_ticket` (`reference_ticket`),
+  ADD KEY `inventory_tracker_ibfk_5` (`D_ID`);
 
 --
 -- Indexes for table `inventory_type`
@@ -204,7 +210,7 @@ ALTER TABLE `inventory_items`
 -- AUTO_INCREMENT for table `inventory_tracker`
 --
 ALTER TABLE `inventory_tracker`
-  MODIFY `IT_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `IT_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- AUTO_INCREMENT for table `inventory_type`
@@ -237,7 +243,8 @@ ALTER TABLE `inventory_tracker`
   ADD CONSTRAINT `inventory_tracker_ibfk_1` FOREIGN KEY (`I_ID`) REFERENCES `inventory_items` (`I_ID`),
   ADD CONSTRAINT `inventory_tracker_ibfk_2` FOREIGN KEY (`Input_by`) REFERENCES `chams_users`.`users` (`U_ID`),
   ADD CONSTRAINT `inventory_tracker_ibfk_3` FOREIGN KEY (`Received_by`) REFERENCES `chams_users`.`users` (`U_ID`),
-  ADD CONSTRAINT `inventory_tracker_ibfk_4` FOREIGN KEY (`reference_ticket`) REFERENCES `chams_ticketing`.`tickets` (`T_ID`);
+  ADD CONSTRAINT `inventory_tracker_ibfk_4` FOREIGN KEY (`reference_ticket`) REFERENCES `chams_ticketing`.`tickets` (`T_ID`),
+  ADD CONSTRAINT `inventory_tracker_ibfk_5` FOREIGN KEY (`D_ID`) REFERENCES `chams_users`.`departments` (`D_ID`) ON DELETE SET NULL ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

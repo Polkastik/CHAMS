@@ -39,7 +39,7 @@ if (isset($_GET['ajax']) && $_GET['ajax'] === 'list') {
 
             echo '<tr>
                 <td>' . date('m/d/y', strtotime($row['date_delivered'])) . '</td>
-                <td>' . htmlspecialchars($row['Dept_Name'] ?? 'N/A') . '</td>
+                <td>' . htmlspecialchars($row['Dept_Name'] ?? $row['D_ID'] ?? 'N/A') . '</td>
                 <td>' . htmlspecialchars($row['item_name']) . '</td>
                 <td>' . htmlspecialchars($row['item_brand']) . '</td>
                 <td>' . htmlspecialchars($row['tracker_qty']) . '</td>
@@ -129,7 +129,7 @@ if (isset($_GET['ajax']) && $_GET['ajax'] === 'list') {
                                 <?php foreach ($items as $row): ?>
                                     <tr>
                                         <td><?= date('m/d/y', strtotime($row['date_delivered'])) ?></td>
-                                        <td><?= htmlspecialchars($row['Dept_Name'] ?? 'N/A') ?></td>
+                                        <td><?= htmlspecialchars($row['Dept_Name'] ?? $row['D_ID'] ?? 'N/A') ?></td>
                                         <td><?= htmlspecialchars($row['item_name']) ?></td>
                                         <td><?= htmlspecialchars($row['item_brand']) ?></td>
                                         <td><?= htmlspecialchars($row['tracker_qty']) ?></td>

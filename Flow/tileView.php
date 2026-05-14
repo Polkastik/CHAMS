@@ -76,6 +76,10 @@ if (isset($_GET['ajax']) && $_GET['ajax'] === 'view') {
 
     </div>
 
+
+    <script>
+        const globalDeptOptions = `<?= $deptOptions ?>`;
+    </script>
     <script src="../Assets/JS/sidebar.js"></script>
     <script src="../Assets/JS/edit.js"></script>
     <script src="../Assets/JS/background.js"></script>
