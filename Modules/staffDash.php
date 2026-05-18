@@ -12,7 +12,7 @@
         </div>
 
         <div class="summary-card" onclick="window.location.href='../flow/ticket.php?status=Unresolved'">
-            <h4>UNRESOLVED</h4>
+            <h4>PENDING</h4>
             <div class="count" id="stat-unresolved"><?= $stats['status'] ?></div>
         </div>
 
@@ -24,7 +24,7 @@
 
     <div class="dashboard-grid">
         <div class="grid-box activity-box" style="width: 80%">
-            <div class="section-label">Available Ticketsss</div>
+            <div class="section-label">Available Tickets</div>
             <div id="ticket-loader" class="loader-overlay">
                 <div class="spinner"></div>
                 <span>Loading Data...</span>

@@ -12,7 +12,7 @@
         </div>
 
         <div class="summary-card" onclick="window.location.href='../flow/ticket.php?status=Unresolved'">
-            <h4>UNRESOLVED</h4>
+            <h4>PENDING</h4>
             <div class="count" id="stat-unresolved"><?= $stats['status'] ?></div>
         </div>
 

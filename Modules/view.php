@@ -57,7 +57,7 @@ $deptOptions = str_replace(["\r", "\n"], '', $deptOptions);
                 </div>
                 <div class="grid-row">
                     <span class="label">Department:</span>
-                    <span class="value"><?= htmlspecialchars($data['Dept_ID']) ?></span>
+                    <span class="value"><?= htmlspecialchars($data['Dept_Name']) ?? 'N/A'?></span>
                 </div>
             </div>
 
@@ -106,7 +106,7 @@ $deptOptions = str_replace(["\r", "\n"], '', $deptOptions);
                             style="width: 25%; background: #e3f2fd; border-left: 5px solid #2196F3; padding: 20px;">
                             <p style="font-weight: bold;"><i class="fas fa-tools"></i> MAINTENANCE ACTION</p>
                             <label>Next Maintenance Interval:</label>
-                            <select name="interval" class="value" style="width: 100%; margin: 10px 0;" onfocus="stopTileRefresh()">
+                            <select name="interval" class="value" style="width: 100%; margin: 10px 0;" onfocus="stopRefresh()">
                                 <option value="+1 month" <?= ($data['M_type'] == 'Predictive') ? 'selected' : '' ?>>Monthly</option>
                                 <option value="+3 months" <?= ($data['M_type'] == 'Preventive' || empty($data['M_type'])) ? 'selected' : '' ?>>Quarterly</option>
                                 <option value="+6 months">Semi-Annual</option>

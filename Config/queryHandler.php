@@ -1648,7 +1648,11 @@ class QueryHandler
 
     public function getMaintenanceById($id)
     {
-        $sql = "SELECT * FROM maintenance WHERE M_ID = ?";
+        $sql = "SELECT m.*, d.Dept_Name 
+                FROM maintenance m 
+                LEFT JOIN chams_users.departments d ON m.Dept_ID = d.D_ID
+                WHERE m.M_ID = ?";
+                
         $stmt = $this->logsDB->prepare($sql);
         $stmt->execute([$id]);
         return $stmt->fetch(PDO::FETCH_ASSOC);
