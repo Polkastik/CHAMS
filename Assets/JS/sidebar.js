@@ -2,23 +2,13 @@ function toggleMenu() {
     const sidebar = document.getElementById("sidebar");
     sidebar.classList.toggle("collapsed");
 
-    // Save the state to localStorage
-    if (sidebar.classList.contains("collapsed")) {
-        localStorage.setItem("sidebarState", "collapsed");
-    } else {
-        localStorage.setItem("sidebarState", "expanded");
-    }
-}
+    const isCollapsed = sidebar.classList.contains("collapsed");
+    const state = isCollapsed ? "collapsed" : "expanded";
 
-// Function to apply the saved state immediately on page load
-(function() {
-    const savedState = localStorage.getItem("sidebarState");
-    const sidebar = document.getElementById("sidebar");
+    localStorage.setItem("sidebarState", state);
     
-    if (sidebar && savedState === "collapsed") {
-        sidebar.classList.add("collapsed");
-    }
-})();
+    document.cookie = "sidebarState=" + state + "; path=/; max-age=" + (60*60*24*30); 
+}
 
 function openNotif() { document.getElementById("notifOverlay").style.display = "flex"; }
 function closeNotif() { document.getElementById("notifOverlay").style.display = "none"; }

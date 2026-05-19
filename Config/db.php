@@ -24,6 +24,7 @@ class database
             );
 
             $live_connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            $live_connection->exec("SET time_zone = '+08:00';");
 
             $this->users_conn     = $live_connection;
             $this->ticket_conn    = $live_connection;

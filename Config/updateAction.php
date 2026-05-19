@@ -3,6 +3,8 @@ session_start();
 require_once 'auth.php';
 require_once 'queryHandler.php';
 
+date_default_timezone_set('Asia/Manila');
+
 $q = new QueryHandler();
 
 function clean_input($data)

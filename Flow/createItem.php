@@ -1,7 +1,7 @@
 <?php
 session_start();
-require_once '../Config/auth.php';
-require_once '../Config/queryHandler.php';
+require_once dirname(__DIR__) . '/Config/auth.php';
+require_once dirname(__DIR__) . '/Config/queryHandler.php';
 $q = new QueryHandler();
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -48,20 +48,20 @@ $types = $q->getInventoryTypes();
 
 <head>
     <title>CHAMS - CREATE ITEM</title>
-    <?php include '../Config/univHead.php'; ?>
-    <link rel="stylesheet" href="../Assets/CSS/createTicket.css">
-    <link rel="stylesheet" href="../Assets/CSS/tile.css">
+    <?php include dirname(__DIR__) . '/Config/univHead.php'; ?>
+    <link rel="stylesheet" href="/Assets/CSS/createTicket.css">
+    <link rel="stylesheet" href="/Assets/CSS/tile.css">
 </head>
 
 <body>
     <div class="ball"></div>
     <!-- Header -->
-    <?php include '../Modules/header.php' ?>
+    <?php include '/Modules/header.php' ?>
 
 
     <!-- sidebar -->
     <div class="container">
-        <?php include '../Modules/sidebar.php' ?>
+        <?php include '/Modules/sidebar.php' ?>
 
         <div class="content">
             <div class="page-header" onclick="window.location.href='inventory.php'">
@@ -151,9 +151,9 @@ $types = $q->getInventoryTypes();
 
     </div>
 
-    <script src="../Assets/JS/sidebar.js"></script>
-    <script src="../Assets/JS/createItem.js"></script>
-    <script src="../Assets/JS/background.js"></script>
+    <script src="/Assets/JS/sidebar.js"></script>
+    <script src="/Assets/JS/createItem.js"></script>
+    <script src="/Assets/JS/background.js"></script>
 </body>
 
 </html>

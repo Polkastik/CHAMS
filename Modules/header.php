@@ -1,5 +1,7 @@
 <?php
 require_once '../Config/queryHandler.php';
+$sidebarClass = (isset($_COOKIE['sidebarState']) && $_COOKIE['sidebarState'] === 'collapsed') ? 'collapsed' : '';
+
 if (!isset($q)) {
     $q = new QueryHandler();
 }
@@ -29,7 +31,7 @@ if (isset($_GET['ajax']) && $_GET['ajax'] === 'notif_count') {
     <div class="top-left">
         <i class="fas fa-bars menu-icon" onclick="toggleMenu()"></i>
         <div class="logo">
-            <img src="../Assets/Images/ICONS/CHAMS.png" alt="CHAMS Logo"
+            <img src="../Assets/Images/ICONS/CHAMS.webp" alt="CHAMS Logo"
                 onclick="window.location.href='../Flow/dashboard.php'">
         </div>
     </div>

@@ -113,11 +113,11 @@ if (isset($_GET['ajax']) && $_GET['ajax'] === 'activity') {
 </head>
 
 <body id="altBody">
-    <?php include '../Modules/header.php' ?>
+    <?php include dirname(__DIR__) . '/Modules/header.php' ?>
 
 
     <div class="container">
-        <?php include '../Modules/sidebar.php' ?>
+        <?php include dirname(__DIR__) . '/Modules/sidebar.php' ?>
 
 
         <div class="content">

@@ -1,4 +1,6 @@
 <?php
+$sidebarClass = (isset($_COOKIE['sidebarState']) && $_COOKIE['sidebarState'] === 'collapsed') ? 'collapsed' : '';
+
 if (!isset($_SESSION)) {
     session_start();
 }
@@ -12,14 +14,6 @@ $lname = $_SESSION['lname'];
 $fullname = $fname . " " . $lname;
 ?>
 
-<script>
-    (function() {
-        const savedState = localStorage.getItem("sidebarState");
-        if (savedState === "collapsed") {
-            document.documentElement.classList.add('sidebar-is-collapsed');
-        }
-    })();
-</script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <div class="sidebar" id="sidebar">
@@ -103,3 +97,13 @@ $fullname = $fname . " " . $lname;
     </a>
 
 </div>
+
+<script>
+    (function() {
+        var savedState = localStorage.getItem("sidebarState");
+        var sidebar = document.getElementById("sidebar");
+        if (sidebar && savedState === "collapsed") {
+            sidebar.classList.add("collapsed");
+        }
+    })();
+</script>

@@ -1452,7 +1452,7 @@ class QueryHandler
 
     // activity Logs
     public function getActivityLogs($filters = [], $page = 1, $limit = 5)
-    {
+    {        
         $sql = "SELECT u.FN, u.LN, a.A_ID, a.U_ID, a.act, a.module, a.ref_ID, a.created_at
             FROM act_logs a
             LEFT JOIN users u ON a.U_ID = u.U_ID
@@ -1493,6 +1493,9 @@ class QueryHandler
 
     public function logActivity($u_id, $act, $ref, $module)
     {
+        
+        date_default_timezone_set('Asia/Manila');
+        
         $sql = "INSERT INTO act_logs (U_ID, act, ref_ID, module, created_at)
             VALUES (:u_id, :act, :ref, :module, NOW())";
 

@@ -1,8 +1,8 @@
 <?php
 session_start();
 ob_clean(); 
-require_once '../Config/auth.php';
-require_once '../Config/queryHandler.php';
+require_once dirname(__DIR__) . '/Config/auth.php';
+require_once dirname(__DIR__) . '/Config/queryHandler.php';
 $q = new QueryHandler();
 $message = "";
 
@@ -51,18 +51,18 @@ $stats = $q->getDashboardStats();
 
 <head>
     <title>CHAMS - CREATE TICKET</title>
-    <?php include '../Config/univHead.php'; ?>
-    <link rel="stylesheet" type="text/css" href="../Assets/CSS/createTicket.css">
+    <?php include dirname(__DIR__) . '/Config/univHead.php'; ?>
+    <link rel="stylesheet" type="text/css" href="/Assets/CSS/createTicket.css">
 </head>
 
 <body>
     <div class="ball"></div>
     <!-- Header -->
-    <?php include '../Modules/header.php' ?>
+    <?php include dirname(__DIR__) . '/Modules/header.php' ?>
 
     <!-- sidebar -->
     <div class="container">
-        <?php include '../Modules/sidebar.php' ?>
+        <?php include dirname(__DIR__) . '/Modules/sidebar.php' ?>
 
         <div class="content">
             <div class="page-header" onclick="window.location.href='dashboard.php'">
@@ -116,9 +116,9 @@ $stats = $q->getDashboardStats();
             </div>
         </div>
 
-        <script src="../Assets/JS/sidebar.js"></script>
-        <script src="../Assets/JS/createTicket.js"></script>
-        <script src="../Assets/JS/background.js"></script>
+        <script src="/Assets/JS/sidebar.js"></script>
+        <script src="/Assets/JS/createTicket.js"></script>
+        <script src="/Assets/JS/background.js"></script>
 </body>
 
 </html>

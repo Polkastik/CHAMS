@@ -17,18 +17,18 @@ $lastName = $user['LN'] ?? '';
 <head>
     <meta charset="UTF-8">
     <title>CHAMS - SETTING</title>
-    <?php include '../Config/univHead.php'; ?>
+    <?php include dirname(__DIR__) . '/Config/univHead.php'; ?>
     <link rel="stylesheet" href="../Assets/CSS/setting.css">
     <link rel="stylesheet" href="../Assets/CSS/filter.css">
 </head>
 
 <body>
 <div class="ball"></div>
-    <?php include '../Modules/header.php' ?>
+    <?php include dirname(__DIR__) . '/Modules/header.php' ?>
 
 
     <div class="container">
-        <?php include '../Modules/sidebar.php' ?>
+        <?php include dirname(__DIR__) . '/Modules/sidebar.php' ?>
 
     <!-- Overlays -->
         <div id="bugOverlay">
