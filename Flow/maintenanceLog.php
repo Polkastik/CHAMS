@@ -1,7 +1,11 @@
 <?php
 session_start();
-require_once '../Config/auth.php';
-require_once '../Config/queryHandler.php';
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
+require_once  dirname(__DIR__) . '/Config/auth.php';
+require_once  dirname(__DIR__) . '/Config/queryHandler.php';
 $q = new QueryHandler();
 
 $user = $q->getUserByEmpId($uid);
@@ -25,13 +29,26 @@ if (isset($_GET['ajax']) && $_GET['ajax'] === 'list') {
             $prioClass = strtolower(str_replace(' ', '-', $prioText));
             $statusText = !empty($row['Status']) ? $row['Status'] : 'Pending';
             $statusClass = strtolower(str_replace(' ', '-', $statusText));
+            $next_m_content = "";
+            if (empty($row['next_m'])) {
+                $next_m_content = "Not Scheduled";
+            } else {
+                $seconds = strtotime($row['next_m']) - time();
+                $days = floor($seconds / (60 * 60 * 24));
+
+                if ($seconds < 0) {
+                    $next_m_content = "Overdue";
+                } else {
+                    $next_m_content = $days . " days left";
+                }
+            }
 
             echo '<tr>
                 <td>' . htmlspecialchars($row['Asset_name']) . '</td>
                 <td>' . htmlspecialchars($row['Dept_Name'] ?? 'N/A') . '</td>
                 <td>' . date('M d, Y | h:i A', strtotime($row['created_at'])) . '</td>
                 <td>' . htmlspecialchars($row['M_type']) . '</td>
-                <td>' . htmlspecialchars($row['next_m'] ?? 'Not Scheduled') . '</td>
+                <td>' . htmlspecialchars($next_m_content) . '</td>
                 <td><span class="badge ' . $prioClass . '">' . htmlspecialchars($prioText) . '</span></td>
                 <td><span class="badge ' . $statusClass . '">' . htmlspecialchars($statusText) . '</span></td>
                 <td>
@@ -66,23 +83,23 @@ if (isset($_GET['ajax']) && $_GET['ajax'] === 'list') {
 <head>
     <meta charset="UTF-8">
     <title>CHAMS - MAINTENANCE LOG</title>
-    <?php include '../Config/univHead.php'; ?>
-    <link rel="stylesheet" type="text/css" href="../Assets/CSS/filter.css">
-    <link rel="stylesheet" href="../Assets/CSS/invTracker.css">
-    <link rel="stylesheet" href="../Assets/CSS/mainLog.css">
-    <link rel="stylesheet" href="../Assets/CSS/tile.css">
-    <link rel="stylesheet" type="text/css" href="../Assets/CSS/inventory.css">
+    <?php include dirname(__DIR__) . '/Config/univHead.php'; ?>
+    <link rel="stylesheet" type="text/css" href="/Assets/CSS/filter.css">
+    <link rel="stylesheet" href="/Assets/CSS/invTracker.css">
+    <link rel="stylesheet" href="/Assets/CSS/mainLog.css">
+    <link rel="stylesheet" href="/Assets/CSS/tile.css">
+    <link rel="stylesheet" type="text/css" href="/Assets/CSS/inventory.css">
 </head>
 
 <body id="altBody">
 
 
-    <?php include '../Modules/header.php' ?>
+    <?php include dirname(__DIR__) . '/Modules/header.php' ?>
 
     <div class="container">
         <?php $filterId = 'maintLog';
         $mode = "maintenance";
-        include '../Modules/sidebar.php';
+        include dirname(__DIR__) . '/Modules/sidebar.php';
         ?>
 
         <div class="content" style="overflow-x: hidden;">
@@ -132,11 +149,24 @@ if (isset($_GET['ajax']) && $_GET['ajax'] === 'list') {
 
                                     $isOverdue = (!empty($row['next_m']) && strtotime($row['next_m']) < time());
 
-                                    $daysLeft = (strtotime($row['next_m']) - time()) / (60 * 60 * 24);
+                                    $next_m_content = "";
+                                    if (empty($row['next_m'])) {
+                                        $next_m_content = "<span>Not Scheduled</span>";
+                                    } else {
+                                        // ✅ SAFE: We already verified next_m is not empty here
+                                        $seconds = strtotime($row['next_m']) - time();
+                                        $days = floor($seconds / (60 * 60 * 24));
+
+                                        if ($seconds < 0) {
+                                            $next_m_content = "Overdue";
+                                        } else {
+                                            $next_m_content = $days . " days left";
+                                        }
+                                    }
 
                                     if ($isOverdue) {
                                         $priority = 'High';
-                                    } elseif ($daysLeft <= 3) {
+                                    } elseif ($days <= 3) {
                                         $priority = 'Medium';
                                     } else {
                                         $priority = 'Low';
@@ -296,9 +326,9 @@ if (isset($_GET['ajax']) && $_GET['ajax'] === 'list') {
         </div>
     </div>
 
-    <script src="../Assets/JS/sidebar.js"></script>
-    <script src="../Assets/JS/maintLog.js"></script>
-    <script src="../Assets/JS/filter.js"></script>
+    <script src="/Assets/JS/sidebar.js"></script>
+    <script src="/Assets/JS/maintLog.js"></script>
+    <script src="/Assets/JS/filter.js"></script>
 </body>
 
 </html>

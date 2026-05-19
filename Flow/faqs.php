@@ -5,7 +5,7 @@ require_once '../Config/queryHandler.php';
 $q = new QueryHandler();
 
 if (!isset($_SESSION['user_id'])) {
-    header("Location: Login.php");
+    header("Location: index.php");
     exit;
 }
 

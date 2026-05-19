@@ -4,9 +4,10 @@
 
 class database
 {
-    private $host = "localhost";
-    private $user = "root";
-    private $pass = "";
+    private $host = "sql200.infinityfree.com";
+    private $user = "if0_41961525";
+    private $pass = "HX03Ig4eZx42Z";
+    private $dbname = "if0_41961525_chams_central";
 
     public $users_conn;
     public $ticket_conn;
@@ -15,40 +16,19 @@ class database
 
     public function connect()
     {
-        try {
-            // USERS DB
-            $this->users_conn = new PDO(
-                "mysql:host=$this->host;dbname=chams_users",
+        try {            
+            $live_connection = new PDO(
+                "mysql:host=$this->host;dbname=$this->dbname;charset=utf8mb4",
                 $this->user,
                 $this->pass
             );
 
-            // TICKETING DB
-            $this->ticket_conn = new PDO(
-                "mysql:host=$this->host;dbname=chams_ticketing",
-                $this->user,
-                $this->pass
-            );
+            $live_connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-            // INVENTORY DB
-            $this->inventory_conn = new PDO(
-                "mysql:host=$this->host;dbname=chams_inventory",
-                $this->user,
-                $this->pass
-            );
-
-            // LOGS DB
-            $this->logs_conn = new PDO(
-                "mysql:host=$this->host;dbname=chams_logs",
-                $this->user,
-                $this->pass
-            );
-
-            // SET ERRORS
-            $this->users_conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-            $this->ticket_conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-            $this->inventory_conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-            $this->logs_conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            $this->users_conn     = $live_connection;
+            $this->ticket_conn    = $live_connection;
+            $this->inventory_conn = $live_connection;
+            $this->logs_conn      = $live_connection;
 
         } catch (PDOException $e) {
             die("Database connection failed: " . $e->getMessage());

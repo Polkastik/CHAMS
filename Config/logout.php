@@ -30,5 +30,5 @@ if (ini_get("session.use_cookies")) {
     );
 }
 
-header("Location: ../Flow/Login.php?status=loggedout");
+header("Location: ../index.php?status=loggedout");
 exit();

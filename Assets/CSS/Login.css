@@ -22,7 +22,7 @@ body {
 /* --- LEFT PANEL --- */
 .left-panel {
     width: 60%;
-    background-image: url('http://localhost/CHAMS/Assets/Images/BLUE BG.jpg');
+    background-image: url('../Images/BLUE BG.jpg');
     background-size: cover;
     background-position: center;
     position: relative;

@@ -15,4 +15,4 @@ foreach ($users as $user) {
     echo "Updated User ID: " . $user['U_ID'] . " (James is now hashed!)<br>";
 }
 
-echo "Migration complete! Now go to Login.php and try logging in.";
+echo "Migration complete! Now go to index.php and try logging in.";

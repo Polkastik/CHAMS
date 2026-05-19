@@ -50,7 +50,7 @@ class QueryHandler
     public function getUsersByRole($roleId)
     {
         $stmt = $this->ticketDB->prepare("
-            SELECT U_ID FROM chams_users.users
+            SELECT U_ID FROM users
             WHERE Role_ID = :role
         ");
         $stmt->execute(['role' => $roleId]);
@@ -60,7 +60,7 @@ class QueryHandler
     public function getDepartments()
     {
         $sql = "SELECT D_ID, Dept_Name 
-        FROM chams_users.departments 
+        FROM departments 
         ORDER BY Dept_Name ASC";
         $stmt = $this->logsDB->prepare($sql);
         $stmt->execute();
@@ -102,9 +102,9 @@ class QueryHandler
                     s.FN AS staff_FN, s.LN AS staff_LN,
                     c.categ_name
             FROM tickets t
-            LEFT JOIN chams_users.users u ON t.Created_By = u.U_ID
-            LEFT JOIN chams_users.users s ON t.Assigned_To = s.U_ID
-            LEFT JOIN chams_users.departments d ON u.Dept_ID = d.D_ID
+            LEFT JOIN users u ON t.Created_By = u.U_ID
+            LEFT JOIN users s ON t.Assigned_To = s.U_ID
+            LEFT JOIN departments d ON u.Dept_ID = d.D_ID
             LEFT JOIN ticket_categories c ON t.t_type = c.TC_ID
 
             WHERE 1=1";
@@ -194,10 +194,10 @@ class QueryHandler
         FROM tickets t
         LEFT JOIN ticket_categories tc ON t.t_type = tc.TC_ID
         LEFT JOIN ticket_subcategories sc ON t.sub_type_id = sc.sub_id
-        LEFT JOIN chams_users.users u ON t.Created_By = u.U_ID
-        LEFT JOIN chams_users.users s ON t.Assigned_To = s.U_ID
-        LEFT JOIN chams_users.departments d ON u.Dept_ID = d.D_ID
-        LEFT JOIN chams_inventory.inventory_items inv ON t.issued_item_id = inv.I_ID
+        LEFT JOIN users u ON t.Created_By = u.U_ID
+        LEFT JOIN users s ON t.Assigned_To = s.U_ID
+        LEFT JOIN departments d ON u.Dept_ID = d.D_ID
+        LEFT JOIN inventory_items inv ON t.issued_item_id = inv.I_ID
         WHERE t.T_ID = :id
     ");
         $stmt->execute(['id' => $id]);
@@ -319,7 +319,7 @@ class QueryHandler
     public function getTicketComments($ticket_id) {
         $sql = "SELECT tc.*, u.FN, u.LN 
                 FROM ticket_comments tc
-                JOIN chams_users.users u ON tc.U_ID = u.U_ID
+                JOIN users u ON tc.U_ID = u.U_ID
                 WHERE tc.T_ID = ?
                 ORDER BY tc.created_at DESC";
                 
@@ -446,7 +446,7 @@ class QueryHandler
             COUNT(t.T_ID) AS ticket_count,
             ROUND(AVG(TIMESTAMPDIFF(HOUR, t.created_at, t.resolved_at)), 1) AS avg_time
         FROM tickets t
-        JOIN chams_users.users u ON t.Assigned_To = u.U_ID
+        JOIN users u ON t.Assigned_To = u.U_ID
         WHERE t.Status = 'Resolved' AND t.resolved_at >= DATE_SUB(NOW(), INTERVAL 7 DAY)
         GROUP BY u.U_ID
         ORDER BY ticket_count DESC
@@ -532,7 +532,7 @@ class QueryHandler
              u.LN as creator_LN,
              c.category_name
         FROM inventory_items i
-        LEFT JOIN chams_users.users u ON i.created_by = u.U_ID
+        LEFT JOIN users u ON i.created_by = u.U_ID
         LEFT JOIN inventory_categories c ON i.categ_ID = c.IC_ID
         WHERE i.I_ID = :id";
 
@@ -545,7 +545,7 @@ class QueryHandler
     {
         $sql = "SELECT i.*, u.FN, u.LN, c.category_name
             FROM inventory_items i
-            LEFT JOIN chams_users.users u ON i.created_by = u.U_ID
+            LEFT JOIN users u ON i.created_by = u.U_ID
             LEFT JOIN inventory_categories c ON i.categ_ID = c.IC_ID
             WHERE i.item_name = :name AND i.categ_ID = :catId";
 
@@ -569,9 +569,9 @@ class QueryHandler
             WHEN i.Quantity <= 0 THEN 'DEPLETED'
             ELSE c.category_name
         END AS category_name
-        FROM chams_inventory.inventory_items i
-        LEFT JOIN chams_users.users u ON i.created_by = u.U_ID
-        LEFT JOIN chams_inventory.inventory_categories c ON i.categ_ID = c.IC_ID
+        FROM inventory_items i
+        LEFT JOIN users u ON i.created_by = u.U_ID
+        LEFT JOIN inventory_categories c ON i.categ_ID = c.IC_ID
         WHERE 1=1
     ";
         if ($onlyAvailable) {
@@ -686,8 +686,8 @@ class QueryHandler
                 d.Dept_Name,
                 CONCAT(u.FN, ' ', u.LN) AS full_name
             FROM inventory_items i
-            LEFT JOIN chams_users.users u ON i.created_by = u.U_ID
-            LEFT JOIN chams_users.departments d ON u.Dept_ID = d.D_ID
+            LEFT JOIN users u ON i.created_by = u.U_ID
+            LEFT JOIN departments d ON u.Dept_ID = d.D_ID
             ORDER BY d.Dept_Name ASC, full_name ASC";
 
         $stmt = $this->inventoryDB->query($sql);
@@ -950,7 +950,7 @@ class QueryHandler
             ]);
 
             // Update Ticket
-            $sql3 = "UPDATE chams_ticketing.tickets SET issued_item_id = :iid, issued_qty = :qty WHERE T_ID = :tid";
+            $sql3 = "UPDATE tickets SET issued_item_id = :iid, issued_qty = :qty WHERE T_ID = :tid";
             $stmt3 = $this->inventoryDB->prepare($sql3);
             $stmt3->execute(['iid' => $itemId, 'qty' => $quantity, 'tid' => $ticketId]);
 
@@ -979,11 +979,11 @@ class QueryHandler
                 FROM inventory_tracker it
                 LEFT JOIN inventory_items i ON it.I_ID = i.I_ID
                 /* Join 1: The Admin who typed it in */
-                LEFT JOIN chams_users.users u_input ON it.Input_by = u_input.U_ID
+                LEFT JOIN users u_input ON it.Input_by = u_input.U_ID
                 /* Join 2: The User who received the item (ID 3 in your example) */
-                LEFT JOIN chams_users.users u_rec ON it.Received_by = u_rec.U_ID
+                LEFT JOIN users u_rec ON it.Received_by = u_rec.U_ID
                 /* Join 3: The Department belonging to the Receiver */
-                LEFT JOIN chams_users.departments d ON u_rec.Dept_ID = d.D_ID
+                LEFT JOIN departments d ON u_rec.Dept_ID = d.D_ID
                 WHERE 1=1";
 
         if (!empty($filters['ticket'])) {
@@ -1055,8 +1055,8 @@ class QueryHandler
             CONCAT(u.FN, ' ', u.LN) AS full_name,
             IFNULL(t.Status, 'Unresolved') AS Status
         FROM tickets t
-        LEFT JOIN chams_users.users u ON t.Created_By = u.U_ID
-        LEFT JOIN chams_users.departments d ON u.Dept_ID = d.D_ID
+        LEFT JOIN users u ON t.Created_By = u.U_ID
+        LEFT JOIN departments d ON u.Dept_ID = d.D_ID
         ORDER BY d.Dept_Name ASC, full_name ASC
     ";
 
@@ -1140,10 +1140,10 @@ class QueryHandler
                 d_tracker.Dept_Name
             FROM inventory_tracker it
             LEFT JOIN inventory_items i ON it.I_ID = i.I_ID
-            LEFT JOIN chams_users.users u_input ON it.Input_by = u_input.U_ID
-            LEFT JOIN chams_users.users u_rec ON it.Received_by = u_rec.U_ID
-            LEFT JOIN chams_users.departments d_rec ON u_rec.Dept_ID = d_rec.D_ID
-            LEFT JOIN chams_users.departments d_tracker ON it.D_ID = d_tracker.D_ID
+            LEFT JOIN users u_input ON it.Input_by = u_input.U_ID
+            LEFT JOIN users u_rec ON it.Received_by = u_rec.U_ID
+            LEFT JOIN departments d_rec ON u_rec.Dept_ID = d_rec.D_ID
+            LEFT JOIN departments d_tracker ON it.D_ID = d_tracker.D_ID
             LEFT JOIN inventory_categories c ON i.categ_ID = c.IC_ID
             WHERE 1=1";
 
@@ -1219,8 +1219,8 @@ class QueryHandler
             case 'inventory':
                 $sql = "SELECT COUNT(*) as total
                     FROM inventory_items i
-                    LEFT JOIN chams_users.users u ON i.created_by = u.U_ID
-                    LEFT JOIN chams_users.departments d ON u.Dept_ID = d.D_ID
+                    LEFT JOIN users u ON i.created_by = u.U_ID
+                    LEFT JOIN departments d ON u.Dept_ID = d.D_ID
                     LEFT JOIN inventory_categories c ON i.categ_ID = c.IC_ID
                     WHERE 1=1";
 
@@ -1246,7 +1246,7 @@ class QueryHandler
 
             case 'actLog':
                 $sql = "SELECT COUNT(*) as total FROM act_logs a
-                    LEFT JOIN chams_users.users u ON a.U_ID = u.U_ID
+                    LEFT JOIN users u ON a.U_ID = u.U_ID
                     WHERE 1=1";
 
                 if (!empty($filters['type']) && $filters['type'] !== 'All') {
@@ -1264,9 +1264,9 @@ class QueryHandler
             case 'tracker':
                 $sql = "SELECT COUNT(*) as total
                     FROM inventory_tracker it
-                    LEFT JOIN chams_users.users u ON it.Received_by = u.U_ID 
-                    LEFT JOIN chams_users.departments d ON u.Dept_ID = d.D_ID
-                    LEFT JOIN chams_users.departments d_tracker ON it.D_ID = d_tracker.D_ID
+                    LEFT JOIN users u ON it.Received_by = u.U_ID 
+                    LEFT JOIN departments d ON u.Dept_ID = d.D_ID
+                    LEFT JOIN departments d_tracker ON it.D_ID = d_tracker.D_ID
                     LEFT JOIN inventory_items i ON it.I_ID = i.I_ID
                     LEFT JOIN inventory_categories c ON i.categ_ID = c.IC_ID
                     WHERE 1=1";
@@ -1292,7 +1292,7 @@ class QueryHandler
             case 'maintenance':
                 $sql = "SELECT COUNT(*) as total 
                         FROM maintenance m
-                        LEFT JOIN chams_users.departments d ON m.Dept_ID = d.D_ID
+                        LEFT JOIN departments d ON m.Dept_ID = d.D_ID
                         WHERE 1=1";
 
                 if (!empty($filters['department']) && $filters['department'] !== 'All') {
@@ -1322,9 +1322,9 @@ class QueryHandler
             default: // ticketing
                 $sql = "SELECT COUNT(*) as total
                     FROM tickets t
-                    LEFT JOIN chams_users.users u ON t.Created_By = u.U_ID
-                    LEFT JOIN chams_users.users s ON t.Assigned_To = s.U_ID
-                    LEFT JOIN chams_users.departments d ON u.Dept_ID = d.D_ID
+                    LEFT JOIN users u ON t.Created_By = u.U_ID
+                    LEFT JOIN users s ON t.Assigned_To = s.U_ID
+                    LEFT JOIN departments d ON u.Dept_ID = d.D_ID
                     LEFT JOIN ticket_categories c ON t.t_type = c.TC_ID
                     WHERE 1=1";
 
@@ -1455,7 +1455,7 @@ class QueryHandler
     {
         $sql = "SELECT u.FN, u.LN, a.A_ID, a.U_ID, a.act, a.module, a.ref_ID, a.created_at
             FROM act_logs a
-            LEFT JOIN chams_users.users u ON a.U_ID = u.U_ID
+            LEFT JOIN users u ON a.U_ID = u.U_ID
             WHERE 1=1";
         $params = [];
 
@@ -1650,7 +1650,7 @@ class QueryHandler
     {
         $sql = "SELECT m.*, d.Dept_Name 
                 FROM maintenance m 
-                LEFT JOIN chams_users.departments d ON m.Dept_ID = d.D_ID
+                LEFT JOIN departments d ON m.Dept_ID = d.D_ID
                 WHERE m.M_ID = ?";
                 
         $stmt = $this->logsDB->prepare($sql);
@@ -1694,8 +1694,8 @@ class QueryHandler
     public function getMaintenanceLogs($filters = [], $page = 1, $limit = 5)
     {
         $sql = "SELECT m.*, d.Dept_Name
-            FROM CHAMS_LOGS.maintenance m
-            LEFT JOIN CHAMS_USERS.departments d ON m.Dept_ID = d.D_ID
+            FROM maintenance m
+            LEFT JOIN departments d ON m.Dept_ID = d.D_ID
             WHERE 1=1";
 
         $params = [];
@@ -1753,7 +1753,7 @@ class QueryHandler
                 IFNULL(d.Dept_Name, 'N/A') AS Dept_Name,
                 IFNULL(m.Status, 'Not Scheduled') AS Status
             FROM maintenance m
-            LEFT JOIN chams_users.departments d ON m.Dept_ID = d.D_ID
+            LEFT JOIN departments d ON m.Dept_ID = d.D_ID
             ORDER BY Dept_Name ASC
         ";
 

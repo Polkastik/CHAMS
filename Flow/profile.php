@@ -1,7 +1,11 @@
 <?php
 session_start();
-require_once '../Config/auth.php';
-require_once '../Config/queryHandler.php';
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
+require_once  dirname(__DIR__) . '/Config/auth.php';
+require_once  dirname(__DIR__) . '/Config/queryHandler.php';
 $q = new QueryHandler();
 
 $user = $q->getUserByEmpId($uid);

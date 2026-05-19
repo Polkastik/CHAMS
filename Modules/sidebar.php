@@ -86,7 +86,7 @@ $fullname = $fname . " " . $lname;
                     <div class="menu-item"><i class="fas fa-history"></i> <span>ACTIVITY LOG</span></div>
                 </a>
 
-                <a href="../FLow/profile.php" style="text-decoration: none;">
+                <a href="profile.php" style="text-decoration: none;">
                     <div class="menu-item"><i class="fas fa-chart-line"></i> <span>PERFORMANCE</span></div>
                 </a>
             <?php endif; ?>

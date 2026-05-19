@@ -3,8 +3,8 @@
 
 <head>
     <title>CHAMS - LOGIN</title>
-    <?php include '../Config/univHead.php'; ?>
-    <link rel="stylesheet" type="text/css" href="http://localhost/CHAMS/Assets/CSS/Login.css">
+    <?php include 'Config/univHead.php'; ?>
+    <link rel="stylesheet" type="text/css" href="../Assets/CSS/Login.css">
 </head>
 
 <body>
@@ -40,7 +40,7 @@
                 </div>
             <?php endif; ?>
 
-            <form id="loginForm" class="login-form" method="POST" action="../Config/loginProcess.php">
+            <form id="loginForm" class="login-form" method="POST" action="Config/loginProcess.php">
                 <div class="input-group">
                     <i class="fas fa-user"></i>
                     <input type="text" name="empId" id="empId" class="form-input" placeholder="Employee ID" required>
@@ -71,7 +71,7 @@
         </div>
     </div>
 
-    <script src="http://localhost/CHAMS/Assets/JS/Login.js"></script>
+    <script src="../Assets/JS/Login.js"></script>
 </body>
 
 </html>

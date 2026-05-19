@@ -1,6 +1,6 @@
 <?php
 session_start();
-
+require_once 'db.php';
 require_once 'queryHandler.php';
 
 $q = new QueryHandler();
@@ -16,7 +16,7 @@ if ($user) {
 
     if ($user['status'] !== 'active') {
         $q->logLogin($user['U_ID'], 'failed');
-        header("Location: ../Flow/login.php?error=inactive");
+        header("Location: ../index.php?error=inactive");
         exit;
     }
 
@@ -48,7 +48,7 @@ if ($user) {
 
     else {
         $q->logLogin($user['U_ID'], 'failed');
-        header("Location: ../Flow/login.php?error=invalid");
+        header("Location: ../index.php?error=invalid");
         exit;
     }
 
@@ -71,7 +71,7 @@ if ($user) {
 
 } else {
     $q->logLogin($user['U_ID'], 'failed');
-    header("Location: ../Flow/login.php?error=notfound");
+    header("Location: ../index.php?error=notfound");
     exit;
 }
 ?>

@@ -1,13 +1,16 @@
 <?php
 session_start();
-require_once '../Config/auth.php';
-require_once '../Config/queryHandler.php';
-require_once '../Modules/pieGraph.php';
+ini_set('display_errors', 1);
+error_reporting(E_ALL);
+
+require_once dirname(__DIR__) . '/Config/auth.php';
+require_once dirname(__DIR__) . '/Config/queryHandler.php';
+require_once dirname(__DIR__) . '/Modules/pieGraph.php';
 
 $q = new QueryHandler();
 
 if (!isset($_SESSION['user_id'])) {
-    header("Location: Login.php");
+    header("Location: index.php");
     exit;
 }
 
@@ -121,31 +124,31 @@ $stats = $q->getDashboardStats();
 
 <head>
     <title>CHAMS - HOMEPAGE</title>
-    <?php include '../Config/univHead.php'; ?>
-    <link rel="stylesheet" href="../Assets/CSS/dashboard.css">
-    <link rel="stylesheet" href="../Assets/CSS/tile.css">
-    <link rel="stylesheet" href="../Assets/CSS/filter.css">
+    <?php include dirname(__DIR__) . '/Config/univHead.php'; ?>
+    <link rel="stylesheet" href="/Assets/CSS/dashboard.css">
+    <link rel="stylesheet" href="/Assets/CSS/tile.css">
+    <link rel="stylesheet" href="/Assets/CSS/filter.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 
 <body>
 <div class="ball"></div>
     <!-- Header -->
-    <?php include '../Modules/header.php' ?>
+    <?php include dirname(__DIR__) . '/Modules/header.php' ?>
 
     <!-- sidebar -->
     <div class="container" id="dashboard-container">
-        <?php include '../Modules/sidebar.php' ?>
+        <?php include dirname(__DIR__) . '/Modules/sidebar.php' ?>
 
         <!-- main content idk why nasa loob ng container -nathan -->
 
         <?php
         if ($role == 1) {
-            include '../Modules/adminDash.php';
+            include dirname(__DIR__) . '/Modules/adminDash.php';
         } elseif ($role == 2) {
-            include '../Modules/staffDash.php';
+            include dirname(__DIR__) . '/Modules/staffDash.php';
         } else {
-            include '../Modules/genDash.php';
+            include dirname(__DIR__) . '/Modules/genDash.php';
         }
         ?>
     </div>
@@ -155,7 +158,7 @@ $stats = $q->getDashboardStats();
     <?php if ($role !=3): ?>
         <script src="../Assets/JS/graphs.js"></script>
     <?php endif; ?>
-    <?php if ($role === 2): ?> <script src="../Assets/JS/ticket.js"></script> <?php endif; ?>
+    <?php if ($role === 2): ?> <script src="Assets/JS/ticket.js"></script> <?php endif; ?>
     <script src="../Assets/JS/dashboard.js"></script>
     <script src="../Assets/JS/background.js"></script>
 </body>

@@ -1,13 +1,14 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.1
+-- version 4.9.0.1
 -- https://www.phpmyadmin.net/
 --
--- Host: 127.0.0.1
--- Generation Time: May 14, 2026 at 10:16 AM
--- Server version: 10.4.32-MariaDB
--- PHP Version: 8.2.12
+-- Host: sql200.infinityfree.com
+-- Generation Time: May 19, 2026 at 09:07 AM
+-- Server version: 11.4.10-MariaDB
+-- PHP Version: 7.2.22
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET AUTOCOMMIT = 0;
 START TRANSACTION;
 SET time_zone = "+00:00";
 
@@ -18,7 +19,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `chams_logs`
+-- Database: `if0_41961525_chams_central`
 --
 
 -- --------------------------------------------------------
@@ -449,7 +450,229 @@ INSERT INTO `act_logs` (`A_ID`, `U_ID`, `act`, `module`, `ref_ID`, `created_at`)
 (406, 2, 'Accepted Ticket: ', 'Ticketing', 45, '2026-05-12 20:51:11'),
 (407, 2, 'Updated Ticket #45 (Status to Ongoing, Assigned to Mon Flores.)', 'Ticketing', 45, '2026-05-12 20:51:11'),
 (408, 1, 'Saved changes to Ticket #45', 'Ticketing', 45, '2026-05-12 23:49:10'),
-(409, 1, 'Deducted Item # 7', 'Inventory', 7, '2026-05-14 16:15:52');
+(409, 1, 'Deducted Item # 7', 'Inventory', 7, '2026-05-14 16:15:52'),
+(410, 1, 'Updated Category: Computers', 'Inventory', 3, '2026-05-15 09:49:45'),
+(411, 1, 'Updated Item: ROG 5220', 'Inventory', 1, '2026-05-15 09:50:00'),
+(412, 1, 'Deducted Item # 6', 'Inventory', 6, '2026-05-15 09:51:31'),
+(413, 1, 'Updated Category: Computers', 'Inventory', 3, '2026-05-15 10:35:03'),
+(414, 1, 'Deducted Item # 5', 'Inventory', 5, '2026-05-15 10:40:04'),
+(415, 1, 'Reopened Ticket #48', 'Ticketing', 48, '2026-05-18 18:50:08'),
+(416, 2, 'Accepted Ticket: #', 'Ticketing', 48, '2026-05-18 23:04:32'),
+(417, 2, 'Updated Ticket #48 (Status to Ongoing, Assigned to Mon Flores.)', 'Ticketing', 48, '2026-05-18 23:04:32'),
+(418, 2, 'Resolved Ticket: #', 'Ticketing', 48, '2026-05-18 23:05:32'),
+(419, 2, 'Updated Ticket #48 (Status to Resolved)', 'Ticketing', 48, '2026-05-18 23:05:32'),
+(420, 1, 'Deducted Item # 2', 'Inventory', 2, '2026-05-19 04:18:35'),
+(421, 1, 'Updated Maintenance #6', 'Maintenance', 6, '2026-05-19 04:19:15');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `departments`
+--
+
+CREATE TABLE `departments` (
+  `D_ID` int(11) NOT NULL,
+  `Dept_Name` varchar(200) NOT NULL,
+  `descript` text NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `departments`
+--
+
+INSERT INTO `departments` (`D_ID`, `Dept_Name`, `descript`) VALUES
+(1, 'MISD', ''),
+(2, 'Radiology', ''),
+(3, 'Laboratory', ''),
+(4, 'Billing', ''),
+(5, 'Executive Office', ''),
+(6, 'HRMD Office', ''),
+(7, 'Accounting division', ''),
+(8, 'Administrative Services Department', ''),
+(9, 'Admitting and Discharge Section', ''),
+(10, 'Adult Nephrology Division', ''),
+(11, 'Ambulatory Endoscopy and Urology Section', ''),
+(12, 'Ambulatory Infusion Therapy Unit', ''),
+(13, 'Anatomic Pathology Division', ''),
+(14, 'Ancillary Service Department', ''),
+(15, 'Anesthesia Division', ''),
+(16, 'Bids and Awards Secretariat', ''),
+(17, 'Billing and Claims Division', ''),
+(18, 'Billing and Philhealth Section', ''),
+(19, 'Blood Bank Section (BBK)', ''),
+(20, 'Blood Donor Recruitment and Apheresis section (BDRA)', ''),
+(21, 'Breast Center', ''),
+(22, 'Budget Division', ''),
+(23, 'Building Administration and Housekeeping', ''),
+(24, 'Business Records Management', ''),
+(25, 'Cardiac Catherization and Radiology Unit', ''),
+(26, 'Cardiac Catheterization Laboratory Section', ''),
+(27, 'Cardiovascular Laboratory Section', ''),
+(28, 'Care Therapeutic Transplant Unit / HICU', ''),
+(29, 'Cellular Immunology and Flow Cytometry Section', ''),
+(30, 'Cellular Transplantation Section', ''),
+(31, 'Central Supply and Sterilization Unit', ''),
+(32, 'Clinical Chemistry Section (CCH)', ''),
+(33, 'Clinical Immunology Section (CIS)', ''),
+(34, 'Clinical Microscopy Section (CMI)', ''),
+(35, 'Clinical Pathology Division', ''),
+(36, 'Clinical Trial and Research Division', ''),
+(37, 'COVID Lab', ''),
+(38, 'Credit and Collection Section', ''),
+(39, 'CT-SCAN', ''),
+(40, 'Department Medical Imaging and Therapeutic Radiology', ''),
+(41, 'Diagnostic Division', ''),
+(42, 'Doctors Clinic', ''),
+(43, 'Emergency Room Service', ''),
+(44, 'Executive Office', ''),
+(45, 'Finance Service Department', ''),
+(46, 'WARD 2A', ''),
+(47, 'WARD 2B', ''),
+(48, 'WARD 2C', ''),
+(49, 'WARD 2D', ''),
+(50, 'WARD 2E', ''),
+(51, 'WARD 2F', ''),
+(52, 'WARD 2G', ''),
+(53, 'WARD 3A', ''),
+(54, 'WARD 3B', ''),
+(55, 'WARD 3C', ''),
+(56, 'WARD 3D', ''),
+(57, 'WARD 3F', ''),
+(58, 'WARD 3E', ''),
+(60, 'Cashier', ''),
+(61, 'Credit', ''),
+(62, 'Operating Room', '');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `inventory_categories`
+--
+
+CREATE TABLE `inventory_categories` (
+  `IC_ID` int(11) NOT NULL,
+  `category_name` varchar(100) NOT NULL,
+  `IC_Desc` text NOT NULL,
+  `category_color` varchar(7) NOT NULL DEFAULT '#e3f2fd',
+  `created_at` datetime DEFAULT NULL,
+  `updated_at` datetime DEFAULT NULL,
+  `created_by` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `inventory_categories`
+--
+
+INSERT INTO `inventory_categories` (`IC_ID`, `category_name`, `IC_Desc`, `category_color`, `created_at`, `updated_at`, `created_by`) VALUES
+(1, 'Networking', 'Lan cables, USB cables you name it\r\n', '#ec3cdd', '2026-03-31 19:00:37', NULL, 1),
+(2, 'Peripherals', '', '#f4a357', '2026-03-31 19:00:37', NULL, 1),
+(3, 'Computers', 'Consists of hardware items if not marked as consumables', '#b90e0e', '2026-03-31 19:00:37', NULL, 1),
+(4, 'Consumables', '', '#c8bdff', '2026-03-31 19:00:37', NULL, 1),
+(6, 'Printers', '', '#e3f2fd', '2026-05-08 12:56:59', NULL, 1);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `inventory_items`
+--
+
+CREATE TABLE `inventory_items` (
+  `I_ID` int(11) NOT NULL,
+  `categ_ID` int(11) NOT NULL,
+  `item_name` varchar(200) NOT NULL,
+  `item_type` int(11) NOT NULL,
+  `item_brand` varchar(150) DEFAULT NULL,
+  `Quantity` int(11) NOT NULL,
+  `Threshold` int(11) NOT NULL,
+  `item_supplier` varchar(150) NOT NULL,
+  `Defects` enum('Yes','No') NOT NULL,
+  `Serial_number` varchar(100) DEFAULT NULL,
+  `date_received` datetime NOT NULL,
+  `collected_by` int(11) DEFAULT NULL,
+  `created_at` datetime NOT NULL,
+  `updated_at` datetime DEFAULT NULL,
+  `created_by` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `inventory_items`
+--
+
+INSERT INTO `inventory_items` (`I_ID`, `categ_ID`, `item_name`, `item_type`, `item_brand`, `Quantity`, `Threshold`, `item_supplier`, `Defects`, `Serial_number`, `date_received`, `collected_by`, `created_at`, `updated_at`, `created_by`) VALUES
+(1, 3, 'ROG 5220', 3, 'ROG', 5300, 200, 'INTELI', 'No', '1234', '2026-04-05 18:15:00', NULL, '2026-04-05 18:16:20', '2026-05-15 09:50:00', 1),
+(2, 4, '005', 1, 'brand', 385, 100, 'supplier', 'No', NULL, '2026-04-05 21:20:00', NULL, '2026-04-05 21:20:56', NULL, 1),
+(3, 4, '005', 1, 'SONY', 0, 200, 'INTELI', 'No', NULL, '2026-04-05 21:20:00', NULL, '2026-04-05 21:40:16', '2026-04-17 21:11:18', 1),
+(4, 4, '005', 1, 'Delta', 0, 2, 'supplier', 'No', NULL, '2026-04-17 21:47:00', NULL, '2026-04-17 21:48:25', NULL, 1),
+(5, 4, '005', 1, '123', 200, 200, 'INTELI', 'No', NULL, '2026-04-29 21:22:00', NULL, '2026-04-29 21:22:36', NULL, 1),
+(6, 4, '005', 1, '123', 200, 200, 'INTELI', 'No', NULL, '2026-04-30 20:56:00', NULL, '2026-04-30 20:56:41', NULL, 1),
+(7, 4, '005', 1, '123', 10, 2, 'INFINI', 'No', NULL, '2026-04-30 22:43:00', NULL, '2026-04-30 22:43:19', NULL, 1),
+(8, 6, 'LaserJet pro', 2, 'Delta', 150, 20, 'ErgoFurniture Ltd.', 'No', NULL, '2026-05-08 12:57:00', NULL, '2026-05-08 12:57:44', NULL, 1),
+(9, 2, 'Intelli mouse', 2, 'Delta', 100, 20, 'ErgoFurniture Ltd.', 'No', NULL, '2026-05-08 12:59:00', NULL, '2026-05-08 12:59:30', NULL, 1),
+(10, 1, 'LAN cables', 2, 'brand', 250, 20, 'ErgoFurniture Ltd.', 'No', 'N/A', '2026-05-08 13:06:00', NULL, '2026-05-08 13:07:14', '2026-05-08 13:08:23', 1);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `inventory_tracker`
+--
+
+CREATE TABLE `inventory_tracker` (
+  `IT_ID` int(11) NOT NULL,
+  `I_ID` int(11) NOT NULL,
+  `Quantity` int(11) NOT NULL,
+  `reference_ticket` int(11) DEFAULT NULL,
+  `Input_by` int(11) NOT NULL,
+  `Received_by` int(11) DEFAULT NULL,
+  `D_ID` int(11) DEFAULT NULL,
+  `date_received` datetime NOT NULL,
+  `created_at` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `inventory_tracker`
+--
+
+INSERT INTO `inventory_tracker` (`IT_ID`, `I_ID`, `Quantity`, `reference_ticket`, `Input_by`, `Received_by`, `D_ID`, `date_received`, `created_at`) VALUES
+(1, 2, 191, 1, 1, 3, NULL, '2026-04-12 16:06:40', '2026-04-12 16:06:40'),
+(2, 3, 200, 2, 1, 3, NULL, '2026-04-11 16:06:40', '2026-04-12 16:06:40'),
+(3, 3, 0, 4, 1, 3, NULL, '2026-04-13 16:06:40', '2026-04-13 16:06:40'),
+(4, 3, 20, 5, 1, 3, NULL, '2026-04-13 16:06:40', '2026-04-15 16:06:40'),
+(5, 3, 5, 3, 1, 3, NULL, '2026-04-22 16:06:40', '2026-04-22 16:06:40'),
+(6, 3, 20, 4, 1, 3, NULL, '2026-04-01 16:06:40', '2026-04-02 16:06:40'),
+(7, 2, 5, 6, 1, 3, NULL, '2026-04-22 16:06:40', '2026-04-23 16:06:40'),
+(8, 4, 5, 6, 1, 3, NULL, '2026-04-17 16:06:40', '2026-04-22 16:06:40'),
+(9, 2, 5, 6, 1, 3, NULL, '2026-04-14 16:06:40', '2026-04-15 16:06:40'),
+(10, 1, 1, 7, 1, 4, NULL, '2026-04-22 16:53:16', '0000-00-00 00:00:00'),
+(11, 6, 200, 43, 1, 3, NULL, '2026-05-11 16:38:35', '0000-00-00 00:00:00'),
+(12, 6, 300, 44, 1, 3, NULL, '2026-05-11 23:29:03', '0000-00-00 00:00:00'),
+(15, 1, 500, NULL, 1, NULL, 23, '2026-05-14 15:26:27', '2026-05-14 15:26:27'),
+(16, 1, 200, NULL, 1, NULL, 13, '2026-05-14 16:10:48', '2026-05-14 16:10:48'),
+(17, 7, 2, NULL, 1, NULL, 21, '2026-05-14 16:14:18', '2026-05-14 16:14:18'),
+(18, 7, 3, NULL, 1, NULL, 15, '2026-05-14 16:15:52', '2026-05-14 16:15:52'),
+(19, 6, 300, NULL, 1, NULL, 20, '2026-05-15 09:51:31', '2026-05-15 09:51:31'),
+(20, 5, 300, NULL, 1, NULL, 40, '2026-05-15 10:40:04', '2026-05-15 10:40:04'),
+(21, 2, 15, NULL, 1, NULL, 19, '2026-05-19 04:18:35', '2026-05-19 04:18:35');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `inventory_type`
+--
+
+CREATE TABLE `inventory_type` (
+  `IT_ID` int(11) NOT NULL,
+  `type` varchar(50) DEFAULT NULL,
+  `created_at` datetime DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `inventory_type`
+--
+
+INSERT INTO `inventory_type` (`IT_ID`, `type`, `created_at`) VALUES
+(1, 'Ink', '2026-04-05 14:42:02'),
+(2, 'HardWare', '2026-04-05 14:42:02'),
+(3, 'Cleaner', '2026-04-05 14:43:00');
 
 -- --------------------------------------------------------
 
@@ -662,7 +885,46 @@ INSERT INTO `login_logs` (`L_ID`, `U_ID`, `login_time`, `logout_time`, `stat`) V
 (190, 3, '2026-05-12 22:48:56', NULL, 'Login'),
 (191, 1, '2026-05-14 10:32:52', '2026-05-14 11:39:03', 'Logout'),
 (192, 1, '2026-05-14 11:39:06', '2026-05-14 16:06:04', 'Logout'),
-(193, 1, '2026-05-14 16:09:09', NULL, 'Login');
+(193, 1, '2026-05-14 16:09:09', '2026-05-14 16:17:09', 'Logout'),
+(194, 1, '2026-05-15 00:50:39', '2026-05-15 00:50:42', 'Logout'),
+(195, 1, '2026-05-15 09:49:26', '2026-05-15 10:01:59', 'Logout'),
+(196, 2, '2026-05-15 10:02:05', '2026-05-15 10:08:53', 'Logout'),
+(197, 1, '2026-05-15 10:08:58', '2026-05-15 10:09:12', 'Logout'),
+(198, 1, '2026-05-15 10:09:43', '2026-05-15 10:10:41', 'Logout'),
+(199, 2, '2026-05-15 10:10:47', '2026-05-15 10:12:00', 'Logout'),
+(200, 3, '2026-05-15 10:12:04', '2026-05-15 10:15:13', 'Logout'),
+(201, 1, '2026-05-15 10:31:21', '2026-05-15 10:47:51', 'Logout'),
+(202, 2, '2026-05-15 10:47:55', '2026-05-15 10:48:02', 'Logout'),
+(203, 3, '2026-05-15 10:48:05', '2026-05-15 10:50:00', 'Logout'),
+(204, 2, '2026-05-15 10:50:03', '2026-05-15 10:54:30', 'Logout'),
+(205, 2, '2026-05-15 10:50:03', NULL, 'Login'),
+(206, 1, '2026-05-15 10:56:33', '2026-05-15 11:03:38', 'Logout'),
+(207, 1, '2026-05-17 15:06:33', NULL, 'Login'),
+(208, 2, '2026-05-17 15:06:47', '2026-05-17 15:07:02', 'Logout'),
+(209, 1, '2026-05-18 17:24:38', '2026-05-18 17:25:24', 'Logout'),
+(210, 2, '2026-05-18 17:25:27', '2026-05-18 17:25:36', 'Logout'),
+(211, 1, '2026-05-18 17:25:38', '2026-05-18 17:50:56', 'Logout'),
+(212, 3, '2026-05-18 17:51:00', '2026-05-18 18:15:18', 'Logout'),
+(213, 2, '2026-05-18 18:15:20', '2026-05-18 18:16:37', 'Logout'),
+(214, 1, '2026-05-18 18:16:46', '2026-05-18 18:25:13', 'Logout'),
+(215, 1, '2026-05-18 18:25:40', '2026-05-18 19:17:05', 'Logout'),
+(216, 3, '2026-05-18 19:17:38', '2026-05-18 19:25:26', 'Logout'),
+(217, 2, '2026-05-18 19:25:28', '2026-05-18 22:29:25', 'Logout'),
+(218, 1, '2026-05-18 22:29:28', '2026-05-18 23:03:20', 'Logout'),
+(219, 2, '2026-05-18 23:03:22', '2026-05-18 23:34:55', 'Logout'),
+(220, 1, '2026-05-18 23:34:57', '2026-05-18 23:39:42', 'Logout'),
+(221, 2, '2026-05-18 23:39:47', '2026-05-18 23:43:16', 'Logout'),
+(222, 1, '2026-05-18 23:43:18', '2026-05-18 23:58:20', 'Logout'),
+(223, 3, '2026-05-18 23:58:23', '2026-05-19 01:03:44', 'Logout'),
+(224, 1, '2026-05-19 03:03:40', NULL, 'Login'),
+(225, 1, '2026-05-19 03:35:48', NULL, 'Login'),
+(226, 1, '2026-05-19 03:37:07', NULL, 'Login'),
+(227, 1, '2026-05-19 03:37:10', '2026-05-19 06:03:01', 'Logout'),
+(228, 1, '2026-05-19 06:03:17', '2026-05-19 06:03:24', 'Logout'),
+(229, 2, '2026-05-19 06:03:28', NULL, 'Login'),
+(230, 2, '2026-05-19 06:04:54', NULL, 'Login'),
+(231, 2, '2026-05-19 06:05:16', NULL, 'Login'),
+(232, 2, '2026-05-19 06:07:30', '2026-05-19 06:07:45', 'Logout');
 
 -- --------------------------------------------------------
 
@@ -691,7 +953,7 @@ INSERT INTO `maintenance` (`M_ID`, `Asset_name`, `Dept_ID`, `M_type`, `desc`, `c
 (1, 'test', 7, 'Preventive', '', '2026-04-20 21:17:29', NULL, 'High', 'Pending', NULL),
 (2, 's', NULL, 'Predictive', '', '2026-04-20 21:18:24', '2027-05-02 14:57:15', NULL, 'Resolved', NULL),
 (4, 'sa', NULL, 'Preventive', '', '2026-04-20 23:39:01', '2026-08-02 14:57:05', NULL, 'Resolved', NULL),
-(6, 'test', 9, 'Preventive', 'test', '2026-05-12 21:38:30', NULL, 'Medium', 'Pending', NULL);
+(6, 'test', 9, 'Preventive', 'test', '2026-05-12 21:38:30', '2027-05-19 19:19:14', 'Medium', 'Resolved', NULL);
 
 -- --------------------------------------------------------
 
@@ -843,7 +1105,11 @@ INSERT INTO `notifications` (`N_ID`, `user_id`, `message`, `type`, `ref_id`, `is
 (132, 3, 'Your ticket #46 has been accepted.', 'ticket', 46, 0, '2026-05-12 20:49:33'),
 (133, 2, 'New Assignment: You have been assigned to Ticket #46 ().', 'assignment', 46, 0, '2026-05-12 20:49:33'),
 (134, 3, 'Your ticket #45 has been accepted.', 'ticket', 45, 0, '2026-05-12 20:51:11'),
-(135, 2, 'New Assignment: You have been assigned to Ticket #45 ().', 'assignment', 45, 0, '2026-05-12 20:51:11');
+(135, 2, 'New Assignment: You have been assigned to Ticket #45 ().', 'assignment', 45, 0, '2026-05-12 20:51:11'),
+(136, 3, 'Your ticket #48 has been accepted.', 'ticket', 48, 0, '2026-05-18 23:04:32'),
+(137, 2, 'New Assignment: You have been assigned to Ticket #48 .', 'assignment', 48, 0, '2026-05-18 23:04:32'),
+(138, 3, 'Your ticket #48 has been resolved.', 'ticket', 48, 0, '2026-05-18 23:05:32'),
+(139, 3, 'ticket #48 has been resolved by Staff', 'ticket', 48, 0, '2026-05-18 23:05:32');
 
 -- --------------------------------------------------------
 
@@ -1000,6 +1266,205 @@ INSERT INTO `notification_dismissals` (`id`, `notification_id`, `user_id`, `dism
 (142, 113, 3, '2026-05-11 05:17:07'),
 (143, 116, 3, '2026-05-11 05:17:07');
 
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `roles`
+--
+
+CREATE TABLE `roles` (
+  `R_ID` int(11) NOT NULL,
+  `role_name` varchar(50) NOT NULL,
+  `descript` text NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `roles`
+--
+
+INSERT INTO `roles` (`R_ID`, `role_name`, `descript`) VALUES
+(1, 'Admin', 'Admin, Supervisor, Secretary'),
+(2, 'Staff', 'Technicians (MISD STAFF)'),
+(3, 'Gen_User', 'Not MISD Staff');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `tickets`
+--
+
+CREATE TABLE `tickets` (
+  `T_ID` int(11) NOT NULL,
+  `ticket_num` varchar(50) DEFAULT NULL,
+  `Title` varchar(255) NOT NULL,
+  `T_description` text NOT NULL,
+  `attachment` varchar(255) DEFAULT NULL,
+  `t_type` int(50) DEFAULT NULL,
+  `sub_type_id` int(11) DEFAULT NULL,
+  `Priority` enum('Unlabeled','Low','Medium','High') NOT NULL DEFAULT 'Unlabeled',
+  `Status` enum('Unresolved','Resolved','Ongoing') NOT NULL DEFAULT 'Unresolved',
+  `Created_By` int(11) NOT NULL,
+  `Assigned_To` int(11) DEFAULT NULL,
+  `Dept_ID` int(11) NOT NULL,
+  `issued_item_id` int(11) DEFAULT NULL,
+  `issued_qty` int(11) DEFAULT 0,
+  `created_at` datetime NOT NULL,
+  `due_date` datetime DEFAULT NULL,
+  `updated_at` datetime DEFAULT NULL,
+  `resolved_at` datetime DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `tickets`
+--
+
+INSERT INTO `tickets` (`T_ID`, `ticket_num`, `Title`, `T_description`, `attachment`, `t_type`, `sub_type_id`, `Priority`, `Status`, `Created_By`, `Assigned_To`, `Dept_ID`, `issued_item_id`, `issued_qty`, `created_at`, `due_date`, `updated_at`, `resolved_at`) VALUES
+(1, 'TICKET-6DE58F', 'penge item', 'test', NULL, 5, NULL, 'Medium', 'Resolved', 3, 2, 4, 2, 191, '2026-04-12 19:46:18', NULL, '2026-04-21 00:43:13', '2026-04-12 22:06:39'),
+(2, 'TICKET-3C2E65', 'test 2', 'test 2', NULL, 5, NULL, 'Low', 'Resolved', 3, 5, 4, 3, 200, '2026-04-12 19:48:11', NULL, '2026-04-12 22:12:25', '2026-04-12 22:06:39'),
+(3, 'TICKET-8068CE', 'test 3', 'test 3', NULL, 5, NULL, 'Low', 'Resolved', 3, 2, 4, 3, 5, '2026-04-12 19:48:17', NULL, '2026-04-12 22:07:44', '2026-04-18 19:33:20'),
+(4, 'TICKET-1F726D', 'test3', 'test3', NULL, 4, NULL, 'High', 'Resolved', 3, NULL, 4, 3, 20, '2026-04-12 22:15:12', '2026-04-13 22:19:00', '2026-04-17 21:11:35', '2026-04-18 19:33:20'),
+(5, 'TICKET-8F02E4', 'he', 'test', NULL, 3, NULL, 'Medium', 'Resolved', 3, 2, 4, 3, 20, '2026-04-12 22:53:02', NULL, '2026-04-17 21:09:12', '2026-04-18 19:33:20'),
+(6, 'TICKET-02B7D8', 'test', 'test', NULL, 2, NULL, 'Medium', 'Resolved', 3, 5, 4, 2, 5, '2026-04-18 00:29:09', NULL, '2026-04-21 01:20:14', '2026-04-21 01:20:14'),
+(7, 'TICKET-FC6A25', 'test', 'test', NULL, 5, NULL, 'High', 'Resolved', 4, 2, 2, 1, 1, '2026-04-18 00:52:12', '2026-04-17 00:54:00', '2026-04-21 00:55:54', '2026-04-18 19:33:20'),
+(8, 'TICKET-06D044', 'aaaaaa', 'aa', NULL, 4, NULL, 'Unlabeled', 'Resolved', 4, 2, 2, NULL, 1, '2026-04-24 18:07:00', NULL, '2026-04-26 20:50:13', '2026-04-26 20:50:13'),
+(9, 'TICKET-B8D69B', '', '', 'CHAMS_69eb40d638825.jpg', NULL, NULL, '', 'Resolved', 4, 2, 2, NULL, 1, '2026-04-24 18:07:18', NULL, '2026-04-24 19:13:47', '2026-04-24 19:13:47'),
+(10, 'TICKET-280887', 'e', 'e', NULL, 4, NULL, 'Unlabeled', 'Resolved', 4, 2, 2, NULL, 1, '2026-04-24 19:14:07', NULL, '2026-04-26 20:50:06', '2026-04-26 20:50:06'),
+(11, 'TICKET-C02F7B', 'test', 'test', 'CHAMS_69eb508ee3f6e.jpg', 4, NULL, 'Unlabeled', 'Resolved', 4, 2, 2, NULL, 1, '2026-04-24 19:14:22', NULL, '2026-04-26 20:11:30', '2026-04-26 20:11:30'),
+(12, 'TICKET-C6D87B', 'hello', 'hi', NULL, 3, NULL, 'Unlabeled', 'Resolved', 4, 2, 2, NULL, 1, '2026-04-24 19:14:29', NULL, '2026-04-26 20:10:47', '2026-04-26 20:10:47'),
+(13, 'TICKET-3157D7', 'lol', 'lol', NULL, 4, NULL, 'Unlabeled', 'Resolved', 4, 2, 2, NULL, 1, '2026-04-24 19:14:35', NULL, '2026-04-26 19:03:28', '2026-04-26 19:03:28'),
+(14, 'TICKET-5BB716', 'test ajax', 'test', NULL, 5, NULL, 'Unlabeled', 'Resolved', 3, 2, 4, NULL, 1, '2026-04-27 19:06:19', NULL, '2026-04-27 23:44:32', '2026-04-27 23:44:32'),
+(15, 'TICKET-621295', 'asdf', 'asf', NULL, 4, NULL, 'Unlabeled', 'Resolved', 3, 2, 4, NULL, 1, '2026-04-27 19:32:03', NULL, '2026-04-28 15:57:48', '2026-04-28 15:57:48'),
+(16, 'TICKET-D33C21', 'afs', 'afs', NULL, 4, NULL, 'Unlabeled', 'Resolved', 3, 2, 4, NULL, 1, '2026-04-27 19:32:52', NULL, '2026-04-28 15:57:51', '2026-04-28 15:57:51'),
+(17, 'TICKET-5F3D15', 'sasa', 'asas', NULL, 4, NULL, 'Unlabeled', 'Resolved', 3, 2, 4, NULL, 1, '2026-04-28 15:35:54', NULL, '2026-04-28 16:09:24', '2026-04-28 16:09:24'),
+(18, 'TICKET-231E57', 'ra', 'ra', NULL, 5, NULL, 'Unlabeled', 'Resolved', 3, 5, 4, NULL, 1, '2026-04-28 15:58:01', NULL, '2026-04-28 16:08:44', '2026-04-28 16:08:44'),
+(19, 'TICKET-0912B1', 'fafa', 'fafa', NULL, 3, NULL, 'Unlabeled', 'Resolved', 3, 5, 4, NULL, 1, '2026-04-28 15:58:18', NULL, '2026-04-28 16:08:41', '2026-04-28 16:08:41'),
+(20, 'TICKET-5C773F', 'sa', 'sa', NULL, 4, NULL, 'Unlabeled', 'Resolved', 3, 5, 4, NULL, 1, '2026-04-28 16:01:07', NULL, '2026-04-28 16:08:29', '2026-04-28 16:08:29'),
+(23, 'TICKET-E077B5', 'asd', 'asd', NULL, 4, NULL, 'Unlabeled', 'Resolved', 4, 2, 2, NULL, 1, '2026-04-28 20:52:38', NULL, '2026-04-30 16:45:59', '2026-04-30 16:45:59'),
+(24, 'TICKET-4F1F7A', 'asd', 'asd', NULL, 4, NULL, 'Unlabeled', 'Resolved', 4, 2, 2, NULL, 1, '2026-04-28 20:52:43', NULL, '2026-04-30 16:38:08', '2026-04-30 16:38:08'),
+(25, 'TICKET-C127A8', 'das', 'das', NULL, 2, NULL, 'Unlabeled', 'Resolved', 4, 2, 2, NULL, 1, '2026-04-28 20:53:02', NULL, '2026-04-30 16:38:02', '2026-04-28 20:58:49'),
+(28, 'TICKET-F1127E', 'asd', 'asd', NULL, 4, NULL, 'Unlabeled', 'Resolved', 3, 2, 4, NULL, 1, '2026-04-30 13:18:45', NULL, '2026-04-30 16:32:39', '2026-04-30 16:32:39'),
+(29, 'TICKET-43F9A5', 'test dash', 'test dash', NULL, 5, NULL, 'Unlabeled', 'Resolved', 4, 2, 2, NULL, 1, '2026-04-30 13:45:02', NULL, '2026-04-30 16:33:00', '2026-05-19 04:17:02'),
+(30, 'TICKET-133AE7', 'ASD', 'ASD', NULL, 4, NULL, 'Unlabeled', 'Resolved', 3, 2, 4, NULL, 1, '2026-04-30 18:56:17', NULL, '2026-04-30 19:02:55', '2026-05-08 22:21:58'),
+(31, 'TICKET-D03FC5', 'sad', 'asd', NULL, 5, NULL, 'Unlabeled', 'Resolved', 3, 2, 4, NULL, 1, '2026-04-30 19:05:14', NULL, '2026-04-30 19:30:40', '2026-04-30 19:30:40'),
+(32, 'TICKET-8D41FF', 'testimh', 'test img', 'CHAMS_69f33780eb817.jpg', 1, NULL, 'Unlabeled', 'Resolved', 3, 2, 4, NULL, 1, '2026-04-30 19:05:36', NULL, '2026-04-30 19:31:48', '2026-04-30 19:31:48'),
+(33, 'TICKET-C16975', 'asd', 'asd', NULL, 4, NULL, 'Unlabeled', 'Resolved', 3, 2, 4, NULL, 1, '2026-04-30 19:08:03', NULL, '2026-04-30 19:30:47', '2026-04-30 19:30:47'),
+(34, 'TICKET-53FBE7', 'asd', 'asd', NULL, 4, NULL, 'Unlabeled', 'Resolved', 3, 2, 4, NULL, 1, '2026-04-30 19:12:20', NULL, '2026-04-30 19:22:32', '2026-04-30 19:22:32'),
+(35, 'TICKET-56BE6E', 'asd', 'asd', NULL, 5, NULL, 'Unlabeled', 'Resolved', 3, 2, 4, NULL, 1, '2026-04-30 19:22:42', NULL, '2026-05-01 23:55:49', '2026-05-01 23:55:49'),
+(36, 'TICKET-A495D9', 'asd', 'asd', NULL, 5, NULL, 'High', 'Resolved', 3, 2, 4, NULL, 1, '2026-04-30 19:29:08', '2026-05-07 22:10:00', '2026-05-08 22:17:41', '2026-05-15 10:51:51'),
+(37, 'TICKET-6DA9CC', 'test', 'test', NULL, 4, NULL, 'High', 'Resolved', 3, 2, 4, NULL, 1, '2026-05-05 19:28:00', '2026-05-07 18:54:00', '2026-05-11 11:16:21', '2026-05-15 10:51:51'),
+(39, 'TICKET-4BF79F', 'test', 'test', NULL, 4, NULL, 'Unlabeled', 'Resolved', 3, 6, 4, NULL, 1, '2026-05-11 11:37:36', NULL, '2026-05-11 11:40:55', '2026-05-11 11:40:55'),
+(40, 'TICKET-0F675C', 'test', 'test', NULL, 4, NULL, 'Unlabeled', 'Resolved', 3, 6, 4, NULL, 1, '2026-05-11 11:44:23', NULL, '2026-05-11 12:07:37', '2026-05-11 12:07:37'),
+(43, 'TICKET-D8AB38', 'ss', 'ss', NULL, 4, NULL, 'High', 'Resolved', 3, 5, 4, 6, 200, '2026-05-11 14:09:31', '2026-05-11 23:15:00', '2026-05-11 23:09:59', '2026-05-11 23:09:59'),
+(44, 'TICKET-B7D3BC', '', '20 005', NULL, 5, NULL, 'Unlabeled', 'Resolved', 3, 2, 4, 6, 300, '2026-05-11 23:03:48', NULL, '2026-05-11 23:55:26', '2026-05-15 10:51:51'),
+(45, 'TICKET-22654F', '', 'test', NULL, 4, 7, 'Unlabeled', 'Resolved', 3, 2, 4, NULL, 1, '2026-05-12 00:05:14', NULL, '2026-05-12 23:49:10', '2026-05-15 10:51:51');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `ticket_categories`
+--
+
+CREATE TABLE `ticket_categories` (
+  `TC_ID` int(11) NOT NULL,
+  `categ_name` varchar(100) NOT NULL,
+  `created_at` datetime DEFAULT NULL,
+  `updated_at` datetime DEFAULT NULL,
+  `created_by` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `ticket_categories`
+--
+
+INSERT INTO `ticket_categories` (`TC_ID`, `categ_name`, `created_at`, `updated_at`, `created_by`) VALUES
+(1, 'Technical Support', '2026-03-31 00:00:00', NULL, 1),
+(2, 'Software Issue', '2026-03-31 00:00:00', NULL, 1),
+(3, 'Hardware Issue', '2026-03-31 00:00:00', NULL, 1),
+(4, 'Network/Internet', '2026-03-31 00:00:00', NULL, 1),
+(5, 'Request Consumables', '2026-04-10 20:01:42', NULL, 1);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `ticket_comments`
+--
+
+CREATE TABLE `ticket_comments` (
+  `id` int(11) NOT NULL,
+  `T_ID` int(11) DEFAULT NULL,
+  `U_ID` int(11) DEFAULT NULL,
+  `comment_text` text DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `ticket_comments`
+--
+
+INSERT INTO `ticket_comments` (`id`, `T_ID`, `U_ID`, `comment_text`, `created_at`) VALUES
+(1, 44, 2, 'test', '2026-05-11 15:47:08'),
+(2, 37, 2, 'test2', '2026-05-11 15:54:34');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `ticket_subcategories`
+--
+
+CREATE TABLE `ticket_subcategories` (
+  `sub_id` int(11) NOT NULL,
+  `category_id` int(11) NOT NULL,
+  `sub_name` varchar(100) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `ticket_subcategories`
+--
+
+INSERT INTO `ticket_subcategories` (`sub_id`, `category_id`, `sub_name`) VALUES
+(1, 3, 'Mouse/Keyboard'),
+(2, 3, 'Monitor Display'),
+(3, 3, 'Printer Issue'),
+(4, 2, 'Login/Password Reset'),
+(5, 2, 'Microsoft Office'),
+(6, 2, 'CHAMS System Error'),
+(7, 4, 'No Wifi'),
+(8, 4, 'Not Connected');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `users`
+--
+
+CREATE TABLE `users` (
+  `U_ID` int(11) NOT NULL,
+  `employee_ID` int(50) NOT NULL,
+  `FN` varchar(100) NOT NULL,
+  `LN` varchar(100) NOT NULL,
+  `email` varchar(150) NOT NULL,
+  `pass_hash` varchar(255) NOT NULL,
+  `role_id` int(11) DEFAULT NULL,
+  `Dept_ID` int(11) DEFAULT NULL,
+  `status` enum('active','inactive') NOT NULL,
+  `created_at` datetime NOT NULL,
+  `updated_at` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `users`
+--
+
+INSERT INTO `users` (`U_ID`, `employee_ID`, `FN`, `LN`, `email`, `pass_hash`, `role_id`, `Dept_ID`, `status`, `created_at`, `updated_at`) VALUES
+(1, 111, 'Nathan', 'Rola', 'nathanrola316@gmail.com', '$2y$10$cT2KdFQHLZXJTOKlB3KNcOZZeEUmBj.uujpHvvD36e/oQcuQqczhG', 1, 1, 'active', '2026-03-22 08:15:21', '2026-03-22 08:15:21'),
+(2, 211, 'Mon', 'Flores', 'nathanrola316@gmail.com', '$2y$10$CMtg1AAJfrKMsvh5YnB9FuKXvMjcfh3fS1Nl7FpbzhTr6.bk595nq', 2, 1, 'active', '2026-03-22 09:40:08', '2026-03-22 09:40:08'),
+(3, 311, 'Ychezda', 'Chevy', 'nathanrola316@gmail.com', '$2y$10$ncfRbZIXd6K/hSOk3dmyJeFW4Y7nPUGewslmDJP/JjCjZ9lXuGvTG', 3, 4, 'active', '2026-03-22 09:40:08', '2026-03-22 09:40:08'),
+(4, 312, 'Elena', 'Rodriguez', '22@gmail.com', '$2y$10$F.Rw4gtJ5VbxsebKlr6YvusH.gEZ1l/iAi4B4Jx1iPAbDEvt4j0L6', 3, 2, 'active', '2026-03-31 14:03:11', '2026-03-31 14:03:11'),
+(5, 212, 'James', 'Tapic', '222@gmail.cpm', '$2y$10$XCw8yqkg03lKdJKZ9nkWielJizhxF504qYBvdg4vijUOct4GVgK7e', 2, 1, 'active', '2026-04-03 12:54:42', '2026-04-03 12:54:42'),
+(6, 213, 'Mark', 'Ocasla', 'chamsmisd@gmail.com', '$2y$10$zu9UHP8raNTr8W5vet.Due7rjHNuiZBfatkXdAiHwbmxpNMglqQH2', 2, 1, 'active', '2026-05-11 05:13:27', '2026-05-11 05:13:27'),
+(7, 112, 'Joshua', 'Lim', 'chamsmisd@gmail.com', '$2y$10$9714HWQShO/1eIDcqJtoiupFShKrdg.sPBInjQw.V4Gv9ZVe564d2', 1, 1, 'active', '2026-05-11 05:13:27', '2026-05-11 05:13:27'),
+(8, 214, 'Clarice', 'Villafuerte', 'chamsmisd@gmail.com', '214', 2, 1, 'active', '2026-05-11 10:44:43', '2026-05-11 10:44:43');
+
 --
 -- Indexes for dumped tables
 --
@@ -1010,6 +1475,47 @@ INSERT INTO `notification_dismissals` (`id`, `notification_id`, `user_id`, `dism
 ALTER TABLE `act_logs`
   ADD PRIMARY KEY (`A_ID`),
   ADD KEY `U_ID` (`U_ID`);
+
+--
+-- Indexes for table `departments`
+--
+ALTER TABLE `departments`
+  ADD PRIMARY KEY (`D_ID`),
+  ADD KEY `D_ID` (`D_ID`),
+  ADD KEY `D_ID_2` (`D_ID`);
+
+--
+-- Indexes for table `inventory_categories`
+--
+ALTER TABLE `inventory_categories`
+  ADD PRIMARY KEY (`IC_ID`),
+  ADD KEY `created_by` (`created_by`);
+
+--
+-- Indexes for table `inventory_items`
+--
+ALTER TABLE `inventory_items`
+  ADD PRIMARY KEY (`I_ID`),
+  ADD KEY `categ_ID` (`categ_ID`),
+  ADD KEY `created_by` (`created_by`),
+  ADD KEY `item_type` (`item_type`);
+
+--
+-- Indexes for table `inventory_tracker`
+--
+ALTER TABLE `inventory_tracker`
+  ADD PRIMARY KEY (`IT_ID`),
+  ADD KEY `I_ID` (`I_ID`),
+  ADD KEY `Input_by` (`Input_by`),
+  ADD KEY `Received_by` (`Received_by`),
+  ADD KEY `reference_ticket` (`reference_ticket`),
+  ADD KEY `inventory_tracker_ibfk_5` (`D_ID`);
+
+--
+-- Indexes for table `inventory_type`
+--
+ALTER TABLE `inventory_type`
+  ADD PRIMARY KEY (`IT_ID`);
 
 --
 -- Indexes for table `login_logs`
@@ -1040,6 +1546,53 @@ ALTER TABLE `notification_dismissals`
   ADD KEY `user_id` (`user_id`);
 
 --
+-- Indexes for table `roles`
+--
+ALTER TABLE `roles`
+  ADD PRIMARY KEY (`R_ID`);
+
+--
+-- Indexes for table `tickets`
+--
+ALTER TABLE `tickets`
+  ADD PRIMARY KEY (`T_ID`),
+  ADD UNIQUE KEY `ticket_num` (`ticket_num`),
+  ADD KEY `Assigned_To` (`Assigned_To`),
+  ADD KEY `tickets_ibfk_2` (`Created_By`),
+  ADD KEY `t_type` (`t_type`),
+  ADD KEY `Dept_ID` (`Dept_ID`),
+  ADD KEY `issued_item_id` (`issued_item_id`);
+
+--
+-- Indexes for table `ticket_categories`
+--
+ALTER TABLE `ticket_categories`
+  ADD PRIMARY KEY (`TC_ID`),
+  ADD KEY `created_by` (`created_by`);
+
+--
+-- Indexes for table `ticket_comments`
+--
+ALTER TABLE `ticket_comments`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `T_ID` (`T_ID`);
+
+--
+-- Indexes for table `ticket_subcategories`
+--
+ALTER TABLE `ticket_subcategories`
+  ADD PRIMARY KEY (`sub_id`),
+  ADD KEY `category_id` (`category_id`);
+
+--
+-- Indexes for table `users`
+--
+ALTER TABLE `users`
+  ADD PRIMARY KEY (`U_ID`),
+  ADD KEY `Dept_ID` (`Dept_ID`),
+  ADD KEY `role_id` (`role_id`);
+
+--
 -- AUTO_INCREMENT for dumped tables
 --
 
@@ -1047,13 +1600,43 @@ ALTER TABLE `notification_dismissals`
 -- AUTO_INCREMENT for table `act_logs`
 --
 ALTER TABLE `act_logs`
-  MODIFY `A_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=410;
+  MODIFY `A_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=422;
+
+--
+-- AUTO_INCREMENT for table `departments`
+--
+ALTER TABLE `departments`
+  MODIFY `D_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=119;
+
+--
+-- AUTO_INCREMENT for table `inventory_categories`
+--
+ALTER TABLE `inventory_categories`
+  MODIFY `IC_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+
+--
+-- AUTO_INCREMENT for table `inventory_items`
+--
+ALTER TABLE `inventory_items`
+  MODIFY `I_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+
+--
+-- AUTO_INCREMENT for table `inventory_tracker`
+--
+ALTER TABLE `inventory_tracker`
+  MODIFY `IT_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
+
+--
+-- AUTO_INCREMENT for table `inventory_type`
+--
+ALTER TABLE `inventory_type`
+  MODIFY `IT_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `login_logs`
 --
 ALTER TABLE `login_logs`
-  MODIFY `L_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=194;
+  MODIFY `L_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=233;
 
 --
 -- AUTO_INCREMENT for table `maintenance`
@@ -1065,13 +1648,49 @@ ALTER TABLE `maintenance`
 -- AUTO_INCREMENT for table `notifications`
 --
 ALTER TABLE `notifications`
-  MODIFY `N_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=136;
+  MODIFY `N_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=140;
 
 --
 -- AUTO_INCREMENT for table `notification_dismissals`
 --
 ALTER TABLE `notification_dismissals`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=144;
+
+--
+-- AUTO_INCREMENT for table `roles`
+--
+ALTER TABLE `roles`
+  MODIFY `R_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
+-- AUTO_INCREMENT for table `tickets`
+--
+ALTER TABLE `tickets`
+  MODIFY `T_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=49;
+
+--
+-- AUTO_INCREMENT for table `ticket_categories`
+--
+ALTER TABLE `ticket_categories`
+  MODIFY `TC_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+--
+-- AUTO_INCREMENT for table `ticket_comments`
+--
+ALTER TABLE `ticket_comments`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT for table `ticket_subcategories`
+--
+ALTER TABLE `ticket_subcategories`
+  MODIFY `sub_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+
+--
+-- AUTO_INCREMENT for table `users`
+--
+ALTER TABLE `users`
+  MODIFY `U_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- Constraints for dumped tables
@@ -1081,26 +1700,33 @@ ALTER TABLE `notification_dismissals`
 -- Constraints for table `act_logs`
 --
 ALTER TABLE `act_logs`
-  ADD CONSTRAINT `act_logs_ibfk_1` FOREIGN KEY (`U_ID`) REFERENCES `chams_users`.`users` (`U_ID`);
+  ADD CONSTRAINT `act_logs_ibfk_1` FOREIGN KEY (`U_ID`) REFERENCES `users` (`U_ID`);
 
 --
 -- Constraints for table `login_logs`
 --
 ALTER TABLE `login_logs`
-  ADD CONSTRAINT `login_logs_ibfk_1` FOREIGN KEY (`U_ID`) REFERENCES `chams_users`.`users` (`U_ID`);
+  ADD CONSTRAINT `login_logs_ibfk_1` FOREIGN KEY (`U_ID`) REFERENCES `users` (`U_ID`);
 
 --
 -- Constraints for table `maintenance`
 --
 ALTER TABLE `maintenance`
-  ADD CONSTRAINT `maintenance_ibfk_1` FOREIGN KEY (`Dept_ID`) REFERENCES `chams_users`.`departments` (`D_ID`);
+  ADD CONSTRAINT `maintenance_ibfk_1` FOREIGN KEY (`Dept_ID`) REFERENCES `departments` (`D_ID`);
 
 --
 -- Constraints for table `notification_dismissals`
 --
 ALTER TABLE `notification_dismissals`
   ADD CONSTRAINT `fk_notif_id` FOREIGN KEY (`notification_id`) REFERENCES `notifications` (`N_ID`) ON DELETE CASCADE,
-  ADD CONSTRAINT `notification_dismissals_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `chams_users`.`users` (`U_ID`);
+  ADD CONSTRAINT `notification_dismissals_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`U_ID`);
+
+--
+-- Constraints for table `users`
+--
+ALTER TABLE `users`
+  ADD CONSTRAINT `users_ibfk_1` FOREIGN KEY (`Dept_ID`) REFERENCES `departments` (`D_ID`) ON DELETE SET NULL,
+  ADD CONSTRAINT `users_ibfk_2` FOREIGN KEY (`role_id`) REFERENCES `roles` (`R_ID`) ON DELETE SET NULL;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

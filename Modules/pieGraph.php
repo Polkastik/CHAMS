@@ -1,5 +1,5 @@
 <?php
-require_once '../config/queryHandler.php';
+require_once dirname(__DIR__) . '/Config/queryHandler.php';
 
 $q = new QueryHandler();
 $data = $q->getInventorySummary();

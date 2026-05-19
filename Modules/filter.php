@@ -1,7 +1,7 @@
 <?php
-require_once '../Config/auth.php';
-require_once '../Config/db.php';
-require_once '../Config/QueryHandler.php';
+require_once  dirname(__DIR__) . '/Config/auth.php';
+require_once  dirname(__DIR__) . '/Config/db.php';
+require_once  dirname(__DIR__) . '/Config/queryHandler.php';
 
 $db = new database();
 

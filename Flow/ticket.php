@@ -1,7 +1,11 @@
 <?php
 session_start();
-require_once '../Config/auth.php';
-require_once '../Config/queryHandler.php';
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
+require_once  dirname(__DIR__) . '/Config/auth.php';
+require_once  dirname(__DIR__) . '/Config/queryHandler.php';
 
 $q = new QueryHandler();
 
@@ -29,11 +33,11 @@ if (isset($_GET['ajax']) && $_GET['ajax'] === 'list') {
     ];
 
     ob_start();
-    include '../Modules/filter.php';
+    include  dirname(__DIR__) . '/Modules/filter.php';
     $filterHtml = ob_get_clean();
 
     ob_start();
-    include '../Modules/tileBox.php';
+    include  dirname(__DIR__) . '/Modules/tileBox.php';
     $tilesHtml = ob_get_clean();
 
     header('Content-Type: application/json');
@@ -53,37 +57,37 @@ $currentPage = 'ticketing';
 <head>
     <meta charset="UTF-8">
     <title>CHAMS - TICKETING</title>
-    <?php include '../Config/univHead.php'; ?>
-    <link rel="stylesheet" href="../Assets/CSS/tile.css">
-    <link rel="stylesheet" href="../Assets/CSS/filter.css">
+    <?php include  dirname(__DIR__) . '/Config/univHead.php'; ?>
+    <link rel="stylesheet" href="/Assets/CSS/tile.css">
+    <link rel="stylesheet" href="/Assets/CSS/filter.css">
 </head>
 
 <body id="altBody">
 
-    <?php include '../Modules/header.php' ?>
+    <?php include  dirname(__DIR__) . '/Modules/header.php' ?>
 
     <div class="container">
-        <?php include '../Modules/sidebar.php' ?>
+        <?php include  dirname(__DIR__) . '/Modules/sidebar.php' ?>
         <div class="content" id="content" style="overflow-x: hidden;">
             <div id="pageHeadText" style="padding: 2%; width: 105%; margin: -1.3% 0 0 -2.3%">
-                <div class="page-header" onclick="window.location.href='../Flow/dashboard.php'">
+                <div class="page-header" onclick="window.location.href='/Flow/dashboard.php'">
                     <i class="fas fa-chevron-left"></i> TICKETS
                 </div>
 
                 <?php $mode = "tickets";
                 $filterId = "ticketing";
-                include '../Modules/filter.php'; ?>
+                include  dirname(__DIR__) . '/Modules/filter.php'; ?>
 
                 <div id="ticket-list-container">
-                    <?php include '../Modules/tileBox.php'; ?>
+                    <?php include  dirname(__DIR__) . '/Modules/tileBox.php'; ?>
                 </div>
             </div>
         </div>
     </div>
 
-    <script src="../Assets/JS/sidebar.js"></script>
-    <script src="../Assets/JS/ticket.js"></script>
-    <script src="../Assets/JS/filter.js"></script>
+    <script src="/Assets/JS/sidebar.js"></script>
+    <script src="/Assets/JS/ticket.js"></script>
+    <script src="/Assets/JS/filter.js"></script>
 </body>
 
 </html>

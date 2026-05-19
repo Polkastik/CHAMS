@@ -85,7 +85,7 @@ if (isset($_GET['ajax']) && $_GET['ajax'] === 'list') {
     <link rel="stylesheet" href="../Assets/CSS/filter.css">
 </head>
 
-<body id="altBody">
+<body id="altBody" style="overflow-x: hidden;">
 
 
     <?php include '../Modules/header.php' ?>
