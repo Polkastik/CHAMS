@@ -260,12 +260,43 @@ class QueryHandler
         return $stmt->execute(['id' => $id]);
     }
 
-    public function deleteTicketByNum($tnum)
-    {
-        $sql = "DELETE FROM tickets WHERE ticket_num = :tnum";
-        $stmt = $this->ticketDB->prepare($sql);
-        return $stmt->execute(['tnum' => $tnum]);
+    public function deleteTicketByNum($tnum){
+    try {
+        $stmt = $this->ticketDB->prepare("SELECT issued_item_id, issued_qty FROM tickets WHERE ticket_num = :ticket_id");
+        $stmt->execute(['ticket_id' => $tnum]);
+        $ticketData = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        // Process inventory restoration if records exist
+        if ($ticketData && !empty($ticketData['issued_item_id']) && $ticketData['issued_qty'] > 0) {
+            $itemId = $ticketData['issued_item_id'];
+            $qtyToRestore = $ticketData['issued_qty'];
+
+            $restoreStock = $this->inventoryDB->prepare("UPDATE inventory_items SET Quantity = Quantity + :qty WHERE I_ID = :item_id");
+            $restoreStock->execute([
+                'qty' => $qtyToRestore,
+                'item_id' => $itemId
+            ]);
+
+            // STEP 3: Log tracking details
+            $logTracker = $this->inventoryDB->prepare("DELETE FROM inventory_tracker WHERE reference_ticket = :tnum");
+            $logTracker->execute([
+                'tnum' => $tnum
+            ]);
+        }
+
+        // STEP 4: Purge parent ticket row
+        $deleteTicket = $this->ticketDB->prepare("DELETE FROM tickets WHERE ticket_num = :ticket_id");
+        $deleteTicket->execute(['ticket_id' => $tnum]);
+
+        return true;
+
+    } catch (PDOException $e) {
+        // This forces the hidden SQL database error text to display directly on-screen
+        die("Database Process Halted: " . $e->getMessage() . " on line " . $e->getLine());
+    } catch (Exception $e) {
+        die("System Process Halted: " . $e->getMessage());
     }
+}
 
     // CREATE TICKET
     

@@ -300,7 +300,7 @@
                         <div class="grid-row">
                             <span class="label">Issued Quantity:</span>
                             <input type="number" name="issued_qty" class="value" style="color: #28a745; font-weight: bold;"
-                                value="<?= htmlspecialchars($data['issued_qty'] ?? 0) ?>" min="0" max="200"
+                                value="<?= htmlspecialchars($data['issued_qty'] ?? 0) ?>" min="0"
                                 title="Quantity cannot exceed current stock">
                         </div>
                     <?php endif; ?>

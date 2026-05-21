@@ -1,4 +1,7 @@
 <?php
+ini_set('display_errors', 1);
+ini_set('display_errors', 'On');
+error_reporting(E_ALL);
 session_start();
 require_once '../Config/db.php';
 require_once '../Config/queryHandler.php';
