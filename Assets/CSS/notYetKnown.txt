@@ -1,0 +1,106 @@
+/* ALL NOTIFICATION & MODAL STYLES */
+#notifOverlay {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100vw; height: 100vh;
+    background: rgba(0, 0, 0, 0.7); 
+    display: none; /* Initially hidden */
+    align-items: center; justify-content: center;
+    z-index: 3000;
+}
+
+.notification-panel {
+    background: #0b4a7a;
+    width: 35vw; min-width: 450px;
+    padding: 6vh 3vw; border-radius: 1.5vw;
+    text-align: center; color: white;
+    position: relative; animation: zoomIn 0.3s ease-out;
+    box-shadow: 0 2vw 5vw rgba(0, 0, 0, 0.8);
+}
+
+.close-notif-x { position: absolute; top: 20px; right: 25px; font-size: 1.8vw; cursor: pointer; color: rgba(255, 255, 255, 0.7); transition: 0.3s ease; }
+.close-notif-x:hover { color: #ff2d8d; transform: scale(1.2) rotate(90deg); }
+
+.notification-panel i.main-bell { font-size: 5vw; margin-bottom: 2vh; display: block; }
+.notif-title { font-size: 2vw; font-weight: bold; margin-bottom: 4vh; letter-spacing: 1px; }
+#notifList { width: 100%; max-height: 40vh; overflow-y: auto; }
+
+.notif-item {
+    background: rgba(255, 255, 255, 0.95); color: #333;
+    padding: 2.5vh 1.5vw; margin-bottom: 2vh;
+    border-radius: 0.8vw; display: flex;
+    justify-content: space-between; align-items: center;
+    cursor: pointer; font-weight: 700; font-size: 1.2vw;
+}
+
+/* SUB-MODAL STYLES */
+.modal-overlay {
+    position: fixed; top: 0; left: 0;
+    width: 100%; height: 100%;
+    display: none; align-items: center; justify-content: center;
+    background: rgba(0, 0, 0, 0.85); z-index: 4000;
+}
+.modal-container { width: 42vw; padding: 5vh 3vw; border-radius: 1.5vw; text-align: center; color: white; position: relative; }
+.bg-ticket { background: #0b4a7a; border: 1px solid rgba(255,255,255,0.2); }
+.bg-stock { background: #ff7a00; }
+.modal-message { background: #fff; color: #333; padding: 3vh 2vw; border-radius: 1vw; margin-top: 2vh; font-size: 1.1vw; text-align: left; }
+.status-row { display: flex; align-items: center; gap: 12px; margin-bottom: 15px; padding-bottom: 10px; border-bottom: 1px solid #eee; }
+.badge { padding: 4px 10px; font-size: 0.7vw; font-weight: 800; border-radius: 4px; color: #fff; text-transform: uppercase; }
+.assigned { background: #0b4a7a; } .unresolved { background: #ff2d8d; }
+.overdue-tag { background: #ff2d8d; font-size: 0.6vw; padding: 2px 6px; border-radius: 3px; }
+.close-btn { margin-top: 3vh; padding: 1.5vh 3vw; border: none; background: #fff; color: #0b4a7a; border-radius: 2vw; cursor: pointer; font-weight: 800; font-size: 1vw; }
+.clear-btn { margin-top: 3vh; background: transparent; border: 1px solid #fff; padding: 1vh 2vw; border-radius: 2vw; color: #fff; cursor: pointer; font-size: 0.9vw; }
+
+@keyframes zoomIn { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+
+
+
+
+<!-- <div id="notifOverlay">
+            <div class="notification-panel">
+                <i class="fas fa-times close-notif-x" onclick="closeNotif()"></i>
+                <i class="fas fa-bell main-bell"></i>
+                <div class="notif-title">NOTIFICATIONS</div>
+                <div id="notifList">
+                    <div class="notif-item" onclick="openModal('stockModal')">
+                        <span>⚠️ Low Stock Alert!</span>
+                        <i class="fas fa-arrow-right"></i>
+                    </div>
+                    <div class="notif-item" onclick="openModal('ticketModal')">
+                        <span>🎫 Ticket Status Updated</span>
+                        <i class="fas fa-arrow-right"></i>
+                    </div>
+                </div>
+                <button class="clear-btn" onclick="clearAllNotifs()">Clear All</button>
+            </div>
+        </div>
+
+         <div class="modal-overlay" id="ticketModal">
+            <div class="modal-container bg-ticket">
+                <i class="fas fa-clipboard-list" style="font-size: 3.5vw; margin-bottom: 2vh;"></i>
+                <h2 style="font-size: 1.8vw;">TICKET STATUS LOG</h2>
+                <div class="modal-message">
+                    <span class="overdue-tag">OVERDUE</span>
+                    <h3 style="font-size: 1.2vw; margin-top: 5px;">Eren Y</h3>
+                    <div class="status-row"><i class="fas fa-check-circle" style="color: #0b4a7a;"></i>
+                        <div style="flex:1;">Ticket Logged</div><span class="badge unresolved">Unresolved</span>
+                    </div>
+                    <div class="status-row"><i class="fas fa-user-check" style="color: #0b4a7a;"></i>
+                        <div style="flex:1;">Assigned to Kenneth F</div><span class="badge assigned">Assigned</span>
+                    </div>
+                </div>
+                <button class="close-btn" onclick="closeModal('ticketModal')">CLOSE LIST</button>
+            </div>
+        </div>
+
+        <div class="modal-overlay" id="stockModal">
+            <div class="modal-container bg-stock">
+                <i class="fas fa-box-open" style="font-size: 3.5vw; margin-bottom: 2vh;"></i>
+                <h2 style="font-size: 1.8vw;">INVENTORY ALERT</h2>
+                <div class="modal-message">
+                    <b>Items below threshold:</b><br><br>
+                    • Printer Ink (2 left)<br>• Bond Paper (5 reams left)
+                </div>
+                <button class="close-btn" style="color: #ff7a00" onclick="closeModal('stockModal')">CLOSE</button>
+            </div>
+        </div> -->
