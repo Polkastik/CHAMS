@@ -1,0 +1,100 @@
+/* --- TABLE CONTAINER --- */
+.table-wrapper {
+    background: #fff;
+    border-radius: 0.6vw;
+    box-shadow: 0 0.2vw 0.8vw rgba(0, 0, 0, .05);
+    overflow: hidden;
+    border: 1px solid #e0e0e0;
+    margin-bottom: 3vh;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+/* --- HEADER STYLING --- */
+thead {
+    background: #f8f9fa;
+    border-bottom: 2px solid #eee;
+}
+
+th {
+    padding: 2vh 1.2vw;
+    text-align: center;
+    font-size: 0.75vw;
+    font-weight: 800;
+    color: #888;
+    text-transform: uppercase;
+}
+
+/* --- BODY STYLING --- */
+tbody tr {
+    border-bottom: 1px solid #eee;
+    transition: 0.2s;
+}
+
+tbody tr:hover {
+    background: #f0f7ff;
+}
+
+td {
+    padding: 2vh 1.2vw;
+    font-size: 0.85vw;
+    color: #444;
+    font-weight: 600;
+    vertical-align: middle;
+}
+
+/* --- OVERDUE TAGS (Inline with Asset Name) --- */
+.overdue-tag {
+    background: #ff2d8d; /* Same pink/red as unresolved badge */
+    color: white;
+    font-size: 0.6vw;
+    font-weight: 900;
+    padding: 0.4vh 0.6vw;
+    border-radius: 0.3vw;
+    margin-right: 0.5vw;
+    display: inline-block;
+    text-transform: uppercase;
+}
+
+/* --- BADGES (Consistent with Ticket System) --- */
+.badge {
+    padding: 0.6vh 0.8vw;
+    font-size: 0.65vw;
+    font-weight: 800;
+    border-radius: 0.4vw;
+    color: #fff;
+    text-transform: uppercase;
+    display: inline-block;
+}
+
+.high, .not-scheduled, .unresolved { background: #ff2d8d !important; }
+.resolved { background: #50e3c2; }
+.low { background: #4a90e2; }
+.scheduled { background: #4a90e2; }
+.ongoing { background: #f5a623; }
+.not-set { background: #b7b7b7;}
+
+
+/* --- LOCK ICON STYLING ---
+.lock-icon {
+    text-align: center;
+    font-size: 1vw;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+.lock-icon:hover {
+    transform: scale(1.2);
+}
+
+.fa-lock { color: #0b4a7a; } /* Theme primary color */
+.fa-lock-open { color: #888; opacity: 0.6; } */
+
+/* --- CUSTOM STYLES FOR SPECIFIC COLUMNS --- */
+/* Center the lock column header and body */
+th:last-child, td:last-child {
+    text-align: center;
+}
